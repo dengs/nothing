@@ -1,8 +1,8 @@
 /**
  * @cbtak/nothing
- * version: v1.0.2
+ * version: v1.0.3
  * author: dengs
- * mail: cbtak@hotmail.com
+ * email: cbtak@hotmail.com
  * github: https://github.com/cbtak/nothing.git
  *
  * 说明：平时积累常用的一些系统对象扩展、功能函数集
@@ -83,37 +83,32 @@ const nothing = {
   /**
    * 构建树型数据
    * 需要优化(暂不建议使用)
-   * @param {*} params
+   * @param {*} treeDataArray
+   * @param {*} params    参数对象
+   * params 说明：
+   * {
+   *  nodeKey     节点唯一标识(默认：id)
+   *  parentKey   父节点唯一标识(默认：parentId)
+   *  childrenKey 子节点集合标识(默认：children)
+   * }
    */
-  buildTree: function (params) {
-    if (!params.treeArray) {
-      params.treeArray = []
-    }
-    if (params.element === null) {
-      params.elementArray.forEach(function (item, index, array) {
-        if (item[params.parentKey] === params.rootParentValue) {
-          params.treeArray[params.treeArray.length] = item
-        } else {
-          nothing.buildTree({
-            element: item,
-            elementArray: params.elementArray,
-            treeArray: params.treeArray,
-            elementKey: params.elementKey,
-            parentKey: params.parentKey,
-            childKey: params.childKey,
-            rootParentValue: params.rootParentValue
-          })
+  buildTree: (treeDataArray = [], {nodeKey = 'id', parentKey = 'parentId', childrenKey = 'children', root = null} = {}) => {
+    let [tree, nodeSet] = [[], {}];
+    treeDataArray.forEach(node => {
+      nodeSet[node[nodeKey]] = node;
+    });
+    for(let key in nodeSet) {
+      let node = nodeSet[key];
+      if(nothing.isNotNull(node[parentKey]) && nodeSet[node[parentKey]] && !(Array.isArray(root) ? root : [root]).contains(node[parentKey])) {
+        if(!nodeSet[node[parentKey]][childrenKey]) {
+          nodeSet[node[parentKey]][childrenKey] = [];
         }
-      })
-    } else {
-      params.elementArray.forEach(function (item, index, array) {
-        if (params.element[params.parentKey] === item[params.elementKey]) {
-          item[params.childKey] = item[params.childKey] || []
-          item[params.childKey][item[params.childKey].length] = params.element
-          // params.element.parentElement = item
-        }
-      })
+        nodeSet[node[parentKey]][childrenKey].push(node);
+      } else {
+        tree.push(node);
+      }
     }
+    return tree;
   },
   /**
    * 验证手机号码
