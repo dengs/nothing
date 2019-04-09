@@ -1,8 +1,12 @@
 {
   "name": "@cbtak/nothing",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "常用的一些系统对象扩展、功能函数集",
   "main": "src/main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cbtak/nothing.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

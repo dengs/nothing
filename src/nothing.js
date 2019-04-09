@@ -1,22 +1,11 @@
 /**
  * @cbtak/nothing
- * version: v1.0.0
+ * version: v1.0.2
  * author: dengs
  * mail: cbtak@hotmail.com
- * github: https://github.com/cbtak/nothing
- * create date: 2017-6-18
+ * github: https://github.com/cbtak/nothing.git
  *
  * 说明：平时积累常用的一些系统对象扩展、功能函数集
- * 在程序入口直接引入即可：
- * import './utils/nothing'
- *
- * 浏览器环境：window.nothing 或 window.$n
- * 小程序环境：wx.nothing 或 wx.$n
- * import方式：import nothing from './utils/nothing'
- *
- * 更新日志：
- * modify date: 【2018-10-13】更新代码风格（去除“;”号、“"”改为“'”、去除未使用的变量等...），以兼容ESlint校验
- * modify date: 【2018-10-15】调整部分语法，以兼容小程序
  */
 const nothing = {
   /**
