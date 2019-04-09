@@ -82,9 +82,8 @@ const nothing = {
   ternary: (expression, result1, result2) => expression ? result1 : result2,
   /**
    * 构建树型数据
-   * 需要优化(暂不建议使用)
-   * @param {*} treeDataArray
-   * @param {*} params    参数对象
+   * @param {*} treeDataArray   树节点数据集合(一维)
+   * @param {*} params          参数对象
    * params 说明：
    * {
    *  nodeKey     节点唯一标识(默认：id)
