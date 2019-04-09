@@ -56,3 +56,8 @@ var = '返回var';
 nothing.ifNull(var, var1, var2); // 结果为：返回var2
 nothing.ifNull(var, var1); // 结果为：返回var
 ```
+
+----------
+
+
+后续完善中...
