@@ -1,0 +1,22 @@
+{
+  "name": "@cbtak/nothing",
+  "version": "1.0.1",
+  "description": "常用的一些系统对象扩展、功能函数集",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nothing",
+    "nothingjs",
+    "nothing.js",
+    "cbtak",
+    "cbtak/nothing",
+    "@cbtak/nothing"
+  ],
+  "author": "dengs <cbtak@hotmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^3.6.0"
+  }
+}
