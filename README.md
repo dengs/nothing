@@ -7,7 +7,7 @@
   npm install @cbtak/nothing --save
 
 ## 使用说明
-    const nothing = require('./nothing');
+    const nothing = require('@cbtak/nothing');
 
 ### 1. 功能函数篇
 

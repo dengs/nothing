@@ -1,14 +1,25 @@
-var path = require('path'); 
+const path = require('path');
 module.exports = {
-    //指定入口文件
-    entry: {
-        entry: './src/main.js'
-    },
-    //指定出口文件.打包生成build.js,如果没有dist文件夹会自动创建.最好写绝对路径
+    entry:path.resolve(__dirname,'src/main.js'),
     output: {
-        path: path.join(__dirname,'lib'), 
-        filename: 'nothing.js'
+        filename: 'nothing.js',
+        path:path.resolve(__dirname,'lib'),
     },
-    //模块,指定加载器,可配置各种加载器
-    module: {}
-};
+    module:{
+        rules:[
+            {
+                test:/(\.jsx|\.js)$/,
+                use:{
+                    loader:"babel-loader",
+                    options:{
+                        presets:[
+                            "env"
+                        ]
+                    }
+                },
+                exclude:path.resolve(__dirname,"node_modules"),
+                include:path.resolve(__dirname,"src")
+            }
+        ]
+    }
+}
