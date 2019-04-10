@@ -1,6 +1,5 @@
 /**
  * @cbtak/nothing
- * version: v1.0.3
  * author: dengs
  * email: cbtak@hotmail.com
  * github: https://github.com/cbtak/nothing.git
