@@ -195,9 +195,182 @@ const nothing = {
     return r ? unescape(r[2]) : null;
   },
   /**
+   * 检查对象是否具有指定属性
+   * @param {*} object    检查的对象
+   * @param {*} property  检查的属性(支持多级属性，以"."分隔)
+   */
+  hasOwnProperty: (object, property) => {
+    if (object && nothing.isNotNull(property)) {
+      let attrs = property.split('.');
+      for(let i = 0; i < attrs.length - 1; i++) {
+        object = object[attrs[i]];
+        if (!object) return false;
+      }
+      if (object.hasOwnProperty && object.hasOwnProperty(attrs[attrs.length - 1])) {
+        return true;
+      }
+    }
+    return false;
+  },
+  /**
    * 系统对象功能扩展
    */
   initExtend: () => {
+    if (!nothing.hasOwnProperty(JSON, 'new')) {
+      /**
+       * 传入JSON对象，创建新JSON对象（args动态指定属性集）
+       * @param {*} json 要构建的对象
+       * @param {*} args 动态指定属性集
+       */
+      Object.defineProperty(JSON, 'new', {
+        value :(json, ...args) => {
+          if (!json) return null;
+          let newJson = {};
+          let tempJson = nothing.deepCopy(json);
+          if (!args || !args.length) return newJson;
+          for (let i = 0; i < args.length; i++) {
+            if (nothing.isNull(args[i])) continue;
+            if (args[i].contains('.')) {
+              let attrs = args[i].split('.');
+              let childJson = newJson[attrs[0]] = newJson[attrs[0]] || {};
+              let tempChildJson = tempJson[attrs[0]] || {};
+              for (let ii = 1; ii < attrs.length; ii++) {
+                if (ii === attrs.length - 1) {
+                  childJson[attrs[ii]] = nothing.isNotNull(tempChildJson) ? tempChildJson[attrs[ii]] : null;
+                } else {
+                  childJson = childJson[attrs[ii]] = childJson[attrs[ii]] || {};
+                  tempChildJson = nothing.isNotNull(tempChildJson) ? tempChildJson[attrs[ii]] : null;
+                }
+              }
+            } else {
+              newJson[args[i]] = tempJson[args[i]];
+            }
+          }
+          tempJson = null;
+          return newJson;
+        }
+      });
+    }
+    if (!nothing.hasOwnProperty(JSON.prototype, 'new')) {
+      Object.defineProperty(JSON.prototype, 'new', {
+        value (...args) {
+          return JSON.new(this, ...args);
+        }
+      });
+    }
+    if (!nothing.hasOwnProperty(JSON, 'serializeArray')) {
+      Object.defineProperty(JSON, 'serializeArray', {
+        value :(json) => {
+          let _arr = []
+          let _toArray = function (json, jsonArray, prefix) {
+            for (let key in json) {
+              if (typeof json[key] === 'function') {
+                continue;
+              }
+              let newKey = (prefix ? prefix + '.' : '') + key
+              if (typeof json[key] === 'object' && !(json[key] instanceof Array)) {
+                _toArray(json[key], jsonArray, newKey)
+              } else {
+                jsonArray[jsonArray.length] = {
+                  name: newKey,
+                  value: json[key]
+                }
+              }
+            }
+          }
+          _toArray(json, _arr)
+          return _arr;
+        }
+      });
+    }
+    if (!nothing.hasOwnProperty(JSON.prototype, 'serializeArray')) {
+      Object.defineProperty(JSON.prototype, 'serializeArray', {
+        value () {
+          return JSON.serializeArray(this);
+        }
+      });
+    }
+    if (!nothing.hasOwnProperty(JSON, 'keys')) {
+      Object.defineProperty(JSON, 'keys', {
+        value :(json) => {
+          return Object.keys(json);
+        }
+      });
+    }
+    if (!nothing.hasOwnProperty(JSON.prototype, 'keys')) {
+      Object.defineProperty(JSON.prototype, 'keys', {
+        value () {
+          return JSON.keys(this);
+        }
+      });
+    }
+    if (!nothing.hasOwnProperty(JSON, 'clear')) {
+      Object.defineProperty(JSON, 'clear', {
+        value :(json) => {
+          if(json) {
+            JSON.keys(json).forEach(key => {
+              delete json[key];
+            })
+          }
+          return json;
+        }
+      });
+    }
+    if (!nothing.hasOwnProperty(JSON.prototype, 'clear')) {
+      Object.defineProperty(JSON.prototype, 'clear', {
+        value () {
+          return JSON.clear(this);
+        }
+      });
+    }
+    if (!nothing.hasOwnProperty(JSON, 'remove')) {
+      Object.defineProperty(JSON, 'remove', {
+        value :(json, ...keys) => {
+          if(json && keys && keys.length) {
+            keys.forEach(key => {
+              delete json[key];
+            })
+          }
+          return json;
+        }
+      });
+    }
+    if (!nothing.hasOwnProperty(JSON.prototype, 'remove')) {
+      Object.defineProperty(JSON.prototype, 'remove', {
+        value (...keys) {
+          return JSON.remove(this, keys);
+        }
+      });
+    }
+    /**
+     * 扩展 Storage 对象
+     */
+    if (window && window.Storage) {
+      if (!nothing.hasOwnProperty(window.Storage.prototype, 'setJSON')) {
+        /**
+         * 扩展 Storage 增加setJSON方法
+         * @param {*} key
+         * @param {*} value
+         */
+        Object.defineProperty(window.Storage.prototype, 'setJSON', {
+          value (key, value) {
+            this.setItem(key, nothing.isNotNull(value) ? JSON.stringify(value) : value);
+          }
+        })
+      }
+      if (!nothing.hasOwnProperty(window.Storage.prototype, 'getJSON')) {
+        /**
+         * 扩展 Storage 增加getJSON方法
+         * @param {Object} key
+         */
+        Object.defineProperty(window.Storage.prototype, 'getJSON', {
+          value (key) {
+            let value = this.getItem(key);
+            return nothing.isNotNull(value) ? JSON.parse(value) : value;
+          }
+        })
+      }
+    }
     /**
      * String对象扩展：替换全部
      * 示例：
