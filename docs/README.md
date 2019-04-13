@@ -1,7 +1,7 @@
 # nothing.js 
 一套简单的常用函数&系统对象扩展库
 <br/>
-![avatar](/logo.jpeg ':size=320')
+![avatar](/logo.jpeg ':size=480')
 ## 概述
 > varsion：`v1.0.7`
 <br>author：`cbtak` <cbtak@hotmail.com>
