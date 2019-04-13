@@ -82,12 +82,13 @@ const nothing = {
   /**
    * 构建树型数据
    * @param {*} treeDataArray   树节点数据集合(一维)
-   * @param {*} params          参数对象
-   * params 说明：
+   * @param {*} options         参数项(可选)
+   * options 说明：
    * {
    *  nodeKey     节点唯一标识(默认：id)
    *  parentKey   父节点唯一标识(默认：parentId)
    *  childrenKey 子节点集合标识(默认：children)
+   *  root        指定作为根节点的项目唯一标识(指定多个时用数组表示)
    * }
    */
   buildTree: (treeDataArray = [], {nodeKey = 'id', parentKey = 'parentId', childrenKey = 'children', root = null} = {}) => {
@@ -95,7 +96,7 @@ const nothing = {
     treeDataArray.forEach(node => {
       nodeSet[node[nodeKey]] = node;
     });
-    for(let key in nodeSet) {
+    for (let key in nodeSet) {
       let node = nodeSet[key];
       if(nothing.isNotNull(node[parentKey]) && nodeSet[node[parentKey]] && !(Array.isArray(root) ? root : [root]).contains(node[parentKey])) {
         if(!nodeSet[node[parentKey]][childrenKey]) {
@@ -109,22 +110,17 @@ const nothing = {
     return tree;
   },
   /**
-   * 验证手机号码
-   * @param {*} mobile
+   * 数值型的舍入处理(可指定舍入模式)
+   * 作为Number(num).toFixed(2) 的增强版本
+   * @param {*} num       要舍入处理的数值
+   * @param {*} options   参数值
+   * options 说明：
+   * {
+   *  precision   保留小数位数
+   *  mode        舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor
+   * }
    */
-  validateMobile: (mobile) => /^[1][3,4,5,7,8][0-9]{9}$/.test(mobile),
-  /**
-   * 数值型验证
-   * @param {*} val
-   */
-  validateNumber: (val) => /^\d+(\.\d+)?$/.test(val),
-  /**
-   * 数值舍入处理（可指定小数位数和舍入模式）
-   * @param {*} num       要格式化的数值
-   * @param {*} precision 小数保留位数
-   * @param {*} mode      舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor
-   */
-  toFixed: (num, precision, mode) => {
+  toFixed: (num, {precision, mode} = {}) => {
     num = Number(num);
     precision = Number(precision || 0);
     mode = [0, 1, -1].contains(mode) ? mode : 0;
@@ -139,30 +135,29 @@ const nothing = {
   /**
    * 数值格式化
    * @param {*} num       要格式化的数值
-   * @param {*} params    参数对象
+   * @param {*} options    参数对象
    * params 参数对象说明：
    * {
-   *  num              要格式化的数值
-   *  params.mode      舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor
-   *  params.thousands 是否显示千分位
-   *  params.precision 保留小数位数
+   *  mode      舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor
+   *  thousands 是否显示千分位
+   *  precision 保留小数位数
+   * }
    *  示例：
    *  numberFormat(12806.123)                                                返回：12806
    *  numberFormat(12806.123, {mode: 0, thousands: true, precision: 2})      返回：12,806.12
    *  numberFormat(12806.123, {mode: 1, precision: 2})                       返回：12806.13
    *  numberFormat(12806.126, {mode: -1, thousands: false, precision: 2})    返回：12806.12
-   * }
    */
-  numberFormat: (num, params) => {
+  numberFormat: (num, options) => {
     if (nothing.isNull(num)) return num;
     num = Number(num);
-    params = params || {};
+    options = options || {};
     // 舍入模式
-    let mode = [0, 1, -1].contains(params.mode) ? params.mode : 0;
+    let mode = [0, 1, -1].contains(options.mode) ? options.mode : 0;
     // 是否显示千分位
-    let thousands = nothing.isNull(params.thousands) ? false : params.thousands;
+    let thousands = nothing.isNull(options.thousands) ? false : options.thousands;
     // 显示小数位数
-    let precision = nothing.isNull(params.precision) ? 0 : params.precision;
+    let precision = nothing.isNull(options.precision) ? 0 : options.precision;
     // 舍入处理
     num = nothing.caseValue(mode,
       0, (precision ? Math.round(num * Math.pow(10, precision)) * (1 / Math.pow(10, precision)) : Math.round(num)),
@@ -183,6 +178,12 @@ const nothing = {
     return (thousands ? Number(tempArr[0]).replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') : tempArr[0]) + (precision ? tempArr[1] : '');
   },
   /**
+   * 数值舍入处理（可指定小数位数和舍入模式）
+   * @param {*} num       要格式化的数值
+   * @param {*} precision 小数保留位数
+   * @param {*} mode      舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor
+   */
+  /**
    * 获取地址栏参数
    * 示例：
    * // http://www.xxx.com/index?userid=123
@@ -202,9 +203,9 @@ const nothing = {
   hasOwnProperty: (object, property) => {
     if (object && nothing.isNotNull(property)) {
       let attrs = property.split('.');
-      for(let i = 0; i < attrs.length - 1; i++) {
+      for (let i = 0; i < attrs.length - 1; i++) {
         object = object[attrs[i]];
-        if (!object) return false;
+        if (nothing.isNull(object)) return false;
       }
       if (object.hasOwnProperty && object.hasOwnProperty(attrs[attrs.length - 1])) {
         return true;
@@ -212,6 +213,16 @@ const nothing = {
     }
     return false;
   },
+  /**
+   * 验证手机号码
+   * @param {*} mobile
+   */
+  validateMobile: (mobile) => /^[1][3,4,5,7,8][0-9]{9}$/.test(mobile),
+  /**
+   * 数值型验证
+   * @param {*} val
+   */
+  validateNumber: (val) => /^\d+(\.\d+)?$/.test(val),
   /**
    * 系统对象功能扩展
    */
@@ -223,6 +234,11 @@ const nothing = {
        * @param {*} args 动态指定属性集
        */
       Object.defineProperty(JSON, 'new', {
+        /**
+         * 传入JSON对象，创建新JSON对象（args动态指定属性集）
+         * @param {*} json 要构建的对象
+         * @param {*} args 动态指定属性集
+         */
         value :(json, ...args) => {
           if (!json) return null;
           let newJson = {};
@@ -461,16 +477,24 @@ const nothing = {
     });
     /**
      * Number对象扩展：数值舍入处理（可指定小数位数和舍入模式）
-     * @param {*} precision 小数保留位数
-     * @param {*} mode      舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor
+     * @param {*} options   参数项
+     * options 说明：
+     * {
+     *  precision   保留小数位数
+     *  mode        舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor
+     * }
      */
-    Object.defineProperty(Number.prototype, 'toFixed', { value (precision, mode) { return nothing.toFixed(this, precision, mode); }});/**
-    * Number对象扩展：数值舍入处理（可指定小数位数和舍入模式）
-    * @param {*} num
-    * @param {*} precision  小数保留位数
-    * @param {*} mode       舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor
-    */
-    Object.defineProperty(Number, 'toFixed', { value: (num, precision, mode) => Number(num).toFixed(precision, mode) });
+    Object.defineProperty(Number.prototype, 'toFixed2', { value (options = {}) { return nothing.toFixed(this, options); }});
+    /**
+     * Number对象扩展：数值舍入处理（可指定小数位数和舍入模式）
+     * @param {*} num
+     * @param {*} options   参数项
+     * options 说明：
+     * {
+     *  precision   保留小数位数
+     *  mode        舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor
+     */
+    Object.defineProperty(Number, 'toFixed2', { value: (num, options = {}) => Number(num).toFixed(options) });
     /**
      * Date对象扩展：日期格式化
      * @param {*} fmt   日期格式
@@ -671,11 +695,7 @@ const nothing = {
       let total = 0;
       begin = nothing.ifNull(begin, 0);
       end = nothing.ifNull(end, this.length);
-      for (let i = 0; i < this.length; i++) {
-        if (i >= begin && i < end) {
-          total += Number(this[i] || 0);
-        }
-      }
+      total = this.reduce((total, item, index) => total += Number(index >= begin && index < end ? item || 0 : 0));
       return total;
     }});
     /**
@@ -703,11 +723,7 @@ const nothing = {
       let total = 0;
       begin = nothing.ifNull(begin, 0);
       end = nothing.ifNull(end, this.length);
-      for (let i = 0; i < this.length; i++) {
-        if (i >= begin && i < end) {
-          total += Number(this[i][attribute] || 0);
-        }
-      }
+      total = this.reduce((total, item, index) => total += Number(index >= begin && index < end ? item[attribute] || 0 : 0));
       return total;
     }});
     /**
@@ -747,12 +763,12 @@ const nothing = {
       let valArray = [];
       begin = nothing.ifNull(begin, 0);
       end = nothing.ifNull(end, this.length);
-      for (let i = 0; i < this.length; i++) {
-        if (i >= begin && i < end) {
-          let val = (typeof this[i][attribute] === 'object' && !(this[i][attribute] instanceof Date) ? nothing.deepCopy(this[i][attribute]) : this[i][attribute]) || null;
+      this.forEach((item, index) => {
+        if (index >= begin && index < end) {
+          let val = (typeof item[attribute] === 'object' && !(item[attribute] instanceof Date) ? nothing.deepCopy(item[attribute]) : item[attribute]) || null;
           valArray.push(val);
         }
-      }
+      })
       return valArray;
     }});
     /**
