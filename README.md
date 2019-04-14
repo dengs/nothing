@@ -14,7 +14,9 @@ npm install @cbtak/nothing --save
 ```
 yarn add @cbtak/nothing
 ```
-## [nothing.js 使用手册>>>](https://cbtak.github.io/nothing/#/)
+
+#### [nothing.js 使用手册>>>](https://cbtak.github.io/nothing/#/)
+
 
 ---
 
