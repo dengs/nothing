@@ -274,17 +274,56 @@ nothing.validateEmail('wangyi@@');          // 结果：false
 ### 2. 系统对象扩展
 
 #### 2.1. Object
-##### 2.1.1. Object.new(source, ...attrs)
-##### 2.1.2. xxxx
+序号 | 函数名称 | 说明
+:--- | :--- | :---
+1 | [Object.clone](/?id=_211-objectclonesource) | 对象克隆(深拷贝)
+2 | [Object.prototype.clone](/?id=_212-objectprototypeclone) | 对象克隆(深拷贝)，基于对象实例克隆
+
+##### 2.1.1. Object.clone(source)
+**参数说明：** `source` *要克隆的对象*
+<br/>&nbsp; &nbsp; **返回值：** `{*}` *克隆后的新对象*
+<br/>
+**功能描述：** 
+> 对象克隆(深拷贝)
+
+**示例代码：**
+```js
+let user = {id: '0001', name: 'wangxiaoming'};
+let newUser = nothing.clone(user);
+```
+
+##### 2.1.2. Object.prototype.clone()
+**参数说明：** `无`
+<br/>&nbsp; &nbsp; **返回值：** `{*}` *克隆后的新对象*
+<br/>
+**功能描述：** 
+> 对象克隆(深拷贝)，基于对象实例克隆<br/>派生于Object的对象实例都继续此方法(如：JSON、String、Array...等对象实例)
+
+**示例代码：**
+```js
+let user = {id: '0001', name: 'wangxiaoming'};
+let newUser = user.clone();
+let userArray = [user, newUser];
+let newUserArray = userArray.clone();
+```
 
 #### 2.2. String
+序号 | 函数名称 | 说明
+:--- | :--- | :---
+1 | [String.replaceAll](/?id=_221-stringreplaceallsource-substr-replacement) | String对象扩展：替换全部
+2 | [String.prototype.replaceAll](/?id=_222-stringprototypereplaceallsubstr-replacement) | String对象原型扩展：替换全部
+3 | [String.contains](/?id=_223-stringcontainssource-instr) | String对象扩展：是否包含
+4 | [String.prototype.contains](/?id=_224-stringprototypecontainsinstr) | String对象原型扩展：是否包含
+5 | [String.toByte](/?id=_225-stringtobytestr) | String对象扩展：字符串转 Byte 数组
+6 | [String.prototype.toByte](/?id=_226-stringprototypetobyte) | String对象原型扩展：字符串转 Byte 数组
+7 | [String.fromByte](/?id=_227-stringfrombytebytes) | String对象扩展：Byte 数组转字符串
 
-##### 2.2.1. String.replaceAll(source, substr, replacement = '')
+##### 2.2.1. String.replaceAll(source, substr, replacement)
 **参数说明：** `source` *执行替换操作的字符串，* `substr` *查找匹配的内容，* `replacement` *替换的内容*
-<br/>&nbsp; &nbsp; **返回值：** `{*}`
+<br/>&nbsp; &nbsp; **返回值：** `String`
 <br/>
 **功能描述：**
-> 字符串查找替换指定内容(替换全部匹配)<br/>(作为原生 replace 函数的增强)
+> String对象扩展：替换全部<br/>字符串查找替换指定内容(替换全部匹配)，作为原生 replace 函数的增强
 
 **示例代码：**
 ```js
@@ -292,12 +331,12 @@ let str = ' this is string ';
 let replaceStr = String.replaceAll(str, 'i', '');   // 结果为：ths s strng
 ```
 
-##### 2.2.2. String.prototype.replaceAll(substr, replacement = '')
+##### 2.2.2. String.prototype.replaceAll(substr, replacement)
 **参数说明：** `substr` *查找匹配的内容，* `replacement` *替换的内容*
-<br/>&nbsp; &nbsp; **返回值：** `true/false`
+<br/>&nbsp; &nbsp; **返回值：** `String`
 <br/>
 **功能描述：**
-> 字符串查找替换指定内容(替换全部匹配)<br/>(作为原生 replace 函数的增强)
+> String对象原型扩展：替换全部<br/>字符串查找替换指定内容(替换全部匹配)，作为原生 replace 函数的增强
 
 **示例代码：**
 ```js
@@ -305,13 +344,117 @@ let str = ' this is string ';
 let replaceStr = str.replaceAll('i', '');     // 结果为：ths s strng
 ```
 
+##### 2.2.3. String.contains(source, instr)
+**参数说明：** `source` *源字符串，* `instr` *检查的内容*
+<br/>&nbsp; &nbsp; **返回值：** `Boolean`
+<br/>
+**功能描述：**
+> String对象扩展：是否包含<br/>在字符串 `source` 中查找是否包含 `inStr`
+
+**示例代码：**
+```js
+let source = 'user: zhang wang li';
+let isContains = String.contains(source, 'zhang');     // 结果：true
+```
+
+##### 2.2.4. String.prototype.contains(instr)
+**参数说明：** `instr` *检查的内容*
+<br/>&nbsp; &nbsp; **返回值：** `Boolean`
+<br/>
+**功能描述：**
+> String对象原型扩展：是否包含<br/>在字符串中查找是否包含 `inStr`
+
+**示例代码：**
+```js
+let source = 'user: zhang wang li';
+let isContains = source.contains('zhang');     // 结果：true
+```
+
+##### 2.2.5. String.toByte(str)
+**参数说明：** `str` *源字符串*
+<br/>&nbsp; &nbsp; **返回值：** `[*]` *转换后的 Byte 数组形式*
+<br/>
+**功能描述：**
+> String对象扩展：字符串转 Byte 数组
+
+**示例代码：**
+```js
+let str = 'this is a string';
+let bytes = String.toByte(str);
+```
+
+##### 2.2.6. String.prototype.toByte()
+**参数说明：** `无`
+<br/>&nbsp; &nbsp; **返回值：** `[*]` *转换后的 Byte 数组形式*
+<br/>
+**功能描述：**
+> String对象原型扩展：字符串转 Byte 数组
+
+**示例代码：**
+```js
+let str = 'this is a string';
+let bytes = str.toByte();
+```
+
+##### 2.2.7. String.fromByte(bytes)
+**参数说明：** `bytes` *Byte 数组*
+<br/>&nbsp; &nbsp; **返回值：** `String` *转换后的字符串形式*
+<br/>
+**功能描述：**
+> String对象扩展：Byte 数组转字符串
+
+**示例代码：**
+```js
+let bytes = [ 122, 104, 97, 110, 103 ];
+let str = String.fromByte(bytes); // 结果：zhang
+```
+
+#### 2.2. Number
+
 #### 2.3. Date
+
+#### 2.3. JSON
+##### 2.3.1. JSON.new(json, ...args)
+**参数说明：** `json` *源对象，* `args` *动态指定属性集*
+<br/>&nbsp; &nbsp; **返回值：** `{*}` *创建的新对象*
+<br/>
+**功能描述：**
+> JSON对象扩展：传入JSON对象，创建新JSON对象（args动态指定属性集）
+
+**示例代码：**
+```js
+let psn = {id: '001', name: 'zhang',
+  corp: {id: 'c01', name: 'xxx公司', depts: [{id: 'd01', 'xxx部门'}]}
+};
+let simpPsn = JSON.new(psn, 'id', 'name', 'corp.id', 'test.test1');
+// 结果：{id: '001', name: 'zhang', corp: {id: 'c01'}, test: {test1: null}};
+```
+
+##### 2.3.2. JSON.prototype.new(...args)
+**参数说明：** `args` *动态指定属性集*
+<br/>&nbsp; &nbsp; **返回值：** `{*}` *创建的新对象*
+<br/>
+**功能描述：**
+> JSON对象原型扩展：基于对象实例本身创建新JSON对象（args动态指定属性集）
+
+**示例代码：**
+```js
+let psn = {id: '001', name: 'zhang',
+  corp: {id: 'c01', name: 'xxx公司', depts: [{id: 'd01', 'xxx部门'}]}
+};
+let simpPsn = psn.new('id', 'name', 'corp.id', 'test.test1');
+// 结果：{id: '001', name: 'zhang', corp: {id: 'c01'}, test: {test1: null}};
+```
+
+!> 注：`Node.js` 后端环境不适用，暂无法实现后端环境对JSON对象的原型扩展，请使用 `JSON.new(json, ...args)` 代替
+
 #### 2.4. Array
-#### 2.5
+
+#### 2.5. Storage
 
 ---
 
-后续完善中...
+持续完善中...
 
 ---
 
