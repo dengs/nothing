@@ -7,6 +7,7 @@
   <meta name="description" content="常用的一些系统对象扩展、功能函数集">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+  <link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
 </head>
 <body>
   <div id="app"></div>
@@ -19,5 +20,19 @@
     }
   </script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <script src="//unpkg.com/docsify-copy-code"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/gitalk.min.js"></script>
+  <script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script>
+    const gitalk = new Gitalk({
+      clientID: '989acbd9848a42dd4504',
+      clientSecret: '20e6f724fa8973e1065c5ef97fe3abe404ea99d9',
+      repo: 'docsify-starter',
+      owner: 'cbtak',
+      admin: ['cbtak'],
+      // facebook-like distraction free mode
+      distractionFreeMode: true
+    })
+  </script>
 </body>
 </html>
