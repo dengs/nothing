@@ -18,23 +18,29 @@
       name: 'nothing.js 使用手册',
       repo: 'https://github.com/cbtak/nothing',
       // logo: '/_media/logo.png',
-      loadSidebar: false
+      loadSidebar: false,
+      pagination: {
+        previousText: '上一章节',
+        nextText: '下一章节',
+        crossChapter: true
+      },
     }
   </script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
   <script src="//unpkg.com/docsify-copy-code"></script>
   <script src="//unpkg.com/docsify/lib/plugins/gitalk.min.js"></script>
   <script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
   <script>
-      const gitalk = new Gitalk({
-        clientID: '989acbd9848a42dd4504',
-        clientSecret: '20e6f724fa8973e1065c5ef97fe3abe404ea99d9',
-        repo: 'https://github.com/cbtak/nothing.git',
-        owner: 'cbtak',
-        admin: ['cbtak'],
-        // facebook-like distraction free mode
-        distractionFreeMode: false
-      })
+      // const gitalk = new Gitalk({
+      //   clientID: '989acbd9848a42dd4504',
+      //   clientSecret: '20e6f724fa8973e1065c5ef97fe3abe404ea99d9',
+      //   repo: 'https://github.com/cbtak/nothing.git',
+      //   owner: 'cbtak',
+      //   admin: ['cbtak'],
+      //   // facebook-like distraction free mode
+      //   distractionFreeMode: false
+      // })
     </script>
 </body>
 </html>

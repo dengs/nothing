@@ -6,7 +6,7 @@
 > varsion：`v1.0.7`
 <br>author：`cbtak` <cbtak@hotmail.com>
 <br/>
- nothing.js 来源于项目开发过程常用到的一些工具函数，筛选通用性比较好的整理成库，大多为本人所写，部分来源于网络(`时间久远，不清楚原著，如原作者看到请@本人进行署名 ~_~`)，本库不依赖于第三方库，可直接在node服务端及前端环境使用。
+ nothing.js 来源于项目开发过程积累常用到的一些工具函数，筛选通用性比较好的整理成库，采用`CommonJS`规范、`ES6`重构。本库不依赖于第三方库，可直接在node服务端及前端环境使用。
 
 ## 安装
 > npm 安装：
@@ -31,25 +31,28 @@ yarn add @cbtak/nothing
 :--- | :--- | :---
 1 | [isNull](/?id=_11-isnullval) | 检验传入值是否为空
 2 | [isNotNull](/?id=_12-isnotnullval) | 检验传入值是否不为空
-3 | [ifNull](/?id=_13-ifnull-val-val1-val2) | 空值处理(类oracle 的 nvl2)
-4 | [ternary](/?id=_14-ternaryexpression-result1-result2) | 三元函数
-5 | [deepCopy](/?id=_15-deepcopysource) | 深拷贝
-6 | [caseValue](/?id=_16-casevalueargs) | 匹配函数(类oracle 的 decode)
-7 | [buildTree](/?id=_17-buildtreetreedataarray-options) | 构建树
-8 | [toFixed](/?id=_18-tofixednum-options) | 数值型的舍入处理(可指定舍入模式)
-9 | [numberFormat](/?id=_19-numberformatnum-options) | 数值格式化
-10 | [getParam](/?id=_110-getparamkey) | 获取地址栏参数
-11 | [hasOwnProperty](/?id=_111-hasownpropertyobject-property) | 检查对象是否具有指定属性
-12 | [validateNumber](/?id=_112-validatenumberval) | 数值型验证
-13 | [validateMobile](/?id=_113-validatemobilemobile) | 验证手机号码
-14 | [validateEmail](/?id=_114-validateemailemail) | 验证邮箱
+3 | [isBlank](/?id=_13-isblankval) | 检验传入值是否为空字符串
+4 | [isNotBlank](/?id=_14-isnotblankval) | 检验传入值是否不为空字符串
+5 | [ifNull](/?id=_15-ifnull-val-val1-val2) | 空值处理(类oracle 的 nvl2)
+6 | [ternary](/?id=_16-ternaryexpression-result1-result2) | 三元函数
+7 | [deepCopy](/?id=_17-deepcopysource-ignorefunction) | 深拷贝
+8 | [caseValue](/?id=_18-casevalueargs) | 匹配函数(类oracle 的 decode)
+9 | [buildTree](/?id=_19-buildtreetreedataarray-options) | 构建树
+10 | [toFixed](/?id=_110-tofixednum-options) | 数值型的舍入处理(可指定舍入模式)
+11 | [numberFormat](/?id=_111-numberformatnum-options) | 数值格式化
+12 | [getParam](/?id=_112-getparamkey) | 获取地址栏参数
+13 | [hasOwnProperty](/?id=_113-hasownpropertyobject-property) | 检查对象是否具有指定属性
+14 | [validateNumber](/?id=_114-validatenumberval) | 数值型验证
+15 | [validateMobile](/?id=_115-validatemobilemobile) | 验证手机号码
+16 | [validateEmail](/?id=_116-validateemailemail) | 验证邮箱
 
 #### 1.1. isNull(val)
 **参数说明：** `val` *要校验的值*
 <br/>&nbsp; &nbsp; **返回值：** `Boolean`
 <br/>
 **功能描述：**
-> 检验传入值是否为空<br/>(值等于 null、''、undefined 时返回 true)
+
+> 检验传入值是否为空<br/>(值等于 `null`、`''`、`undefined` 时返回 true)
 
 **示例代码：**
 ```js
@@ -63,7 +66,7 @@ let result = nothing.isNull(var) ? 'var is null' : 'var is not null';
 <br/>&nbsp; &nbsp; **返回值：** `Boolean`
 <br/>
 **功能描述：** 
-> 检验传入值是否不为空<br/>(值不等于 null、''、undefined 时返回 true)
+> 检验传入值是否不为空<br/>(值不等于 `null`、`''`、`undefined` 时返回 true)
 
 **示例代码：**
 ```js
@@ -72,7 +75,35 @@ let result = nothing.isNull(var) ? 'var is null' : 'var is not null';
 // 输出结果：var is not null
 ```
 
-#### 1.3. ifNull (val, val1, val2)
+#### 1.3. isBlank(val)
+**参数说明：** `val` *要校验的值*
+<br/>&nbsp; &nbsp; **返回值：** `Boolean`
+<br/>
+**功能描述：**
+> 检验传入值是否为空字符串<br/>(值等于 `null`、`''`、`undefined`、`'  '` 时返回 true)
+
+**示例代码：**
+```js
+let var = '  ';
+let result = nothing.isBlank(var) ? 'var is blank' : 'var is not blank';
+// 输出结果：var is blank
+```
+
+#### 1.4. isNotBlank(val)
+**参数说明：** `val` *要校验的值*
+<br/>&nbsp; &nbsp; **返回值：** `Boolean`
+<br/>
+**功能描述：**
+> 检验传入值是否不为空字符串<br/>(值不等于 `null`、`''`、`undefined`、`'  '` 时返回 true)
+
+**示例代码：**
+```js
+let var = '  ';
+let result = nothing.isNotBlank(var) ? 'var is not blank' : 'var is blank';
+// 输出结果：var is blank
+```
+
+#### 1.5. ifNull (val, val1, val2)
 **参数说明：** `val` *要校验的值(val2未传递时作为返回结果)，* `val1` *返回结果1，* `val2` *返回结果2(可选)*
 <br/>&nbsp; &nbsp; **返回值：** `{*}` *根据校验结果返回：val/val1/val2*
 <br/>
@@ -88,7 +119,7 @@ nothing.ifNull(var, var1, var2);    // 结果为：返回var2
 nothing.ifNull(var, var1);          // 结果为：返回var
 ```
 
-#### 1.4. ternary(expression, result1, result2)
+#### 1.6. ternary(expression, result1, result2)
 **参数说明：** `expression` *表达式，* `result1` *表达式成立时返回，* `result2` *表达式不成立时返回*
 <br/>&nbsp; &nbsp; **返回值：** `{*}` *表达式是否成立返回 result1/result2*
 <br/>
@@ -100,20 +131,21 @@ nothing.ifNull(var, var1);          // 结果为：返回var
 let result = nothing.ternary(var === 100, 'var === 100', 'var != 100');
 ```
 
-#### 1.5. deepCopy(source)
-**参数说明：** `source` *要拷贝的对象*
+#### 1.7. deepCopy(source, ignoreFunction)
+**参数说明：** `source` *要拷贝的对象* `ignoreFunction` *忽略函数属性(可选，默认 false)*
 <br/>&nbsp; &nbsp; **返回值：** `{*}` *拷贝后的对象*
 <br/>
 **功能描述：**
-> 深拷贝<br/>对传入对象进行深度拷贝
+> 深拷贝<br/>对传入对象进行深度拷贝<br>第二个参数传入`true`时，将忽略函数类型的属性
 
 **示例代码：**
 ```js
-let a = {name: 'this is a'};
-let copy_a = nothing.deepCopy(a);
+let a = {name: 'this is a', showFun: function() {}};
+let copy_a = nothing.deepCopy(a);         // 完整拷贝
+let copy_b = nothing.deepCopy(a, true);   // 第二个参数传入true，将忽略函数类型属性 showFun
 ```
 
-#### 1.6. caseValue(...args)
+#### 1.8. caseValue(...args)
 **参数说明：** `args` *动态参数*
 <br/>&nbsp; &nbsp; **返回值：** `{*}`  *匹配后的结果*
 <br/>
@@ -135,7 +167,7 @@ nothing.caseValue('A', 'B', value1, 'C', value2, defaultValue)        // 返回 
 nothing.caseValue('A', 'B', value1, ['A','C'], value2, defaultValue)  // 返回 value2
 ```
 
-#### 1.7. buildTree(treeDataArray, options)
+#### 1.9. buildTree(treeDataArray, options)
 **参数说明：** `treeDataArray` *树节点数据集合(一维)*
 <br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;`options` *参数项(可选)，详细说明：*
 <br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{
@@ -161,7 +193,7 @@ let data = [
 let tree = nothing.buildTree(data, {parentKey: 'parent'});
 ```
 
-#### 1.8. toFixed(num, options)
+#### 1.10. toFixed(num, options)
 **参数说明：** `num` *要舍入处理的数值*
 <br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;`options` *参数项(可选)，详细说明：*
 <br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{
@@ -181,7 +213,7 @@ nothing.toFixed(10.2345, {precision: 2, mode: 1});  // 结果：10.24
 nothing.toFixed(10.2345, {precision: 2, mode: -1}); // 结果：10.23
 ```
 
-#### 1.9. numberFormat(num, options)
+#### 1.11. numberFormat(num, options)
 **参数说明：** `num` *要舍入处理的数值*
 <br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;`options` *参数项(可选)，详细说明：*
 <br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{
@@ -202,7 +234,7 @@ nothing.numberFormat(12806.123, {mode: 1, precision: 2})                      //
 nothing.numberFormat(12806.126, {mode: -1, thousands: false, precision: 2})   // 返回：12806.12
 ```
 
-#### 1.10. getParam(key)
+#### 1.12. getParam(key)
 **参数说明：** `key` *参数名称*
 <br/>&nbsp; &nbsp; **返回值：** `String`
 <br/>
@@ -215,9 +247,8 @@ nothing.numberFormat(12806.126, {mode: -1, thousands: false, precision: 2})   //
 let userid = nothing.getParam('userid');  // 结果：123
 ```
 
-#### 1.11. hasOwnProperty(object, property)
-**参数说明：** `object` *检查的对象*
-**参数说明：** `property` *检查的属性(支持多级属性，以"."分隔)*
+#### 1.13. hasOwnProperty(object, property)
+**参数说明：** `object` *检查的对象* `property` *检查的属性(支持多级属性，以"."分隔)*
 <br/>&nbsp; &nbsp; **返回值：** `Boolean`
 <br/>
 **功能描述：** 
@@ -231,7 +262,7 @@ nothing.hasOwnProperty(user, 'age');    // 结果：false
 nothing.hasOwnProperty(user, 'school.class');    // 结果：true
 ```
 
-#### 1.12. validateNumber(val)
+#### 1.14. validateNumber(val)
 **参数说明：** `val` *要验证的参数*
 <br/>&nbsp; &nbsp; **返回值：** `Boolean`
 <br/>
@@ -245,7 +276,7 @@ nothing.validateNumber('12.22.32');   // 结果：false
 nothing.validateNumber('ab32');       // 结果：false
 ```
 
-#### 1.13. validateMobile(mobile)
+#### 1.15. validateMobile(mobile)
 **参数说明：** `mobile` *要验证的手机号*
 <br/>&nbsp; &nbsp; **返回值：** `Boolean`
 <br/>
@@ -258,7 +289,7 @@ nothing.validateMobile(13500012222);    // 结果：true
 nothing.validateMobile(24563325633);    // 结果：false
 ```
 
-#### 1.14. validateEmail(email)
+#### 1.16. validateEmail(email)
 **参数说明：** `mail` *要验证的 email*
 <br/>&nbsp; &nbsp; **返回值：** `Boolean`
 <br/>
@@ -276,36 +307,41 @@ nothing.validateEmail('wangyi@@');          // 结果：false
 #### 2.1. Object
 序号 | 函数名称 | 说明
 :--- | :--- | :---
-1 | [Object.clone](/?id=_211-objectclonesource) | 对象克隆(深拷贝)
-2 | [Object.prototype.clone](/?id=_212-objectprototypeclone) | 对象克隆(深拷贝)，基于对象实例克隆
+1 | [Object.clone](/?id=_211-objectclonesource-ignorefunction) | 对象克隆(深拷贝)
+2 | [Object.prototype.clone](/?id=_212-objectprototypecloneignorefunction) | 对象克隆(深拷贝)，基于对象实例克隆
 
-##### 2.1.1. Object.clone(source)
-**参数说明：** `source` *要克隆的对象*
+##### 2.1.1. Object.clone(source, ignoreFunction)
+**参数说明：** `source` *要克隆的对象* `ignoreFunction` *忽略函数属性(可选，默认 false)*
 <br/>&nbsp; &nbsp; **返回值：** `{*}` *克隆后的新对象*
 <br/>
 **功能描述：** 
-> 对象克隆(深拷贝)
+> 对象克隆(深拷贝)<br>第二个参数传入`true`时，将忽略函数类型的属性
 
 **示例代码：**
 ```js
-let user = {id: '0001', name: 'wangxiaoming'};
-let newUser = nothing.clone(user);
+let user = {id: '0001', name: 'wangxiaoming', fun: () => {}};
+let newUser1 = Object.clone(user);
+let newUser2 = Object.clone(user, true); // 忽略函数属性
 ```
 
-##### 2.1.2. Object.prototype.clone()
-**参数说明：** `无`
+##### 2.1.2. Object.prototype.clone(ignoreFunction)
+**参数说明：** `ignoreFunction` *忽略函数属性(可选，默认 false)*
 <br/>&nbsp; &nbsp; **返回值：** `{*}` *克隆后的新对象*
 <br/>
 **功能描述：** 
-> 对象克隆(深拷贝)，基于对象实例克隆<br/>派生于Object的对象实例都继续此方法(如：JSON、String、Array...等对象实例)
+> 对象克隆(深拷贝)，基于对象实例克隆<br>第二个参数传入`true`时，将忽略函数类型的属性<br/>派生于Object的对象实例都继续此方法(如：JSON、String、Array...等对象实例)
 
 **示例代码：**
 ```js
-let user = {id: '0001', name: 'wangxiaoming'};
-let newUser = user.clone();
+let user = {id: '0001', name: 'wangxiaoming', fun: () => {}};
+let newUser1 = user.clone();
+let newUser2 = user.clone(true);            // 忽略函数属性
 let userArray = [user, newUser];
-let newUserArray = userArray.clone();
+let newUserArray1 = userArray.clone();
+let newUserArray2 = userArray.clone(true);  // 忽略函数属性
 ```
+
+!> 注：`微信小程序` 环境不适用，暂无法实现对Object对象的原型扩展，请直接使用 `nothing.clone(object)` 或 `Object.clone(object)` 代替
 
 #### 2.2. String
 序号 | 函数名称 | 说明
@@ -317,6 +353,8 @@ let newUserArray = userArray.clone();
 5 | [String.toByte](/?id=_225-stringtobytestr) | String对象扩展：字符串转 Byte 数组
 6 | [String.prototype.toByte](/?id=_226-stringprototypetobyte) | String对象原型扩展：字符串转 Byte 数组
 7 | [String.fromByte](/?id=_227-stringfrombytebytes) | String对象扩展：Byte 数组转字符串
+7 | [String.from](/?id=_228-stringfromobject-format) | String对象扩展：将对象转换为字符串
+7 | [String.isString](/?id=_229-stringisstringobject) | String对象扩展：校验对象是否为字符串
 
 ##### 2.2.1. String.replaceAll(source, substr, replacement)
 **参数说明：** `source` *执行替换操作的字符串，* `substr` *查找匹配的内容，* `replacement` *替换的内容*
@@ -409,12 +447,85 @@ let bytes = [ 122, 104, 97, 110, 103 ];
 let str = String.fromByte(bytes); // 结果：zhang
 ```
 
-#### 2.2. Number
+##### 2.2.8. String.from(object, format)
+**参数说明：** `object` *要转换的对象* `format` *格式(可选，仅对日期有效)*
+<br/>&nbsp; &nbsp; **返回值：** `String` *转换后的字符串形式*
+<br/>
+**功能描述：**
+> String对象扩展：将对象转换为字符串(日期型可指定格式)
 
-#### 2.3. Date
+**示例代码：**
+```js
+let str1 = String.from(true);             // 结果："true"
+let str2 = String.from(100.1);            // 结果："100.1"
+let str3 = String.from([1, 2, {a: 1}]);   // 结果："[1,2,{"a":1}]"
+let str4 = String.from(new Date());       // 结果："2019-01-01 01:01:01"
+let str5 = String.from(new Date(), 'yy-MM-dd'); // 结果："19-01-01"
+```
 
-#### 2.3. JSON
-##### 2.3.1. JSON.new(json, ...args)
+##### 2.2.9. String.isString(object)
+**参数说明：** `object` *要校验的对象*
+<br/>&nbsp; &nbsp; **返回值：** `Boolean`
+<br/>
+**功能描述：**
+> String对象扩展：校验对象是否为字符串
+
+**示例代码：**
+```js
+String.isString(true);            // 结果：false
+String.isString(100.1);           // 结果：false
+String.isString([1, 2]);          // 结果：false
+String.isString(new Date());      // 结果：false
+String.isString("string");        // 结果：true
+```
+
+#### 2.3. Number
+序号 | 函数名称 | 说明
+:--- | :--- | :---
+1 | [Number.format](/?id=_231-numberformatnum-options) | Number对象扩展：数值格式化
+2 | [Number.prototype.format](/?id=_232-numberprototypeformatoptions) | Number对象原型扩展：数值格式化
+3 | [Number.toFixed2](/?id=_233-numbertofixed2num-options) | Number对象扩展：数值舍入处理（可指定小数位数和舍入模式）
+4 | [Number.prototype.toFixed2](/?id=_234-numberprototypetofixed2options) | Number对象原型扩展：数值舍入处理（可指定小数位数和舍入模式）
+
+##### 2.3.1. Number.format(num, options)
+
+##### 2.3.2. Number.prototype.format(options)
+
+##### 2.3.3. Number.toFixed2(num, options)
+
+##### 2.3.4. Number.prototype.toFixed2(options)
+
+#### 2.4. Boolean
+
+#### 2.5. Date
+序号 | 函数名称 | 说明
+:--- | :--- | :---
+1 | [Date.format](/?id=_251-dateformatdate-fmt) | Date对象扩展：日期格式化
+2 | [Date.prototype.format](/?id=_252-dateprototypeformatfmt) | Date对象原型扩展：日期格式化
+3 | [Date.add](/?id=_253-dateadddate-interval-number) | Date对象扩展：日期计算(增加)
+4 | [Date.prototype.add](/?id=_254-dateprototypeaddinterval-number) | Date对象原型扩展：日期计算(增加)
+5 | [Date.diff](/?id=_255-datediffdiffdate1-diffdate2-interval) | Date对象扩展：日期差异计算
+6 | [Date.prototype.diff](/?id=_256-dateprototypediffdiffdate-interval) | Date对象原型扩展：日期差异计算
+
+##### 2.5.1. Date.format(date, fmt)
+
+##### 2.5.2. Date.prototype.format(fmt)
+
+##### 2.5.3. Date.add(date, interval, number)
+
+##### 2.5.4. Date.prototype.add(interval, number)
+
+##### 2.5.5. Date.diff(diffDate1 , diffDate2, interval)
+
+##### 2.5.6. Date.prototype.diff(diffDate, interval)
+
+#### 2.6. JSON
+序号 | 函数名称 | 说明
+:--- | :--- | :---
+1 | [JSON.new](/?id=_261-jsonnewjson-args) | JSON对象扩展：传入JSON对象，创建新JSON对象
+2 | [JSON.prototype.new](/?id=_262-jsonprototypenewargs) | JSON对象原型扩展：基于对象实例本身创建新JSON对象
+
+##### 2.6.1. JSON.new(json, ...args)
 **参数说明：** `json` *源对象，* `args` *动态指定属性集*
 <br/>&nbsp; &nbsp; **返回值：** `{*}` *创建的新对象*
 <br/>
@@ -430,7 +541,7 @@ let simpPsn = JSON.new(psn, 'id', 'name', 'corp.id', 'test.test1');
 // 结果：{id: '001', name: 'zhang', corp: {id: 'c01'}, test: {test1: null}};
 ```
 
-##### 2.3.2. JSON.prototype.new(...args)
+##### 2.6.2. JSON.prototype.new(...args)
 **参数说明：** `args` *动态指定属性集*
 <br/>&nbsp; &nbsp; **返回值：** `{*}` *创建的新对象*
 <br/>
@@ -448,9 +559,9 @@ let simpPsn = psn.new('id', 'name', 'corp.id', 'test.test1');
 
 !> 注：`Node.js` 后端环境不适用，暂无法实现后端环境对JSON对象的原型扩展，请使用 `JSON.new(json, ...args)` 代替
 
-#### 2.4. Array
+#### 2.7. Array
 
-#### 2.5. Storage
+#### 2.8. Storage
 
 ---
 
