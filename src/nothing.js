@@ -729,320 +729,380 @@ const nothing = {
       }
     },
     Array: () => {
-      /**
-       * Array对象扩展：是否为空
-       * @param {*} array
-       */
-      Object.defineProperty(Array, 'isEmpty', { value: (array) => !array || !array.length });
-      /**
-       * Array对象扩展：是否为空
-       */
-      Object.defineProperty(Array.prototype, 'isEmpty', { value () { return Array.isEmpty(this); }});
-      /**
-       * Array对象扩展：是否不为空
-       * @param {*} array
-       */
-      Object.defineProperty(Array, 'isNotEmpty', { value: (array) => array && array.length });
-      /**
-       * Array对象扩展：是否不为空
-       */
-      Object.defineProperty(Array.prototype, 'isNotEmpty', { value () { return Array.isNotEmpty(this); }});
-      /**
-       * Array对象扩展：是否包含元素
-       * @param {*} array
-       * @param {*} element
-       */
-      Object.defineProperty(Array, 'contains', { value: (array, element) => array && array.indexOf(element) !== -1 });
-      /**
-       * Array对象扩展：是否包含元素
-       * @param {*} element
-       */
-      Object.defineProperty(Array.prototype, 'contains', { value (element) { return Array.contains(this, element); }});
-      /**
-       * Array对象扩展：添加元素（可指定位置）
-       * @param {*} element   元素
-       * @param {*} index     添加位置(可选，为空时添加到数组末尾)
-       */
-      Object.defineProperty(Array.prototype, 'add', {
-        value (element, index) {
-          if (nothing.isNotNull(index)) {
-            this.splice(index, 0, element);
-          } else {
-            this.push(element);
+      if (!nothing.hasOwnProperty(Array, 'isEmpty')) {
+        /**
+         * Array对象扩展：是否为空
+         * @param {*} array
+         */
+        Object.defineProperty(Array, 'isEmpty', { value: (array) => !array || !array.length });
+      }
+      if (!nothing.hasOwnProperty(Array.prototype, 'isEmpty')) {
+        /**
+         * Array对象扩展：是否为空
+         */
+        Object.defineProperty(Array.prototype, 'isEmpty', { value () { return Array.isEmpty(this); }});
+      }
+      if (!nothing.hasOwnProperty(Array, 'isNotEmpty')) {
+        /**
+         * Array对象扩展：是否不为空
+         * @param {*} array
+         */
+        Object.defineProperty(Array, 'isNotEmpty', { value: (array) => array && array.length });
+      }
+      if (!nothing.hasOwnProperty(Array.prototype, 'isNotEmpty')) {
+        /**
+         * Array对象扩展：是否不为空
+         */
+        Object.defineProperty(Array.prototype, 'isNotEmpty', { value () { return Array.isNotEmpty(this); }});
+      }
+      if (!nothing.hasOwnProperty(Array, 'contains')) {
+        /**
+         * Array对象扩展：是否包含元素
+         * @param {*} array
+         * @param {*} element
+         */
+        Object.defineProperty(Array, 'contains', { value: (array, element) => array && array.indexOf(element) !== -1 });
+      }
+      if (!nothing.hasOwnProperty(Array.prototype, 'contains')) {
+        /**
+         * Array对象扩展：是否包含元素
+         * @param {*} element
+         */
+        Object.defineProperty(Array.prototype, 'contains', { value (element) { return Array.contains(this, element); }});
+      }
+      if (!nothing.hasOwnProperty(Array, 'add')) {
+        /**
+         * Array对象扩展：添加元素（可指定位置）
+         * @param {*} array     数组
+         * @param {*} element   元素
+         * @param {*} index     添加位置(可选，为空时添加到数组末尾)
+         */
+        Object.defineProperty(Array, 'add', { value: (array, element, index) => array.add(element, index) });
+      }
+      if (!nothing.hasOwnProperty(Array.prototype, 'add')) {
+        /**
+         * Array对象扩展：添加元素（可指定位置）
+         * @param {*} element   元素
+         * @param {*} index     添加位置(可选，为空时添加到数组末尾)
+         */
+        Object.defineProperty(Array.prototype, 'add', {
+          value (element, index) {
+            if (nothing.isNotNull(index)) {
+              this.splice(index, 0, element);
+            } else {
+              this.push(element);
+            }
+            return this;
+          }
+        });
+      }
+      if (!nothing.hasOwnProperty(Array, 'addAll')) {
+        /**
+         * Array对象扩展：批量添加元素（可指定位置）
+         * @param {*} array     数组
+         * @param {*} elements  元素数组
+         * @param {*} index     添加位置(可选，为空时添加到数组末尾)
+         */
+        Object.defineProperty(Array, 'addAll', { value: (array, elements, index) => array.addAll(elements, index) });
+      }
+      if (!nothing.hasOwnProperty(Array.prototype, 'addAll')) {
+        /**
+         * Array对象扩展：批量添加元素（可指定位置）
+         * @param {*} elements  元素数组
+         * @param {*} index     添加位置(可选，为空时添加到数组末尾)
+         */
+        Object.defineProperty(Array.prototype, 'addAll', { value (elements = [], index) {
+          this.splice(nothing.ifNull(index, this.length), 0, ...elements);
+          return this;
+        }});
+      }
+      if (!nothing.hasOwnProperty(Array, 'addFirst')) {
+        /**
+         * Array对象扩展：添加元素到数据第一个位置
+         * @param {*} array   数组
+         * @param {*} element 元素
+         */
+        Object.defineProperty(Array, 'addFirst', { value: (array, element) => array.addFirst(element) });
+      }
+      if (!nothing.hasOwnProperty(Array.prototype, 'addFirst')) {
+        /**
+         * Array对象扩展：添加元素到数据第一个位置
+         * @param {*} element 元素
+         */
+        Object.defineProperty(Array.prototype, 'addFirst', { value (element) { return this.add(element, 0); }});
+      }
+      if (!nothing.hasOwnProperty(Array, 'first')) {
+        /**
+         * Array对象扩展：获取数组第一个元素
+         * @param {*} array   数组
+         */
+        Object.defineProperty(Array, 'first', { value: (array) => array.first() });
+      }
+      if (!nothing.hasOwnProperty(Array.prototype, 'first')) {
+        /**
+         * Array对象扩展：获取数组第一个元素
+         */
+        Object.defineProperty(Array.prototype, 'first', { value () { return this[0] }});
+      }
+      if (!nothing.hasOwnProperty(Array, 'last')) {
+        /**
+         * Array对象扩展：获取数组最后一个元素
+         * @param {*} array   数组
+         */
+        Object.defineProperty(Array, 'last', { value: (array) => array.last() });
+      }
+      if (!nothing.hasOwnProperty(Array.prototype, 'last')) {
+        /**
+         * Array对象扩展：获取数组最后一个元素
+         */
+        Object.defineProperty(Array.prototype, 'last', { value () { return this[this.length - 1] }});
+      }
+      if (!nothing.hasOwnProperty(Array, 'sum')) {
+        /**
+         * Array对象扩展：汇总数组元素（数值型有效）
+         * @param {*} array   数组
+         * @param {*} params  参数对象
+         * params 说明：
+         * {
+         *  begin    开始位置
+         *  end      结束位置
+         * }
+         */
+        Object.defineProperty(Array, 'sum', {
+          value: (array, {begin, end} = {}) => {
+            let total = 0;
+            begin = nothing.ifNull(begin, 0);
+            end = nothing.ifNull(end, array.length);
+            if (array.length) {
+              total = array.forEach((item, index) => {
+                total += Number(index >= begin && index < end ? item || 0 : 0);
+              });
+            }
+            return total;
+          }
+        });
+      }
+      if (!nothing.hasOwnProperty(Array.prototype, 'sum')) {
+        /**
+         * Array对象扩展：汇总数组元素（数值型有效）
+         * @param {*} params  参数对象
+         * params 说明：
+         * {
+         *  begin    开始位置
+         *  end      结束位置
+         * }
+         */
+        Object.defineProperty(Array.prototype, 'sum', { value (params = {}) {
+          return Array.sum(this, params);
+        }});
+      }
+      if (!nothing.hasOwnProperty(Array, 'sumAttribute')) {
+        /**
+         * Array对象扩展：汇总数组元素对象指定属性
+         * @param {*} array       数组
+         * @param {*} attribute   汇总属性
+         * @param {*} params      参数对象
+         * params 说明：
+         * {
+         *  begin     开始位置
+         *  end       结束位置
+         * }
+         */
+        Object.defineProperty(Array, 'sumAttribute', {
+          value (array, attribute, {begin, end} = {}) {
+            let total = 0;
+            begin = nothing.ifNull(begin, 0);
+            end = nothing.ifNull(end, array.length);
+            if (array.length) {
+              array.forEach((item, index) => {
+                total += Number(index >= begin && index < end ? item[attribute] || 0 : 0);
+              });
+            }
+            return total;
+          }
+        });
+      }
+      if (!nothing.hasOwnProperty(Array.prototype, 'sumAttribute')) {
+        /**
+         * Array对象扩展：汇总数组元素对象指定属性
+         * @param {*} params      参数对象
+         * @param {*} attribute   汇总属性
+         * params 说明：
+         * {
+         *  begin     开始位置
+         *  end       结束位置
+         * }
+         */
+        Object.defineProperty(Array.prototype, 'sumAttribute', { value (attribute, params = {}) {
+          return Array.sumAttribute(this, attribute, params);
+        }});
+      }
+      if (!nothing.hasOwnProperty(Array, 'remove')) {
+        /**
+         * Array对象扩展：移除元素
+         * @param {*} array
+         * @param {*} element
+         */
+        Object.defineProperty(Array, 'remove', { value: (array, element) => array.remove(element) });
+      }
+      if (!nothing.hasOwnProperty(Array.prototype, 'remove')) {
+        /**
+         * Array对象扩展：移除元素
+         * @param {*} element
+         */
+        Object.defineProperty(Array.prototype, 'remove', { value (element) { this.splice(this.findIndex(item => item === element), 1); return this; }});
+      }
+      if (!nothing.hasOwnProperty(Array, 'getAttribute')) {
+        /**
+         * Array对象扩展：批量获取对象指定属性值
+         * @param {*} array       数组
+         * @param {*} attribute   属性
+         * @param {*} params      参数对象
+         * params 说明：
+         * {
+         *  begin     开始位置
+         *  end       结束位置
+         * }
+         */
+        Object.defineProperty(Array, 'getAttribute', { value: (array, attribute, params = {}) => array.getAttribute(attribute, params) });
+      }
+      if (!nothing.hasOwnProperty(Array.prototype, 'getAttribute')) {
+        /**
+         * Array对象扩展：批量获取对象指定属性值
+         * @param {*} attribute   属性
+         * @param {*} params      参数对象
+         * params 说明：
+         * {
+         *  begin     开始位置
+         *  end       结束位置
+         * }
+         */
+        Object.defineProperty(Array.prototype, 'getAttribute', { value (attribute, {begin, end} = {}) {
+          let valArray = [];
+          begin = nothing.ifNull(begin, 0);
+          end = nothing.ifNull(end, this.length);
+          this.forEach((item, index) => {
+            if (index >= begin && index < end) {
+              let val = (typeof item[attribute] === 'object' && !(item[attribute] instanceof Date) ? nothing.deepCopy(item[attribute]) : item[attribute]) || null;
+              valArray.push(val);
+            }
+          })
+          return valArray;
+        }});
+      }
+      if (!nothing.hasOwnProperty(Array, 'setAttribute')) {
+        /**
+         * Array对象扩展：批量设置指定属性值
+         * @param {*} array       数组
+         * @param {*} attribute   属性
+         * @param {*} value       设置的值
+         * @param {*} params      参数对象
+         * params 说明：
+         * {
+         *  begin     开始位置
+         *  end       结束位置
+         * }
+         */
+        Object.defineProperty(Array, 'setAttribute', { value: (array, attribute, value, params = {}) => array.setAttribute(attribute, value, params) });
+      }
+      if (!nothing.hasOwnProperty(Array.prototype, 'setAttribute')) {
+        /**
+         * Array对象扩展：批量设置指定属性值
+         * @param {*} attribute   属性
+         * @param {*} value       设置的值
+         * @param {*} params      参数对象
+         * params 说明：
+         * {
+         *  begin     开始位置
+         *  end       结束位置
+         * }
+         */
+        Object.defineProperty(Array.prototype, 'setAttribute', { value (attribute, value, {begin, end} = {}) {
+          begin = nothing.ifNull(begin, 0);
+          end = nothing.ifNull(end, this.length);
+          for (let i = 0; i < this.length; i++) {
+            if (i >= begin && i < end && typeof this[i] === 'object' && !(this[i] instanceof Date)) {
+              this[i][attribute] = value;
+            }
           }
           return this;
-        }
-      });
-      /**
-       * Array对象扩展：添加元素（可指定位置）
-       * @param {*} array     数组
-       * @param {*} element   元素
-       * @param {*} index     添加位置(可选，为空时添加到数组末尾)
-       */
-      Object.defineProperty(Array, 'add', { value: (array, element, index) => array.add(element, index) });
-      /**
-       * Array对象扩展：批量添加元素（可指定位置）
-       * @param {*} elements  元素数组
-       * @param {*} index     添加位置(可选，为空时添加到数组末尾)
-       */
-      Object.defineProperty(Array.prototype, 'addAll', { value (elements = [], index) {
-        this.splice(nothing.ifNull(index, this.length), 0, ...elements);
-        return this;
-      }});
-      /**
-       * Array对象扩展：批量添加元素（可指定位置）
-       * @param {*} array     数组
-       * @param {*} elements  元素数组
-       * @param {*} index     添加位置(可选，为空时添加到数组末尾)
-       */
-      Object.defineProperty(Array, 'addAll', { value: (array, elements, index) => array.addAll(elements, index) });
-      /**
-       * Array对象扩展：添加元素到数据第一个位置
-       * @param {*} element 元素
-       */
-      Object.defineProperty(Array.prototype, 'addFirst', { value (element) { return this.add(element, 0); }});
-      /**
-       * Array对象扩展：添加元素到数据第一个位置
-       * @param {*} array   数组
-       * @param {*} element 元素
-       */
-      Object.defineProperty(Array, 'addFirst', { value: (array, element) => array.addFirst(element) });
-      /**
-       * Array对象扩展：获取数组第一个元素
-       */
-      Object.defineProperty(Array.prototype, 'first', { value () { return this[0] }});
-      /**
-       * Array对象扩展：获取数组第一个元素
-       * @param {*} array   数组
-       */
-      Object.defineProperty(Array, 'first', { value: (array) => array.first() });
-      /**
-       * Array对象扩展：获取数组最后一个元素
-       */
-      Object.defineProperty(Array.prototype, 'last', { value () { return this[this.length - 1] }});
-      /**
-       * Array对象扩展：获取数组最后一个元素
-       * @param {*} array   数组
-       */
-      Object.defineProperty(Array, 'last', { value: (array) => array.last() });
-      /**
-       * Array对象扩展：汇总数组元素（数值型有效）
-       * @param {*} params  参数对象
-       * params 说明：
-       * {
-       *  begin    开始位置
-       *  end      结束位置
-       * }
-       */
-      Object.defineProperty(Array.prototype, 'sum', { value (params = {}) {
-        return Array.sum(this, params);
-      }});
-      /**
-       * Array对象扩展：汇总数组元素（数值型有效）
-       * @param {*} array   数组
-       * @param {*} params  参数对象
-       * params 说明：
-       * {
-       *  begin    开始位置
-       *  end      结束位置
-       * }
-       */
-      Object.defineProperty(Array, 'sum', {
-        value: (array, {begin, end} = {}) => {
-          let total = 0;
+        }});
+      }
+      if (!nothing.hasOwnProperty(Array, 'deleteAttribute')) {
+        /**
+         * Array对象扩展：批量删除指定属性
+         * @param {*} array       数组
+         * @param {*} attribute   属性(支持多个以数组形式)
+         * @param {*} params      参数对象
+         * params 说明：
+         * {
+         *  begin     开始位置
+         *  end       结束位置
+         * }
+         */
+        Object.defineProperty(Array, 'deleteAttribute', { value: (array, attribute, params = {}) => array.deleteAttribute(attribute, params) });
+      }
+      if (!nothing.hasOwnProperty(Array.prototype, 'deleteAttribute')) {
+        /**
+         * Array对象扩展：批量删除指定属性
+         * @param {*} attribute   属性(支持多个以数组形式)
+         * @param {*} params      参数对象
+         * params 说明：
+         * {
+         *  begin     开始位置
+         *  end       结束位置
+         * }
+         */
+        Object.defineProperty(Array.prototype, 'deleteAttribute', { value (attribute, {begin, end} = {}) {
           begin = nothing.ifNull(begin, 0);
-          end = nothing.ifNull(end, array.length);
-          if (array.length) {
-            total = array.forEach((item, index) => {
-              total += Number(index >= begin && index < end ? item || 0 : 0);
-            });
+          end = nothing.ifNull(end, this.length);
+          let deleteAttributes = Array.isArray(attribute) ? attribute : [attribute];
+          for (let i = 0; i < this.length; i++) {
+            if (i >= begin && i < end && typeof this[i] === 'object' && !(this[i] instanceof Date)) {
+              deleteAttributes.forEach(attr => delete this[i][attr]);
+            }
           }
-          return total;
-        }
-      });
-      /**
-       * Array对象扩展：汇总数组元素对象指定属性
-       * @param {*} params      参数对象
-       * @param {*} attribute   汇总属性
-       * params 说明：
-       * {
-       *  begin     开始位置
-       *  end       结束位置
-       * }
-       */
-      Object.defineProperty(Array.prototype, 'sumAttribute', { value (attribute, params = {}) {
-        return Array.sumAttribute(this, attribute, params);
-      }});
-      /**
-       * Array对象扩展：汇总数组元素对象指定属性
-       * @param {*} array       数组
-       * @param {*} attribute   汇总属性
-       * @param {*} params      参数对象
-       * params 说明：
-       * {
-       *  begin     开始位置
-       *  end       结束位置
-       * }
-       */
-      Object.defineProperty(Array, 'sumAttribute', {
-        value (array, attribute, {begin, end} = {}) {
-          let total = 0;
+          return this;
+        }});
+      }
+      if (!nothing.hasOwnProperty(Array, 'setAttributeToAttribute')) {
+        /**
+         * Array对象扩展：批量设置对象本身属性到指定属性
+         * @param {*} array             数组
+         * @param {*} sourceAttribute   源属性
+         * @param {*} targetAttribute   目标属性
+         * @param {*} params            参数对象
+         * params 说明：
+         * {
+         *  begin     开始位置
+         *  end       结束位置
+         * }
+         */
+        Object.defineProperty(Array, 'setAttributeToAttribute', { value: (array, sourceAttribute, targetAttribute, params = {}) => array.setAttributeToAttribute(sourceAttribute, targetAttribute, params) });
+      }
+      if (!nothing.hasOwnProperty(Array.prototype, 'setAttributeToAttribute')) {
+        /**
+         * Array对象扩展：批量设置对象本身属性到指定属性
+         * @param {*} sourceAttribute   源属性
+         * @param {*} targetAttribute   目标属性
+         * @param {*} params            参数对象
+         * params 说明：
+         * {
+         *  begin     开始位置
+         *  end       结束位置
+         * }
+         */
+        Object.defineProperty(Array.prototype, 'setAttributeToAttribute', { value (sourceAttribute, targetAttribute, {begin, end} = {}) {
           begin = nothing.ifNull(begin, 0);
-          end = nothing.ifNull(end, array.length);
-          if (array.length) {
-            array.forEach((item, index) => {
-              total += Number(index >= begin && index < end ? item[attribute] || 0 : 0);
-            });
+          end = nothing.ifNull(end, this.length);
+          for (let i = 0; i < this.length; i++) {
+            if (i >= begin && i < end && typeof this[i] === 'object' && !(this[i] instanceof Date)) {
+              this[i][targetAttribute] = this[i][sourceAttribute];
+            }
           }
-          return total;
-        }
-      });
-      /**
-       * Array对象扩展：移除元素
-       * @param {*} element
-       */
-      Object.defineProperty(Array.prototype, 'remove', { value (element) { this.splice(this.findIndex(item => item === element), 1); return this; }});
-      /**
-       * Array对象扩展：移除元素
-       * @param {*} array
-       * @param {*} element
-       */
-      Object.defineProperty(Array, 'remove', { value: (array, element) => array.remove(element) });
-      /**
-       * Array对象扩展：批量获取对象指定属性值
-       * @param {*} attribute   属性
-       * @param {*} params      参数对象
-       * params 说明：
-       * {
-       *  begin     开始位置
-       *  end       结束位置
-       * }
-       */
-      Object.defineProperty(Array.prototype, 'getAttribute', { value (attribute, {begin, end} = {}) {
-        let valArray = [];
-        begin = nothing.ifNull(begin, 0);
-        end = nothing.ifNull(end, this.length);
-        this.forEach((item, index) => {
-          if (index >= begin && index < end) {
-            let val = (typeof item[attribute] === 'object' && !(item[attribute] instanceof Date) ? nothing.deepCopy(item[attribute]) : item[attribute]) || null;
-            valArray.push(val);
-          }
-        })
-        return valArray;
-      }});
-      /**
-       * Array对象扩展：批量获取对象指定属性值
-       * @param {*} array       数组
-       * @param {*} attribute   属性
-       * @param {*} params      参数对象
-       * params 说明：
-       * {
-       *  begin     开始位置
-       *  end       结束位置
-       * }
-       */
-      Object.defineProperty(Array, 'getAttribute', { value: (array, attribute, params = {}) => array.getAttribute(attribute, params) });
-      /**
-       * Array对象扩展：批量设置指定属性值
-       * @param {*} attribute   属性
-       * @param {*} value       设置的值
-       * @param {*} params      参数对象
-       * params 说明：
-       * {
-       *  begin     开始位置
-       *  end       结束位置
-       * }
-       */
-      Object.defineProperty(Array.prototype, 'setAttribute', { value (attribute, value, {begin, end} = {}) {
-        begin = nothing.ifNull(begin, 0);
-        end = nothing.ifNull(end, this.length);
-        for (let i = 0; i < this.length; i++) {
-          if (i >= begin && i < end && typeof this[i] === 'object' && !(this[i] instanceof Date)) {
-            this[i][attribute] = value;
-          }
-        }
-        return this;
-      }});
-      /**
-       * Array对象扩展：批量设置指定属性值
-       * @param {*} array       数组
-       * @param {*} attribute   属性
-       * @param {*} value       设置的值
-       * @param {*} params      参数对象
-       * params 说明：
-       * {
-       *  begin     开始位置
-       *  end       结束位置
-       * }
-       */
-      Object.defineProperty(Array, 'setAttribute', { value: (array, attribute, value, params = {}) => array.setAttribute(attribute, value, params) });
-      /**
-       * Array对象扩展：批量删除指定属性
-       * @param {*} attribute   属性(支持多个以数组形式)
-       * @param {*} params      参数对象
-       * params 说明：
-       * {
-       *  begin     开始位置
-       *  end       结束位置
-       * }
-       */
-      Object.defineProperty(Array.prototype, 'deleteAttribute', { value (attribute, {begin, end} = {}) {
-        begin = nothing.ifNull(begin, 0);
-        end = nothing.ifNull(end, this.length);
-        let deleteAttributes = Array.isArray(attribute) ? attribute : [attribute];
-        for (let i = 0; i < this.length; i++) {
-          if (i >= begin && i < end && typeof this[i] === 'object' && !(this[i] instanceof Date)) {
-            deleteAttributes.forEach(attr => delete this[i][attr]);
-          }
-        }
-        return this;
-      }});
-      /**
-       * Array对象扩展：批量删除指定属性
-       * @param {*} array       数组
-       * @param {*} attribute   属性(支持多个以数组形式)
-       * @param {*} params      参数对象
-       * params 说明：
-       * {
-       *  begin     开始位置
-       *  end       结束位置
-       * }
-       */
-      Object.defineProperty(Array, 'deleteAttribute', { value: (array, attribute, params = {}) => array.deleteAttribute(attribute, params) });
-      /**
-       * Array对象扩展：批量设置对象本身属性到指定属性
-       * @param {*} sourceAttribute   源属性
-       * @param {*} targetAttribute   目标属性
-       * @param {*} params            参数对象
-       * params 说明：
-       * {
-       *  begin     开始位置
-       *  end       结束位置
-       * }
-       */
-      Object.defineProperty(Array.prototype, 'setAttributeToAttribute', { value (sourceAttribute, targetAttribute, {begin, end} = {}) {
-        begin = nothing.ifNull(begin, 0);
-        end = nothing.ifNull(end, this.length);
-        for (let i = 0; i < this.length; i++) {
-          if (i >= begin && i < end && typeof this[i] === 'object' && !(this[i] instanceof Date)) {
-            this[i][targetAttribute] = this[i][sourceAttribute];
-          }
-        }
-        return this;
-      }});
-      /**
-       * Array对象扩展：批量设置对象本身属性到指定属性
-       * @param {*} array             数组
-       * @param {*} sourceAttribute   源属性
-       * @param {*} targetAttribute   目标属性
-       * @param {*} params            参数对象
-       * params 说明：
-       * {
-       *  begin     开始位置
-       *  end       结束位置
-       * }
-       */
-      Object.defineProperty(Array, 'setAttributeToAttribute', { value: (array, sourceAttribute, targetAttribute, params = {}) => array.setAttributeToAttribute(sourceAttribute, targetAttribute, params) });
+          return this;
+        }});
+      }
     },
     /**
      * Storage 对象扩展
