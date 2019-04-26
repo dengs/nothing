@@ -257,7 +257,9 @@ const nothing = {
       }
       if (!nothing.hasOwnProperty(Object.prototype, 'clone')) {
         // 需要排除微信小程序环境(不想依赖jssdk，临时校验是否有wx对象及wx.login函数)
-        if (!wx || !wx.login) {
+        if (typeof wx !== 'undefined' && !wx.login) {
+          console.warn("## nothing.js warning ## : 当前环境不支持 Object.prototype 原型方式扩展clone函数. ");
+        } else {
           /**
            * 对象实例克隆(深拷贝)
            */
@@ -266,8 +268,6 @@ const nothing = {
               return nothing.deepCopy(this, ignoreFunction);
             }
           });
-        } else {
-          console.warn("## nothing.js warning ## : 当前环境不支持 Object.prototype 原型方式扩展clone函数. ");
         }
       }
     },
@@ -686,6 +686,45 @@ const nothing = {
           }
         });
       }
+      if (!nothing.hasOwnProperty(JSON, 'getAttribute')) {
+        Object.defineProperty(JSON, 'getAttribute', {
+          value :(json, attribute) => {
+            if (attribute.contains('.')) {
+              let attrs = attribute.split('.');
+              let child = json;
+              for (let i = 0; i < attrs.length; i++) {
+                if (i === attrs.length - 1) {
+                  return child[attrs[i]];
+                } else {
+                  child = child[attrs[i]];
+                  if (!child) return null;
+                }
+              }
+            } else {
+              return json[attribute];
+            }
+          }
+        });
+      }
+      if (!nothing.hasOwnProperty(JSON, 'setAttribute')) {
+        Object.defineProperty(JSON, 'setAttribute', {
+          value :(json, attribute, value) => {
+            if (attribute.contains('.')) {
+              let attrs = attribute.split('.');
+              let child = json;
+              attrs.forEach((attr, index) => {
+                if (index === attrs.length - 1) {
+                  child[attr] = value;
+                } else {
+                  child = child[attr] = child[attr] || {};
+                }
+              })
+            } else {
+              json[attribute] = value;
+            }
+          }
+        });
+      }
       if (nothing.hasOwnProperty(JSON, 'prototype')) {
         if (!nothing.hasOwnProperty(JSON.prototype, 'new')) {
           /**
@@ -727,6 +766,7 @@ const nothing = {
           });
         }
       }
+
     },
     Array: () => {
       if (!nothing.hasOwnProperty(Array, 'isEmpty')) {
@@ -1103,12 +1143,66 @@ const nothing = {
           return this;
         }});
       }
+      if (!nothing.hasOwnProperty(Array, 'agg')) {
+        Object.defineProperty(Array, 'agg', {
+          value: (data = [], groupBy = [], {sum = [], min = [], max = [], avg = [], count = '_count'} = {}) => {
+            let [aggArray, groupSet] = [[], {}];
+            if (Array.isNotEmpty(data)) {
+              // 按 groupBy 分组
+              data.forEach(item => {
+                let groupKey = groupBy.map(groupItem => nothing.ifNull(JSON.getAttribute(item, groupItem), '')).join('-');
+                groupSet[groupKey] = groupSet[groupKey] || [];
+                groupSet[groupKey].push(item);
+              })
+              for (let key in groupSet) {
+                let aggItems = groupSet[key];
+                let aggItem = JSON.new(aggItems[0], ...groupBy);
+                // sum
+                if (Array.isNotEmpty(sum)) {
+                  sum.forEach(sumItem => {
+                    aggItem[sumItem] = aggItems.sumAttribute(sumItem);
+                  });
+                }
+                // min
+                if (Array.isNotEmpty(min)) {
+                  min.forEach(minItem => {
+                    aggItem[minItem] = aggItems.sort((itemA, itemB) => itemA[minItem] - itemB[minItem])[0][minItem];
+                  });
+                }
+                // max
+                if (Array.isNotEmpty(max)) {
+                  max.forEach(maxItem => {
+                    aggItem[maxItem] = aggItems.sort((itemA, itemB) => itemB[maxItem] - itemA[maxItem])[0][maxItem];
+                  });
+                }
+                // avg
+                if (Array.isNotEmpty(avg)) {
+                  avg.forEach(avgItem => {
+                    aggItem[avgItem] = aggItems.sumAttribute(avgItem) / aggItems.length;
+                  });
+                }
+                // count
+                nothing.ternary(nothing.isNotNull(count), JSON.setAttribute(aggItem, count, aggItems.length));
+                aggArray.push(aggItem);
+              }
+            }
+            return aggArray;
+          }
+        });
+      }
+      if (!nothing.hasOwnProperty(Array.prototype, 'agg')) {
+        Object.defineProperty(Array.prototype, 'agg', {
+          value (groupBy = [], options = {}) {
+            return Array.agg(this, groupBy, options);
+          }
+        });
+      }
     },
     /**
      * Storage 对象扩展
      */
     Storage: () => {
-      let { Storage } = global.window || {};
+      let { Storage } = typeof window !== 'undefined' ? window : {};
       if (Storage && !nothing.hasOwnProperty(Storage.prototype, 'setJSON')) {
         /**
          * 扩展 Storage 对象实例：增加setJSON方法
@@ -1155,6 +1249,6 @@ nothing.initExtend();
 /**
  * 绑定到 window 对象
  */
-if (global.window) global.window.nothing = nothing;
+if (typeof window !== 'undefined') window.nothing = nothing;
 
 module.exports = nothing;
