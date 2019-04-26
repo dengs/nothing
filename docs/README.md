@@ -3,7 +3,7 @@
 <br/>
 ![avatar](/logo.jpeg ':size=480')
 ## 概述
-> varsion：`v1.0.10`
+> varsion：`v1.0.11`
 <br>author：`cbtak` <cbtak@hotmail.com>
 <br/>
  nothing.js 来源于项目开发过程积累常用到的一些工具函数，筛选通用性比较好的整理成库，采用`CommonJS`规范、`ES6`重构。本库不依赖于第三方库，可直接在node服务端及前端环境使用。
