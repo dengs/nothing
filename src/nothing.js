@@ -257,7 +257,7 @@ const nothing = {
       }
       if (!nothing.hasOwnProperty(Object.prototype, 'clone')) {
         // 需要排除微信小程序环境(不想依赖jssdk，临时校验是否有wx对象及wx.login函数)
-        if (typeof wx !== 'undefined' && !wx.login) {
+        if (typeof wx !== 'undefined' && wx.login) {
           console.warn("## nothing.js warning ## : 当前环境不支持 Object.prototype 原型方式扩展clone函数. ");
         } else {
           /**
