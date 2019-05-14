@@ -236,7 +236,7 @@ const nothing = {
    */
   defineGetter: (object, ...args) => {
     let getters = Array.isArray(args[0]) ? args[0] : [{name: args[0], value: args[1]}]
-    getters.forEach(item => object.__defineGetter__(item.name, () => item.value))
+    getters.forEach(item => object.__defineGetter__(item.name, () => item.value instanceof Function ? item.value.apply() : item.value))
   },
   /**
    * 定义对象 Setter
