@@ -230,6 +230,34 @@ const nothing = {
     return false;
   },
   /**
+   * 定义对象 Getter
+   * @param {*} object    源对象
+   * @param {*} args
+   */
+  defineGetter: (object, ...args) => {
+    let getters = Array.isArray(args[0]) ? args[0] : [{name: args[0], value: args[1]}]
+    getters.forEach(item => object.__defineGetter__(item.name, () => item.value))
+  },
+  /**
+   * 定义对象 Setter
+   * @param {*} object    源对象
+   * @param {*} args
+   */
+  defineSetter: (object, ...args) => {
+    let setters = Array.isArray(args[0]) ? args[0] : [{name: args[0], set: args[1]}]
+    setters.forEach(item => object.__defineSetter__(item.name, (val) => {
+      if (nothing.isNotNull(item.set)) {
+        if (item.set instanceof Function) {
+          item.set.apply(object, val)
+        } else {
+          object[item.set] = val
+        }
+      } else {
+        object[item.name] = val
+      }
+    }))
+  },
+  /**
    * 验证手机号码
    * @param {*} mobile
    */
