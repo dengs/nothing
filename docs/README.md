@@ -1,9 +1,9 @@
 # nothing.js 
-一套简单的常用函数&系统对象扩展库
+一套简单易用的常用函数&系统对象扩展库
 <br/>
 ![avatar](/logo.jpeg ':size=480')
 ## 概述
-> varsion：`v1.0.12`
+> varsion：`v1.0.16`
 <br>author：`cbtak` <cbtak@hotmail.com>
 <br/>
  nothing.js 来源于项目开发过程积累常用到的一些工具函数，筛选通用性比较好的整理成库，采用`CommonJS`规范、`ES6`重构。本库不依赖于第三方库，可直接在node服务端及前端环境使用。
@@ -42,9 +42,12 @@ yarn add @cbtak/nothing
 11 | [numberFormat](/?id=_111-numberformatnum-options) | 数值格式化
 12 | [getParam](/?id=_112-getparamkey) | 获取地址栏参数
 13 | [hasOwnProperty](/?id=_113-hasownpropertyobject-property) | 检查对象是否具有指定属性
-14 | [validateNumber](/?id=_114-validatenumberval) | 数值型验证
-15 | [validateMobile](/?id=_115-validatemobilemobile) | 验证手机号码
-16 | [validateEmail](/?id=_116-validateemailemail) | 验证邮箱
+14 | [defineGetter](/?id=_114-definegetter-object-args) | 定义对象Getter访问器
+15 | [defineSetter](/?id=_115-definesetter-object-args) | 定义对象Setter访问器
+16 | [validateNumber](/?id=_116-validatenumberval) | 数值型验证
+17 | [validateMobile](/?id=_117-validatemobilemobile) | 验证手机号码
+18 | [validateIDCard](/?id=_118-validateidcardidcard) | 验证身份证
+19 | [validateEmail](/?id=_119-validateemailemail) | 验证邮箱
 
 #### 1.1. isNull(val)
 **参数说明：** `val` *要校验的值*
@@ -262,7 +265,11 @@ nothing.hasOwnProperty(user, 'age');    // 结果：false
 nothing.hasOwnProperty(user, 'school.class');    // 结果：true
 ```
 
-#### 1.14. validateNumber(val)
+#### 1.14. defineGetter: (object, ...args)
+
+#### 1.15. defineSetter: (object, ...args)
+
+#### 1.16. validateNumber(val)
 **参数说明：** `val` *要验证的参数*
 <br/>&nbsp; &nbsp; **返回值：** `Boolean`
 <br/>
@@ -276,7 +283,7 @@ nothing.validateNumber('12.22.32');   // 结果：false
 nothing.validateNumber('ab32');       // 结果：false
 ```
 
-#### 1.15. validateMobile(mobile)
+#### 1.17. validateMobile(mobile)
 **参数说明：** `mobile` *要验证的手机号*
 <br/>&nbsp; &nbsp; **返回值：** `Boolean`
 <br/>
@@ -289,7 +296,20 @@ nothing.validateMobile(13500012222);    // 结果：true
 nothing.validateMobile(24563325633);    // 结果：false
 ```
 
-#### 1.16. validateEmail(email)
+#### 1.18. validateIDCard(idCard)
+**参数说明：** `idCard` *要验证的身份证号码*
+<br/>&nbsp; &nbsp; **返回值：** `Boolean`
+<br/>
+**功能描述：** 
+> 验证身份证号码是否合法
+
+**示例代码：**
+```js
+nothing.validateIDCard('43048820100102445X'); // 结果：true
+nothing.validateIDCard('1234567890');         // 结果：false
+```
+
+#### 1.19. validateEmail(email)
 **参数说明：** `mail` *要验证的 email*
 <br/>&nbsp; &nbsp; **返回值：** `Boolean`
 <br/>

@@ -46,14 +46,14 @@ const nothing = {
    * let result = isBlank(var) ? 'var is blank' : 'var not blank'
    * @param {*} val
    */
-  isBlank: (val) => val === null || val === undefined || val === '' || String(val) === '',
+  isBlank: (val) => val === null || val === undefined || val === '' || String(val).trim() === '',
   /**
    * 是否不为空字符串(不等于：null、undefined、''、'  ')
    * 示例：
    * let result = isNotBlank(var) ? 'var not blank' : 'var is blank'
    * @param {*} val
    */
-  isNotBlank: (val) => val !== null && val !== undefined && val !== '' && String(val) !== '',
+  isNotBlank: (val) => val !== null && val !== undefined && val !== '' && String(val).trim() !== '',
   /**
    * 空值处理(类oracle nvl2)
    * 如果val为空，则返回val1，不为空时，则验证是否传递val2参数，如传递则返回val2，否则返回val
@@ -267,6 +267,15 @@ const nothing = {
    * @param {*} val
    */
   validateNumber: (val) => /^\d+(\.\d+)?$/.test(val),
+  /**
+   * 身份证验证
+   * @param {*} val 
+   */
+  validateIDCard: (val) => /^\d{17}[0-9Xx]$/.test(val),
+  /**
+   * 邮箱验证
+   */
+  validateEmail: (val) => /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(val),
   /**
    * 系统对象功能扩展定义
    */
