@@ -3,7 +3,7 @@ module.exports = {
     entry:path.resolve(__dirname,'src/main.js'),
     output: {
         libraryTarget: 'umd',
-        filename: 'nothing.js',
+        filename: 'nothing.min.js',
         path:path.resolve(__dirname,'lib'),
     },
     module:{
