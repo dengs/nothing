@@ -20,7 +20,7 @@
     "cbtak/nothing",
     "@cbtak/nothing"
   ],
-  "author": "dengs <cbtak@hotmail.com>",
+  "author": "cbtak <cbtak@hotmail.com>",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.26.3",
