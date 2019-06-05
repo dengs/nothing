@@ -6,24 +6,6 @@
  */
 const nothing = {
   /**
-   * 深度拷贝
-   * @param source
-   * @param ignoreFunction
-   */
-  deepCopy: (source, ignoreFunction = false) => {
-    // 非对象类型直接返回
-    if (!(source instanceof Object)) return source;
-    // 日期类型直接返回
-    if (source instanceof Date) return new Date(source);
-    let result = source instanceof Array ? [] : {};
-    for (let key in source) {
-      // 为函数属性根据 ignoreFunction 处理是否忽略 (原型继承的函数也忽略)
-      if (typeof source[key] === "function" && ignoreFunction && nothing.hasOwnProperty(source, key)) continue;
-      result[key] = source[key] && typeof source[key] === 'object' ? nothing.deepCopy(source[key], ignoreFunction) : source[key];
-    }
-    return result;
-  },
-  /**
    * 是否为空(等于：null、undefined、'')
    * @param {*} val
    */
@@ -50,6 +32,24 @@ const nothing = {
    * @param {*} val2
    */
   ifNull: (val, val1, val2) => nothing.isNull(val) ? val1 : (val2 === undefined ? val : val2),
+  /**
+   * 深度拷贝
+   * @param source
+   * @param ignoreFunction
+   */
+  deepCopy: (source, ignoreFunction = false) => {
+    // 非对象类型直接返回
+    if (!(source instanceof Object)) return source;
+    // 日期类型直接返回
+    if (source instanceof Date) return new Date(source);
+    let result = source instanceof Array ? [] : {};
+    for (let key in source) {
+      // 为函数属性根据 ignoreFunction 处理是否忽略 (原型继承的函数也忽略)
+      if (typeof source[key] === "function" && ignoreFunction && nothing.hasOwnProperty(source, key)) continue;
+      result[key] = source[key] && typeof source[key] === 'object' ? nothing.deepCopy(source[key], ignoreFunction) : source[key];
+    }
+    return result;
+  },
   /**
    * 匹配函数，类似 oracle 中的 decode
    * 说明: 取第一个参数与后续偶数位置的参数进行比较，如匹配则返回当前比较的偶数位置下一个参数作为结果
@@ -573,33 +573,30 @@ const nothing = {
         /**
          * JSON对象扩展：传入JSON对象，创建新JSON对象（args动态指定属性集）
          * @param {*} json 要构建的对象
-         * @param {*} args 动态指定属性集
+         * @param {*} args 动态指定属性集(支持字符串及对象形式)
+         * 示例：
+         * JSON.new(
+         *    json,
+         *    'id', 'name', 'dept.id', 'dept.name',
+         *    {attribute: 'office.id', alias: 'officeId'},
+         *    {attribute: 'area.id', alias: 'myArea.main.id'},
+         *    {attribute: 'age', alias: 'myAge', defaultValue: 20}
+         * )
          */
         Object.defineProperty(JSON, 'new', {
           value :(json, ...args) => {
-            if (!json) return null;
+            if (nothing.isNull(json)) return json;
             let newJson = {};
-            let tempJson = nothing.deepCopy(json);
-            if (!args || !args.length) return newJson;
-            for (let i = 0; i < args.length; i++) {
-              if (nothing.isNull(args[i])) continue;
-              if (args[i].contains('.')) {
-                let attrs = args[i].split('.');
-                let childJson = newJson[attrs[0]] = newJson[attrs[0]] || {};
-                let tempChildJson = tempJson[attrs[0]] || {};
-                for (let ii = 1; ii < attrs.length; ii++) {
-                  if (ii === attrs.length - 1) {
-                    childJson[attrs[ii]] = nothing.isNotNull(tempChildJson) ? tempChildJson[attrs[ii]] : null;
-                  } else {
-                    childJson = childJson[attrs[ii]] = childJson[attrs[ii]] || {};
-                    tempChildJson = nothing.isNotNull(tempChildJson) ? tempChildJson[attrs[ii]] : null;
-                  }
-                }
-              } else {
-                newJson[args[i]] = tempJson[args[i]];
-              }
-            }
-            tempJson = null;
+            if (Array.isEmpty(args)) return newJson;
+            args.forEach(item => {
+              if (nothing.isNull(item) || (typeof item === 'object' && nothing.isNull(item.attribute))) return;
+              let newAttrItem = typeof item === 'object' ? item : {attribute: item};
+              JSON.setAttribute(
+                newJson,
+                nothing.ifNull(newAttrItem.alias, newAttrItem.attribute),
+                nothing.ifNull(JSON.getAttribute(json, newAttrItem.attribute), newAttrItem.defaultValue)
+              );
+            })
             return newJson;
           }
         });
