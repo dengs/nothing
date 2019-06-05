@@ -115,20 +115,20 @@ const nothing = {
    * 数值型的舍入处理(可指定小数位&舍入模式)
    * 作为Number(num).toFixed(2) 的增强版本
    * @param {*} num         要舍入处理的数值
-   * @param {*} precision   保留小数位数
+   * @param {*} scale       保留小数位数
    * @param {*} mode        舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor
    */
-  numberToFixed: (num, precision = 0, mode = 0) => {
+  numberToFixed: (num, scale = 0, mode = 0) => {
     num = Number(num);
-    precision = Number(precision);
+    scale = Number(scale);
     mode = [0, 1, -1].indexOf(mode) !== -1 ? mode : 0;
     // 舍入处理
     num = nothing.caseValue(mode,
-      0, (precision ? Math.round(num * Math.pow(10, precision)) * (1 / Math.pow(10, precision)) : Math.round(num)),
-      1, (precision ? Math.ceil(num * Math.pow(10, precision)) * (1 / Math.pow(10, precision)) : Math.ceil(num)),
-      -1, (precision ? Math.floor(num * Math.pow(10, precision)) * (1 / Math.pow(10, precision)) : Math.floor(num))
+      0, (scale ? Math.round(num * Math.pow(10, scale)) * (1 / Math.pow(10, scale)) : Math.round(num)),
+      1, (scale ? Math.ceil(num * Math.pow(10, scale)) * (1 / Math.pow(10, scale)) : Math.ceil(num)),
+      -1, (scale ? Math.floor(num * Math.pow(10, scale)) * (1 / Math.pow(10, scale)) : Math.floor(num))
     );
-    return Number(num.toFixed(precision));
+    return Number(num.toFixed(scale));
   },
   /**
    * 数值格式化
@@ -138,25 +138,25 @@ const nothing = {
    * {
    *  mode      舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor
    *  thousands 是否显示千分位
-   *  precision 保留小数位数
+   *  scale     保留小数位数
    * }
    */
-  numberFormat: (num, {precision, mode, thousands = false} = {}) => {
+  numberFormat: (num, {scale, mode, thousands = false} = {}) => {
     if (nothing.isNull(num)) return num;
     num = Number(num);
-    if (nothing.isNotNull(precision)) {
+    if (nothing.isNotNull(scale)) {
       // 舍入处理
       mode = [0, 1, -1].indexOf(mode) !== -1 ? mode : 0;
-      num = nothing.numberToFixed(num, precision, mode);
+      num = nothing.numberToFixed(num, scale, mode);
     }
     let tempArr = num.toString().split('.');  // 按小数点分割为数组
     tempArr[1] = tempArr[1] || '';            // 小数点后的数值处理
-    if (precision) {
-      tempArr[1] = tempArr[1].substr(0, precision); // 截去多余位数
-      tempArr[1] = '.' + tempArr[1] + new Array(precision - tempArr[1].length + 1).join('0'); // 小数位数处理（不够位数补0）
+    if (scale) {
+      tempArr[1] = tempArr[1].substr(0, scale); // 截去多余位数
+      tempArr[1] = '.' + tempArr[1] + new Array(scale - tempArr[1].length + 1).join('0'); // 小数位数处理（不够位数补0）
     }
     // 根据是否显示千分位格式化返回
-    return (thousands ? Number(tempArr[0]).replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') : tempArr[0]) + (precision ? tempArr[1] : '');
+    return (thousands ? Number(tempArr[0]).replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') : tempArr[0]) + (scale ? tempArr[1] : '');
   },
   /**
    * 日期格式化
@@ -183,7 +183,7 @@ const nothing = {
   /**
    * 数值舍入处理（可指定小数位数和舍入模式）
    * @param {*} num       要格式化的数值
-   * @param {*} precision 小数保留位数
+   * @param {*} scale     小数保留位数
    * @param {*} mode      舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor
    */
   /**
@@ -447,22 +447,22 @@ const nothing = {
          * Number对象扩展：数值舍入处理（可指定小数位数和舍入模式）
          * 作为Number.toFixed()的增强版
          * @param {*} num         要舍入处理的数值
-         * @param {*} precision   保留小数位数
+         * @param {*} scale       保留小数位数
          * @param {*} mode        舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor
          */
-        Object.defineProperty(Number, 'toFixed2', { value: (num, precision, mode) => nothing.numberToFixed(num, precision, mode) });
+        Object.defineProperty(Number, 'toFixed2', { value: (num, scale, mode) => nothing.numberToFixed(num, scale, mode) });
       }
       if (!nothing.hasOwnProperty(Number.prototype, 'toFixed2')) {
         /**
          * Number对象实例扩展：数值舍入处理（可指定小数位数和舍入模式）
          * 作为Number.toFixed()的增强版
          * @param {*} num         要舍入处理的数值
-         * @param {*} precision   保留小数位数
+         * @param {*} scale       保留小数位数
          * @param {*} mode        舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor
          */
         Object.defineProperty(Number.prototype, 'toFixed2', {
-          value (precision, mode) {
-            return nothing.numberToFixed(this, precision, mode);
+          value (scale, mode) {
+            return nothing.numberToFixed(this, scale, mode);
           }
         });
       }
@@ -1019,7 +1019,7 @@ const nothing = {
             let valArray = [];
             array.forEach((item, index) => {
               if (index >= begin && index < end) {
-                let val = JSON.getAttribute(item, attribute);
+                let val = Number.isInteger(attribute) ? item[attribute] : JSON.getAttribute(item, attribute);
                 valArray.push(val);
               }
             })
