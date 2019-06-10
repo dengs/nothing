@@ -1,11 +1,11 @@
 # nothing.js 
 一套简单易用的常用函数&系统对象扩展库
-<br/>
+<br>
 ![avatar](/logo.jpeg ':size=480')
 ## 概述
-> varsion：`v1.0.16`
+> varsion：`v1.1.3`
 <br>author：`cbtak` <cbtak@hotmail.com>
-<br/>
+<br>
  nothing.js 来源于项目开发过程积累常用到的一些工具函数，筛选通用性比较好的整理成库，采用`CommonJS`规范、`ES6`重构。本库不依赖于第三方库，可直接在node服务端及前端环境使用。
 
 ## 安装
@@ -22,7 +22,10 @@ yarn add @cbtak/nothing
 
 ### 模块引入
 ```js
-  const nothing = require('@cbtak/nothing');
+  // require
+  const nothing = require('@cbtak/nothing')
+  // import
+  import nothing from '@cbtak/nothing'
 ```
 
 ### 1. 功能函数篇
@@ -34,28 +37,27 @@ yarn add @cbtak/nothing
 3 | [isBlank](/?id=_13-isblankval) | 检验传入值是否为空字符串
 4 | [isNotBlank](/?id=_14-isnotblankval) | 检验传入值是否不为空字符串
 5 | [ifNull](/?id=_15-ifnull-val-val1-val2) | 空值处理(类oracle 的 nvl2)
-6 | [ternary](/?id=_16-ternaryexpression-result1-result2) | 三元函数
-7 | [deepCopy](/?id=_17-deepcopysource-ignorefunction) | 深拷贝
+6 | [deepCopy](/?id=_16-deepcopysource-ignorefunction) | 深拷贝
+7 | [ternary](/?id=_17-ternaryexpression-result1-result2) | 三元函数
 8 | [caseValue](/?id=_18-casevalueargs) | 匹配函数(类oracle 的 decode)
 9 | [buildTree](/?id=_19-buildtreetreedataarray-options) | 构建树
-10 | [toFixed](/?id=_110-tofixednum-options) | 数值型的舍入处理(可指定舍入模式)
+10 | [numberToFixed](/?id=_110-numbertofixednum-scale-0-mode-0) | 数值型的舍入处理(可指定小数位&舍入模式)
 11 | [numberFormat](/?id=_111-numberformatnum-options) | 数值格式化
-12 | [getParam](/?id=_112-getparamkey) | 获取地址栏参数
-13 | [hasOwnProperty](/?id=_113-hasownpropertyobject-property) | 检查对象是否具有指定属性
-14 | [defineGetter](/?id=_114-definegetter-object-args) | 定义对象Getter访问器
-15 | [defineSetter](/?id=_115-definesetter-object-args) | 定义对象Setter访问器
-16 | [validateNumber](/?id=_116-validatenumberval) | 数值型验证
-17 | [validateMobile](/?id=_117-validatemobilemobile) | 验证手机号码
-18 | [validateIDCard](/?id=_118-validateidcardidcard) | 验证身份证
-19 | [validateEmail](/?id=_119-validateemailemail) | 验证邮箱
+12 | [dateFormat](/?id=_112-dateformatdate-format) | 日期格式化
+13 | [getParam](/?id=_113-geturlparamkey) | 获取地址栏参数
+14 | [hasOwnProperty](/?id=_114-hasownpropertyobject-property) | 检查对象是否具有指定属性
+15 | [defineGetter](/?id=_115-definegetter-object-getter-value) | 定义对象Getter
+16 | [defineSetter](/?id=_116-definesetter-object-setter-value) | 定义对象Setter
+17 | [validateNumber](/?id=_117-validatenumberval) | 数值型验证
+18 | [validateMobile](/?id=_118-validatemobilemobile) | 验证手机号码
+19 | [validateIDCard](/?id=_119-validateidcardidcard) | 验证身份证
+20 | [validateEmail](/?id=_120-validateemailemail) | 验证邮箱
 
 #### 1.1. isNull(val)
 **参数说明：** `val` *要校验的值*
-<br/>&nbsp; &nbsp; **返回值：** `Boolean`
-<br/>
-**功能描述：**
-
-> 检验传入值是否为空<br/>(值等于 `null`、`''`、`undefined` 时返回 true)
+<br>　**返回值：** `Boolean`
+<br>**功能描述：**
+> 检验传入值是否为空<br>(值等于 `null`、`''`、`undefined` 时返回 true)
 
 **示例代码：**
 ```js
@@ -66,10 +68,9 @@ let result = nothing.isNull(var) ? 'var is null' : 'var is not null';
 
 #### 1.2. isNotNull(val)
 **参数说明：** `val` *要校验的值*
-<br/>&nbsp; &nbsp; **返回值：** `Boolean`
-<br/>
-**功能描述：** 
-> 检验传入值是否不为空<br/>(值不等于 `null`、`''`、`undefined` 时返回 true)
+<br>　**返回值：** `Boolean`
+<br>**功能描述：** 
+> 检验传入值是否不为空<br>(值不等于 `null`、`''`、`undefined` 时返回 true)
 
 **示例代码：**
 ```js
@@ -80,10 +81,9 @@ let result = nothing.isNull(var) ? 'var is null' : 'var is not null';
 
 #### 1.3. isBlank(val)
 **参数说明：** `val` *要校验的值*
-<br/>&nbsp; &nbsp; **返回值：** `Boolean`
-<br/>
-**功能描述：**
-> 检验传入值是否为空字符串<br/>(值等于 `null`、`''`、`undefined`、`'  '` 时返回 true)
+<br>　**返回值：** `Boolean`
+<br>**功能描述：**
+> 检验传入值是否为空字符串<br>(值等于 `null`、`''`、`undefined`、`'  '` 时返回 true)
 
 **示例代码：**
 ```js
@@ -94,10 +94,9 @@ let result = nothing.isBlank(var) ? 'var is blank' : 'var is not blank';
 
 #### 1.4. isNotBlank(val)
 **参数说明：** `val` *要校验的值*
-<br/>&nbsp; &nbsp; **返回值：** `Boolean`
-<br/>
-**功能描述：**
-> 检验传入值是否不为空字符串<br/>(值不等于 `null`、`''`、`undefined`、`'  '` 时返回 true)
+<br>　**返回值：** `Boolean`
+<br>**功能描述：**
+> 检验传入值是否不为空字符串<br>(值不等于 `null`、`''`、`undefined`、`'  '` 时返回 true)
 
 **示例代码：**
 ```js
@@ -107,11 +106,12 @@ let result = nothing.isNotBlank(var) ? 'var is not blank' : 'var is blank';
 ```
 
 #### 1.5. ifNull (val, val1, val2)
-**参数说明：** `val` *要校验的值(val2未传递时作为返回结果)，* `val1` *返回结果1，* `val2` *返回结果2(可选)*
-<br/>&nbsp; &nbsp; **返回值：** `{*}` *根据校验结果返回：val/val1/val2*
-<br/>
-**功能描述：** 
->空值处理(类oracle nvl2)<br/>如果val为空，则返回val1，不为空时，则验证是否传递val2参数，如传递则返回val2，否则返回val
+**参数说明：** `val` *要校验的值(val2未传递时作为返回结果)，*
+<br>　　　　　 `val1` *返回结果1，*
+<br>　　　　　 `val2` *返回结果2(可选)*
+<br>　**返回值：** `{*}` *根据校验结果返回：val/val1/val2*
+<br>**功能描述：** 
+>空值处理(类oracle nvl2)<br>如果val为空，则返回val1，不为空时，则验证是否传递val2参数，如传递则返回val2，否则返回val
 
 **示例代码：**
 ```js
@@ -122,24 +122,13 @@ nothing.ifNull(var, var1, var2);    // 结果为：返回var2
 nothing.ifNull(var, var1);          // 结果为：返回var
 ```
 
-#### 1.6. ternary(expression, result1, result2)
-**参数说明：** `expression` *表达式，* `result1` *表达式成立时返回，* `result2` *表达式不成立时返回*
-<br/>&nbsp; &nbsp; **返回值：** `{*}` *表达式是否成立返回 result1/result2*
-<br/>
-**功能描述：** 
-> 三元函数<br/>expression 表达式成立则返回 result1，否则返回 result2
 
-**示例代码：**
-```js
-let result = nothing.ternary(var === 100, 'var === 100', 'var != 100');
-```
-
-#### 1.7. deepCopy(source, ignoreFunction)
-**参数说明：** `source` *要拷贝的对象* `ignoreFunction` *忽略函数属性(可选，默认 false)*
-<br/>&nbsp; &nbsp; **返回值：** `{*}` *拷贝后的对象*
-<br/>
-**功能描述：**
-> 深拷贝<br/>对传入对象进行深度拷贝<br>第二个参数传入`true`时，将忽略函数类型的属性
+#### 1.6. deepCopy(source, ignoreFunction)
+**参数说明：** `source` *要拷贝的对象*
+<br>　　　　　 `ignoreFunction` *忽略函数属性(可选，默认 false)*
+<br>　**返回值：** `{*}` *拷贝后的对象*
+<br>**功能描述：**
+> 深拷贝<br>对传入对象进行深度拷贝<br>第二个参数传入`true`时，将忽略函数类型的属性
 
 **示例代码：**
 ```js
@@ -148,14 +137,26 @@ let copy_a = nothing.deepCopy(a);         // 完整拷贝
 let copy_b = nothing.deepCopy(a, true);   // 第二个参数传入true，将忽略函数类型属性 showFun
 ```
 
+#### 1.7. ternary(expression, result1, result2)
+**参数说明：** `expression` *表达式，*
+<br>　　　　　 `result1` *表达式成立时返回，*
+<br>　　　　　 `result2` *表达式不成立时返回*
+<br>　**返回值：** `{*}` *表达式是否成立返回 result1/result2*
+<br>**功能描述：** 
+> 三元函数<br>expression 表达式成立则返回 result1，否则返回 result2
+
+**示例代码：**
+```js
+let result = nothing.ternary(var === 100, 'var === 100', 'var != 100');
+```
+
 #### 1.8. caseValue(...args)
 **参数说明：** `args` *动态参数*
-<br/>&nbsp; &nbsp; **返回值：** `{*}`  *匹配后的结果*
-<br/>
-**功能描述：** 
-> 匹配函数，类似 oracle 中的 decode<br/>匹配规则: 取第一个参数与后续偶数位置的参数进行比较，如匹配则返回当前比较的偶数位置下一个参数作为结果，
+<br>　**返回值：** `{*}`  *匹配后的结果*
+<br>**功能描述：** 
+> 匹配函数，类似 oracle 中的 decode<br>匹配规则: 取第一个参数与后续偶数位置的参数进行比较，如匹配则返回当前比较的偶数位置下一个参数作为结果，
 如未找到匹配项目，并且参数个数大于3而且为偶数，则取最后一个参数作为默认值返回
-<br/>
+<br>
 
 * `注：参数为动态参数，参数个数最少为3，否则无意义`
 * `偶数位置被比较的参数可以为数组`
@@ -172,17 +173,17 @@ nothing.caseValue('A', 'B', value1, ['A','C'], value2, defaultValue)  // 返回 
 
 #### 1.9. buildTree(treeDataArray, options)
 **参数说明：** `treeDataArray` *树节点数据集合(一维)*
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;`options` *参数项(可选)，详细说明：*
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;`nodeKey` *节点唯一标识(默认：id)*
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;`parentKey` *'父节点唯一标识(默认：parentId)*
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;`childrenKey` *子节点集合标识(默认：children)*
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;`root` *指定作为根节点的项目唯一标识(指定多个时用数组表示)*
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}
-<br/>&nbsp; &nbsp; **返回值：** `Array`
-<br/>
+<br>　　　　　 `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`nodeKey` *节点唯一标识(默认：id)*
+<br>　　　　　　　`parentKey` *'父节点唯一标识(默认：parentId)*
+<br>　　　　　　　`childrenKey` *子节点集合标识(默认：children)*
+<br>　　　　　　　`root` *指定作为根节点的项目唯一标识(指定多个时用数组表示)*
+<br>　　　　　　}
+<br>　**返回值：** `Array`
+<br>
 **功能描述：** 
-> 构建树<br/>根据父节点唯一标识生成树型结构数据
+> 构建树<br>根据父节点唯一标识生成树型结构数据
 
 **示例代码：**
 ```js
@@ -196,52 +197,62 @@ let data = [
 let tree = nothing.buildTree(data, {parentKey: 'parent'});
 ```
 
-#### 1.10. toFixed(num, options)
-**参数说明：** `num` *要舍入处理的数值*
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;`options` *参数项(可选)，详细说明：*
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;`precision` *保留小数位数*
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;`mode` *舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor*
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}
-<br/>&nbsp; &nbsp; **返回值：** `Number`
-<br/>
-**功能描述：** 
-> 数值型的舍入处理(可指定舍入模式)<br/>作为Number(num).toFixed(2) 的增强版本
+#### 1.10. numberToFixed(num, scale = 0, mode = 0)
+**参数说明：** `num`*要舍入处理的数值* 
+<br>　　　　　 `scale` *保留小数位(可选，默认0)*
+<br>　　　　　 `mode` *舍入模式(可选，默认0)：0:Math.round  1:Math.ceil  -1:Math.floor*
+<br>　**返回值：** `Number`
+<br>**功能描述：** 
+> 数值型的舍入处理，可指定小数位&舍入模式<br>作为Number(num).toFixed(2) 的增强版本
 
 **示例代码：**
 ```js
-nothing.toFixed(10.2345, {precision: 2});           // 结果：10.23
-nothing.toFixed(10.2345, {precision: 2, mode: 0});  // 结果：10.23
-nothing.toFixed(10.2345, {precision: 2, mode: 1});  // 结果：10.24
-nothing.toFixed(10.2345, {precision: 2, mode: -1}); // 结果：10.23
+nothing.numberToFixed(10.2345, 2);      // 结果：10.23
+nothing.numberToFixed(10.2345, 2, 0);   // 结果：10.23
+nothing.numberToFixed(10.2345, 2, 1);   // 结果：10.24
+nothing.numberToFixed(10.2345, 2, -1);  // 结果：10.23
 ```
 
 #### 1.11. numberFormat(num, options)
 **参数说明：** `num` *要舍入处理的数值*
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;`options` *参数项(可选)，详细说明：*
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;`precision` *保留小数位数*
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;`thousands` *是否显示千分位*
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;`mode` *舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor*
-<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}
-<br/>&nbsp; &nbsp; **返回值：** `String` *格式化后的字符串表示*
-<br/>
-**功能描述：** 
-> 数值格式化<br/>转换为指定格式的文本(舍入处理并可指定舍入模式)
+<br>　　　　　 `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`scale` *保留小数位数*
+<br>　　　　　　　`thousands` *是否显示千分位*
+<br>　　　　　　　`mode` *舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor*
+<br>　　　　　　}
+<br>　**返回值：** `String` *格式化后的字符串表示*
+<br>**功能描述：** 
+> 数值格式化<br>转换为指定格式的文本(舍入处理并可指定舍入模式)
 
 **示例代码：**
 ```js
 nothing.numberFormat(12806.123)                                               // 返回：12806
-nothing.numberFormat(12806.123, {mode: 0, thousands: true, precision: 2})     // 返回：12,806.12
-nothing.numberFormat(12806.123, {mode: 1, precision: 2})                      // 返回：12806.13
-nothing.numberFormat(12806.126, {mode: -1, thousands: false, precision: 2})   // 返回：12806.12
+nothing.numberFormat(12806.123, {mode: 0, thousands: true, scale: 2})     // 返回：12,806.12
+nothing.numberFormat(12806.123, {mode: 1, scale: 2})                      // 返回：12806.13
+nothing.numberFormat(12806.126, {mode: -1, thousands: false, scale: 2})   // 返回：12806.12
 ```
 
-#### 1.12. getParam(key)
+#### 1.12. dateFormat(date, format)
+**参数说明：** `date`*日期* 
+<br>　　　　　 `format` *日期格式*
+<br>　**返回值：** `String`
+<br>**功能描述：** 
+> 日期格式化<br>格式化日期为格式化表达式的字符串形式
+
+**示例代码：**
+```js
+nothing.dateFormat(new Date(), 'yyyy年MM月');              // 结果：2018年06月
+nothing.dateFormat(new Date(), 'yyyy-MM-dd');             // 结果：2018-06-10
+nothing.dateFormat(new Date(), 'yyyy-MM-dd HH:mm:ss');    // 结果：2018-06-10 12:20:35
+nothing.dateFormat(new Date(), 'yyyy-MM-dd');             // 结果：12:20:35
+nothing.dateFormat(new Date(), 'dd/MM/yyyy');             // 结果：10/06/2018
+```
+
+#### 1.13. getURLParam(key)
 **参数说明：** `key` *参数名称*
-<br/>&nbsp; &nbsp; **返回值：** `String`
-<br/>
-**功能描述：** 
+<br>　**返回值：** `String`
+<br>**功能描述：** 
 > 获取地址栏指定参数
 
 **示例代码：**
@@ -250,12 +261,12 @@ nothing.numberFormat(12806.126, {mode: -1, thousands: false, precision: 2})   //
 let userid = nothing.getParam('userid');  // 结果：123
 ```
 
-#### 1.13. hasOwnProperty(object, property)
-**参数说明：** `object` *检查的对象* `property` *检查的属性(支持多级属性，以"."分隔)*
-<br/>&nbsp; &nbsp; **返回值：** `Boolean`
-<br/>
-**功能描述：** 
-> 检查对象是否具有指定属性<br/>注：检查的属性支持多级属性，以"."分隔
+#### 1.14. hasOwnProperty(object, property)
+**参数说明：** `object` *检查的对象*
+<br>　　　　　 `property` *检查的属性(支持多级属性，以"."分隔)*
+<br>　**返回值：** `Boolean`
+<br>**功能描述：** 
+> 检查对象是否具有指定属性<br>注：检查的属性支持多级属性，以"."分隔
 
 **示例代码：**
 ```js
@@ -265,15 +276,41 @@ nothing.hasOwnProperty(user, 'age');    // 结果：false
 nothing.hasOwnProperty(user, 'school.class');    // 结果：true
 ```
 
-#### 1.14. defineGetter: (object, ...args)
+#### 1.15. defineGetter: (object, getter, value)
+**参数说明：** `object` *源对象*
+<br>　　　　　 `getter` *要定义的getter名称/或要定义getter属性集合*
+<br>　　　　　 `value` *getter的返回值*
+<br>　**返回值：** 无
+<br>**功能描述：** 
+> 为对象定义getter，可单个定义或指定定义<br>单个定义：第二个参数`getter`为字符串形式的getter属性名称，并且需传入第三个参数`value`<br>批量定义：第二个参数`getter`为数组形式的getter属性集合，数据格式为：`[{name: 'getter1', value: 1}, {name: 'getter2', value: function() {return this.name; }}]`，第三个参数无效<br>
+*注：`value` 可以为任何形式的数据或对象，为函数时在访问该getter属性时会执行，详见示例代码：*
 
-#### 1.15. defineSetter: (object, ...args)
+**示例代码：**
+```js
+let user = {id: '0001', firstName: 'zhang', lastName: 'san', age: 20};
+// 单个定义
+nothing.defineGetter(user,
+  'fullName',
+  function () { return `${this.firstName} ${this.lastName}`; }
+);
+nothing.defineGetter(user, 'sayHello', 'Hello !');
+// 批量定义
+nothing.defineGetter(user, [
+  {name: 'preYearAge', value: function () { return this.age - 1; }},
+  {name: 'nextYearAge', value: function () { return this.age + 1; }}
+]);
+console.log(user.fullName);     // 输出：zhang san
+console.log(user.sayHello);     // 输出：Hello !
+console.log(user.preYearAge);   // 输出：19
+console.log(user.nextYearAge);  // 输出：21
+```
 
-#### 1.16. validateNumber(val)
+#### 1.16. defineSetter: (object, setter, value)
+
+#### 1.17. validateNumber(val)
 **参数说明：** `val` *要验证的参数*
-<br/>&nbsp; &nbsp; **返回值：** `Boolean`
-<br/>
-**功能描述：** 
+<br>　**返回值：** `Boolean`
+<br>**功能描述：** 
 > 数值型验证是否合法
 
 **示例代码：**
@@ -283,11 +320,10 @@ nothing.validateNumber('12.22.32');   // 结果：false
 nothing.validateNumber('ab32');       // 结果：false
 ```
 
-#### 1.17. validateMobile(mobile)
+#### 1.18. validateMobile(mobile)
 **参数说明：** `mobile` *要验证的手机号*
-<br/>&nbsp; &nbsp; **返回值：** `Boolean`
-<br/>
-**功能描述：** 
+<br>　**返回值：** `Boolean`
+<br>**功能描述：** 
 > 验证手机号码是否合法
 
 **示例代码：**
@@ -296,11 +332,10 @@ nothing.validateMobile(13500012222);    // 结果：true
 nothing.validateMobile(24563325633);    // 结果：false
 ```
 
-#### 1.18. validateIDCard(idCard)
+#### 1.19. validateIDCard(idCard)
 **参数说明：** `idCard` *要验证的身份证号码*
-<br/>&nbsp; &nbsp; **返回值：** `Boolean`
-<br/>
-**功能描述：** 
+<br>　**返回值：** `Boolean`
+<br>**功能描述：** 
 > 验证身份证号码是否合法
 
 **示例代码：**
@@ -309,11 +344,10 @@ nothing.validateIDCard('43048820100102445X'); // 结果：true
 nothing.validateIDCard('1234567890');         // 结果：false
 ```
 
-#### 1.19. validateEmail(email)
+#### 1.20. validateEmail(email)
 **参数说明：** `mail` *要验证的 email*
-<br/>&nbsp; &nbsp; **返回值：** `Boolean`
-<br/>
-**功能描述：** 
+<br>　**返回值：** `Boolean`
+<br>**功能描述：** 
 > 验证email是否合法
 
 **示例代码：**
@@ -331,10 +365,10 @@ nothing.validateEmail('wangyi@@');          // 结果：false
 2 | [Object.prototype.clone](/?id=_212-objectprototypecloneignorefunction) | 对象克隆(深拷贝)，基于对象实例克隆
 
 ##### 2.1.1. Object.clone(source, ignoreFunction)
-**参数说明：** `source` *要克隆的对象* `ignoreFunction` *忽略函数属性(可选，默认 false)*
-<br/>&nbsp; &nbsp; **返回值：** `{*}` *克隆后的新对象*
-<br/>
-**功能描述：** 
+**参数说明：** `source` *要克隆的对象*
+<br>　　　　　 `ignoreFunction` *忽略函数属性(可选，默认 false)*
+<br>　**返回值：** `{*}` *克隆后的新对象*
+<br>**功能描述：** 
 > 对象克隆(深拷贝)<br>第二个参数传入`true`时，将忽略函数类型的属性
 
 **示例代码：**
@@ -346,10 +380,9 @@ let newUser2 = Object.clone(user, true); // 忽略函数属性
 
 ##### 2.1.2. Object.prototype.clone(ignoreFunction)
 **参数说明：** `ignoreFunction` *忽略函数属性(可选，默认 false)*
-<br/>&nbsp; &nbsp; **返回值：** `{*}` *克隆后的新对象*
-<br/>
-**功能描述：** 
-> 对象克隆(深拷贝)，基于对象实例克隆<br>第二个参数传入`true`时，将忽略函数类型的属性<br/>派生于Object的对象实例都继续此方法(如：JSON、String、Array...等对象实例)
+<br>　**返回值：** `{*}` *克隆后的新对象*
+<br>**功能描述：** 
+> 对象克隆(深拷贝)，基于对象实例克隆<br>第二个参数传入`true`时，将忽略函数类型的属性<br>派生于Object的对象实例都继承此方法(如：JSON、String、Array...等对象实例)
 
 **示例代码：**
 ```js
@@ -377,11 +410,12 @@ let newUserArray2 = userArray.clone(true);  // 忽略函数属性
 7 | [String.isString](/?id=_229-stringisstringobject) | String对象扩展：校验对象是否为字符串
 
 ##### 2.2.1. String.replaceAll(source, substr, replacement)
-**参数说明：** `source` *执行替换操作的字符串，* `substr` *查找匹配的内容，* `replacement` *替换的内容*
-<br/>&nbsp; &nbsp; **返回值：** `String`
-<br/>
-**功能描述：**
-> String对象扩展：替换全部<br/>字符串查找替换指定内容(替换全部匹配)，作为原生 replace 函数的增强
+**参数说明：** `source` *执行替换操作的字符串，*
+<br>　　　　　 `substr` *查找匹配的内容，*
+<br>　　　　　 `replacement` *替换的内容*
+<br>　**返回值：** `String`
+<br>**功能描述：**
+> String对象扩展：替换全部<br>字符串查找替换指定内容(替换全部匹配)，作为原生 replace 函数的增强
 
 **示例代码：**
 ```js
@@ -390,11 +424,11 @@ let replaceStr = String.replaceAll(str, 'i', '');   // 结果为：ths s strng
 ```
 
 ##### 2.2.2. String.prototype.replaceAll(substr, replacement)
-**参数说明：** `substr` *查找匹配的内容，* `replacement` *替换的内容*
-<br/>&nbsp; &nbsp; **返回值：** `String`
-<br/>
-**功能描述：**
-> String对象原型扩展：替换全部<br/>字符串查找替换指定内容(替换全部匹配)，作为原生 replace 函数的增强
+**参数说明：** `substr` *查找匹配的内容，*
+<br>　　　　　 `replacement` *替换的内容*
+<br>　**返回值：** `String`
+<br>**功能描述：**
+> String对象原型扩展：替换全部<br>字符串查找替换指定内容(替换全部匹配)，作为原生 replace 函数的增强
 
 **示例代码：**
 ```js
@@ -403,11 +437,11 @@ let replaceStr = str.replaceAll('i', '');     // 结果为：ths s strng
 ```
 
 ##### 2.2.3. String.contains(source, instr)
-**参数说明：** `source` *源字符串，* `instr` *检查的内容*
-<br/>&nbsp; &nbsp; **返回值：** `Boolean`
-<br/>
-**功能描述：**
-> String对象扩展：是否包含<br/>在字符串 `source` 中查找是否包含 `inStr`
+**参数说明：** `source` *源字符串，*
+<br>　　　　　 `instr` *检查的内容*
+<br>　**返回值：** `Boolean`
+<br>**功能描述：**
+> String对象扩展：是否包含<br>在字符串 `source` 中查找是否包含 `inStr`
 
 **示例代码：**
 ```js
@@ -417,10 +451,9 @@ let isContains = String.contains(source, 'zhang');     // 结果：true
 
 ##### 2.2.4. String.prototype.contains(instr)
 **参数说明：** `instr` *检查的内容*
-<br/>&nbsp; &nbsp; **返回值：** `Boolean`
-<br/>
-**功能描述：**
-> String对象原型扩展：是否包含<br/>在字符串中查找是否包含 `inStr`
+<br>　**返回值：** `Boolean`
+<br>**功能描述：**
+> String对象原型扩展：是否包含<br>在字符串中查找是否包含 `inStr`
 
 **示例代码：**
 ```js
@@ -430,9 +463,8 @@ let isContains = source.contains('zhang');     // 结果：true
 
 ##### 2.2.5. String.toByte(str)
 **参数说明：** `str` *源字符串*
-<br/>&nbsp; &nbsp; **返回值：** `[*]` *转换后的 Byte 数组形式*
-<br/>
-**功能描述：**
+<br>　**返回值：** `[*]` *转换后的 Byte 数组形式*
+<br>**功能描述：**
 > String对象扩展：字符串转 Byte 数组
 
 **示例代码：**
@@ -443,9 +475,8 @@ let bytes = String.toByte(str);
 
 ##### 2.2.6. String.prototype.toByte()
 **参数说明：** `无`
-<br/>&nbsp; &nbsp; **返回值：** `[*]` *转换后的 Byte 数组形式*
-<br/>
-**功能描述：**
+<br>　**返回值：** `[*]` *转换后的 Byte 数组形式*
+<br>**功能描述：**
 > String对象原型扩展：字符串转 Byte 数组
 
 **示例代码：**
@@ -456,9 +487,8 @@ let bytes = str.toByte();
 
 ##### 2.2.7. String.fromByte(bytes)
 **参数说明：** `bytes` *Byte 数组*
-<br/>&nbsp; &nbsp; **返回值：** `String` *转换后的字符串形式*
-<br/>
-**功能描述：**
+<br>　**返回值：** `String` *转换后的字符串形式*
+<br>**功能描述：**
 > String对象扩展：Byte 数组转字符串
 
 **示例代码：**
@@ -468,10 +498,10 @@ let str = String.fromByte(bytes); // 结果：zhang
 ```
 
 ##### 2.2.8. String.from(object, format)
-**参数说明：** `object` *要转换的对象* `format` *格式(可选，仅对日期有效)*
-<br/>&nbsp; &nbsp; **返回值：** `String` *转换后的字符串形式*
-<br/>
-**功能描述：**
+**参数说明：** `object` *要转换的对象*
+<br>　　　　　 `format` *格式(可选，仅对日期有效)*
+<br>　**返回值：** `String` *转换后的字符串形式*
+<br>**功能描述：**
 > String对象扩展：将对象转换为字符串(日期型可指定格式)
 
 **示例代码：**
@@ -485,9 +515,8 @@ let str5 = String.from(new Date(), 'yy-MM-dd'); // 结果："19-01-01"
 
 ##### 2.2.9. String.isString(object)
 **参数说明：** `object` *要校验的对象*
-<br/>&nbsp; &nbsp; **返回值：** `Boolean`
-<br/>
-**功能描述：**
+<br>　**返回值：** `Boolean`
+<br>**功能描述：**
 > String对象扩展：校验对象是否为字符串
 
 **示例代码：**
@@ -504,18 +533,81 @@ String.isString("string");        // 结果：true
 :--- | :--- | :---
 1 | [Number.format](/?id=_231-numberformatnum-options) | Number对象扩展：数值格式化
 2 | [Number.prototype.format](/?id=_232-numberprototypeformatoptions) | Number对象原型扩展：数值格式化
-3 | [Number.toFixed2](/?id=_233-numbertofixed2num-options) | Number对象扩展：数值舍入处理（可指定小数位数和舍入模式）
-4 | [Number.prototype.toFixed2](/?id=_234-numberprototypetofixed2options) | Number对象原型扩展：数值舍入处理（可指定小数位数和舍入模式）
+3 | [Number.toFixed2](/?id=_233-numbertofixed2num-scale-mode) | Number对象扩展：数值舍入处理（可指定小数位数和舍入模式）
+4 | [Number.prototype.toFixed2](/?id=_234-numberprototypetofixed2scale-mode) | Number对象原型扩展：数值舍入处理（可指定小数位数和舍入模式）
 
 ##### 2.3.1. Number.format(num, options)
+**参数说明：** `num` *要舍入处理的数值*
+<br>　　　　　 `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`scale` *保留小数位数*
+<br>　　　　　　　`thousands` *是否显示千分位*
+<br>　　　　　　　`mode` *舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor*
+<br>　　　　　　}
+<br>　**返回值：** `String` *格式化后的字符串表示*
+<br>**功能描述：** 
+> 数值格式化<br>转换为指定格式的文本(舍入处理并可指定舍入模式)
+
+**示例代码：**
+```js
+Number.format(12806.123)                                           // 返回：12806
+Number.format(12806.123, {mode: 0, thousands: true, scale: 2})     // 返回：12,806.12
+Number.format(12806.123, {mode: 1, scale: 2})                      // 返回：12806.13
+Number.format(12806.126, {mode: -1, thousands: false, scale: 2})   // 返回：12806.12
+```
 
 ##### 2.3.2. Number.prototype.format(options)
+**参数说明：** `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`scale` *保留小数位数*
+<br>　　　　　　　`thousands` *是否显示千分位*
+<br>　　　　　　　`mode` *舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor*
+<br>　　　　　　}
+<br>　**返回值：** `String` *格式化后的字符串表示*
+<br>**功能描述：** 
+> 数值格式化<br>转换为指定格式的文本(舍入处理并可指定舍入模式)
 
-##### 2.3.3. Number.toFixed2(num, options)
+**示例代码：**
+```js
+Number(12806.123)                                                     // 返回：12806
+Number(12806.123).format.({mode: 0, thousands: true, scale: 2})   // 返回：12,806.12
+Number(12806.123).format.({mode: 1, scale: 2})                    // 返回：12806.13
+Number(12806.126).format.({mode: -1, thousands: false, scale: 2}) // 返回：12806.12
+```
 
-##### 2.3.4. Number.prototype.toFixed2(options)
+##### 2.3.3. Number.toFixed2(num, scale, mode)
+**参数说明：** `num`*要舍入处理的数值* 
+<br>　　　　　 `scale` *保留小数位(可选，默认0)*
+<br>　　　　　 `mode` *舍入模式(可选，默认0)：0:Math.round  1:Math.ceil  -1:Math.floor*
+<br>　**返回值：** `Number`
+<br>**功能描述：** 
+> 数值型的舍入处理，可指定小数位&舍入模式<br>作为Number(num).toFixed() 的增强版本
+
+**示例代码：**
+```js
+Number.toFixed2(10.2345, 2);      // 结果：10.23
+Number.toFixed2(10.2345, 2, 0);   // 结果：10.23
+Number.toFixed2(10.2345, 2, 1);   // 结果：10.24
+Number.toFixed2(10.2345, 2, -1);  // 结果：10.23
+```
+
+##### 2.3.4. Number.prototype.toFixed2(scale, mode)
+**参数说明：** `scale` *保留小数位(可选，默认0)*
+<br>　　　　　 `mode` *舍入模式(可选，默认0)：0:Math.round  1:Math.ceil  -1:Math.floor*
+<br>　**返回值：** `Number`
+<br>**功能描述：** 
+> 数值型的舍入处理，可指定小数位&舍入模式<br>作为Number(num).toFixed() 的增强版本
+
+**示例代码：**
+```js
+Number(10.2345).toFixed2(2);      // 结果：10.23
+Number(10.2345).toFixed2(2, 0);   // 结果：10.23
+Number(10.2345).toFixed2(2, 1);   // 结果：10.24
+Number(10.2345).toFixed2(2, -1);  // 结果：10.23
+```
 
 #### 2.4. Boolean
+><br>　　　　　暂无<br><br>
 
 #### 2.5. Date
 序号 | 函数名称 | 说明
@@ -547,8 +639,8 @@ String.isString("string");        // 结果：true
 
 ##### 2.6.1. JSON.new(json, ...args)
 **参数说明：** `json` *源对象，* `args` *动态指定属性集*
-<br/>&nbsp; &nbsp; **返回值：** `{*}` *创建的新对象*
-<br/>
+<br>　**返回值：** `{*}` *创建的新对象*
+<br>
 **功能描述：**
 > JSON对象扩展：传入JSON对象，创建新JSON对象（args动态指定属性集）
 
@@ -563,8 +655,8 @@ let simpPsn = JSON.new(psn, 'id', 'name', 'corp.id', 'test.test1');
 
 ##### 2.6.2. JSON.prototype.new(...args)
 **参数说明：** `args` *动态指定属性集*
-<br/>&nbsp; &nbsp; **返回值：** `{*}` *创建的新对象*
-<br/>
+<br>　**返回值：** `{*}` *创建的新对象*
+<br>
 **功能描述：**
 > JSON对象原型扩展：基于对象实例本身创建新JSON对象（args动态指定属性集）
 
