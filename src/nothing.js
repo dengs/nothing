@@ -51,6 +51,14 @@ const nothing = {
     return result;
   },
   /**
+   * 三元函数
+   * expression 表达式成立则返回 result1，否则返回 result2
+   * @param {*} expression
+   * @param {*} result1
+   * @param {*} result2
+   */
+  ternary: (expression, result1, result2) => expression ? result1 : result2,
+  /**
    * 匹配函数，类似 oracle 中的 decode
    * 说明: 取第一个参数与后续偶数位置的参数进行比较，如匹配则返回当前比较的偶数位置下一个参数作为结果
    * 如未找到匹配项目，并且参数个数大于3而且为偶数，则取最后一个参数作为默认值返回
@@ -75,14 +83,6 @@ const nothing = {
     }
     return args.length > 3 && !(args.length % 2) ? args[args.length - 1] : null;
   },
-  /**
-   * 三元函数
-   * expression 表达式成立则返回 result1，否则返回 result2
-   * @param {*} expression
-   * @param {*} result1
-   * @param {*} result2
-   */
-  ternary: (expression, result1, result2) => expression ? result1 : result2,
   /**
    * 构建树型数据
    * @param {*} treeDataArray   树节点数据集合(一维)
@@ -219,28 +219,29 @@ const nothing = {
   /**
    * 定义对象 Getter
    * @param {*} object    源对象
-   * @param {*} args      getter属性集
+   * @param {*} getter    要定义的getter名称/或要定义getter属性集合
+   * @param {*} value     getter的返回值
    */
-  defineGetter: (object, ...args) => {
-    let getters = Array.isArray(args[0]) ? args[0] : [{name: args[0], value: args[1]}]
+  defineGetter: (object, getter, value) => {
+    console.warn(object, getter, value)
+    let getters = Array.isArray(getter) ? getter : [{name: getter, value: value}]
     getters.forEach(item => object.__defineGetter__(item.name, () => item.value instanceof Function ? item.value.apply(object) : item.value))
   },
   /**
    * 定义对象 Setter
    * @param {*} object    源对象
-   * @param {*} args      setter属性集
+   * @param {*} setter    要定义的setter名称/或要定义setter属性集合
+   * @param {*} value     setter的处理函数/或要设值的属性
    */
-  defineSetter: (object, ...args) => {
-    let setters = Array.isArray(args[0]) ? args[0] : [{name: args[0], set: args[1]}]
+  defineSetter: (object, setter, value) => {
+    let setters = Array.isArray(setter) ? setter : [{name: setter, value: value}]
     setters.forEach(item => object.__defineSetter__(item.name, (val) => {
-      if (nothing.isNotNull(item.set)) {
-        if (item.set instanceof Function) {
-          item.set.call(object, val)
+      if (nothing.isNotNull(item.value)) {
+        if (item.value instanceof Function) {
+          item.value.call(object, val)
         } else {
-          object[item.set] = val
+          object[item.value] = val
         }
-      } else {
-        object[item.name] = val
       }
     }))
   },
