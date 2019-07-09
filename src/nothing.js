@@ -1,6 +1,6 @@
 /**
  * @cbtak/nothing
- * author: dengs
+ * author: cbtak
  * email: cbtak@hotmail.com
  * github: https://github.com/cbtak/nothing.git
  * 
@@ -43,18 +43,18 @@ const nothing = {
   /**
    * 深度拷贝
    * @param source
-   * @param ignoreFunction
+   * @param ignorePrototype 暂不推荐使用此参数，默认忽略原型属性
    */
-  deepCopy: (source, ignoreFunction = false) => {
+  deepCopy: (source, ignorePrototype = true) => {
     // 非对象类型直接返回
     if (!(source instanceof Object)) return source;
     // 日期类型直接返回
     if (source instanceof Date) return new Date(source);
     let result = source instanceof Array ? [] : {};
     for (let key in source) {
-      // 为函数属性根据 ignoreFunction 处理是否忽略 (原型继承的函数也忽略)
-      if (typeof source[key] === "function" && ignoreFunction && nothing.hasOwnProperty(source, key)) continue;
-      result[key] = source[key] && typeof source[key] === 'object' ? nothing.deepCopy(source[key], ignoreFunction) : source[key];
+      // 忽略原型属性
+      if (typeof source === "object" && ignorePrototype && nothing.isPrototype(source, key)) continue;
+      result[key] = nothing.isNotNull(source[key]) && typeof source[key] === 'object' ? nothing.deepCopy(source[key], ignorePrototype) : source[key];
     }
     return result;
   },
@@ -207,20 +207,50 @@ const nothing = {
     return r ? unescape(r[2]) : null;
   },
   /**
+   * 获取对象指定属性
+   * @param {*} object    要获取属性的对象
+   * @param {*} property  要获取的属性(支持多级属性，以"."分隔)
+   */
+  getOwnProperty: (object, property) => {
+    if (object && nothing.isNotNull(property)) {
+      let attrs = property.split('.');
+      for (let i = 0; i < attrs.length; i++) {
+        object = object[attrs[i]];
+        if (nothing.isNull(object)) return null;
+      }
+      return object
+    }
+    return null;
+  },
+  /**
    * 检查对象是否具有指定属性
    * @param {*} object    检查的对象
    * @param {*} property  检查的属性(支持多级属性，以"."分隔)
    */
   hasOwnProperty: (object, property) => {
     if (object && nothing.isNotNull(property)) {
-      let attrs = property.split('.');
-      for (let i = 0; i < attrs.length - 1; i++) {
-        object = object[attrs[i]];
-        if (nothing.isNull(object)) return false;
+      if (property.indexOf('.') !== -1) {
+        let attrs = property.split('.');
+        property = attrs[attrs.length - 1];
+        object = nothing.getOwnProperty(object, attrs.slice(0,attrs.length - 1).join('.'));
       }
-      if (object.hasOwnProperty && object.hasOwnProperty(attrs[attrs.length - 1])) {
-        return true;
+      return object && object.hasOwnProperty && object.hasOwnProperty(property);
+    }
+    return false;
+  },
+  /**
+   * 检查对象属性是否为原型属性
+   * @param {*} object    检查的对象
+   * @param {*} property  检查的属性(支持多级属性，以"."分隔)
+   */
+  isPrototype: (object, property) => {
+    if (object && nothing.isNotNull(property)) {
+      if (property.indexOf('.') !== -1) {
+        let attrs = property.split('.');
+        property = attrs[attrs.length - 1];
+        object = nothing.getOwnProperty(object, attrs.slice(0,attrs.length - 1).join('.'));
       }
+      return object && object.hasOwnProperty && !object.hasOwnProperty(property) && (property in object);
     }
     return false;
   },
@@ -285,9 +315,9 @@ const nothing = {
         /**
          * 对象克隆(深拷贝)
          * @param {*} source 要克隆的对象
-         * @param {*} ignoreFunction
+         * @param {*} ignorePrototype 暂不推荐使用此参数，默认忽略原型属性
          */
-        Object.defineProperty(Object, 'clone', { value :(source, ignoreFunction) => nothing.deepCopy(source, ignoreFunction) });
+        Object.defineProperty(Object, 'clone', { value :(source, ignorePrototype) => nothing.deepCopy(source, ignorePrototype) });
       }
       if (!nothing.hasOwnProperty(Object.prototype, 'clone')) {
         // 需要排除微信小程序环境(不想依赖jssdk，临时校验是否有wx对象及wx.login函数)
@@ -298,8 +328,8 @@ const nothing = {
            * 对象实例克隆(深拷贝)
            */
           Object.defineProperty(Object.prototype, 'clone', {
-            value (ignoreFunction) {
-              return nothing.deepCopy(this, ignoreFunction);
+            value (ignorePrototype) {
+              return nothing.deepCopy(this, ignorePrototype);
             }
           });
         }
@@ -933,7 +963,7 @@ const nothing = {
             let total = 0;
             if (array.length) {
               array.forEach((item, index) => {
-                total += Number(index >= begin && index < end ? item || 0 : 0);
+                total += Number(index >= begin && index <= end ? item || 0 : 0);
               });
             }
             return total;
@@ -969,7 +999,7 @@ const nothing = {
             let total = 0;
             if (array.length) {
               array.forEach((item, index) => {
-                total += Number(index >= begin && index < end ? JSON.getAttribute(item, attribute) || 0 : 0);
+                total += Number(index >= begin && index <= end ? JSON.getAttribute(item, attribute) || 0 : 0);
               });
             }
             return total;
@@ -1025,7 +1055,7 @@ const nothing = {
           value: (array, attribute, {begin = 0, end = array.length} = {}) => {
             let valArray = [];
             array.forEach((item, index) => {
-              if (index >= begin && index < end) {
+              if (index >= begin && index <= end) {
                 let val = Number.isInteger(attribute) ? item[attribute] : JSON.getAttribute(item, attribute);
                 valArray.push(val);
               }
@@ -1078,7 +1108,7 @@ const nothing = {
           begin = nothing.ifNull(begin, 0);
           end = nothing.ifNull(end, this.length);
           for (let i = 0; i < this.length; i++) {
-            if (i >= begin && i < end && typeof this[i] === 'object' && !(this[i] instanceof Date)) {
+            if (i >= begin && i <= end && typeof this[i] === 'object' && !(this[i] instanceof Date)) {
               this[i][attribute] = value;
             }
           }
@@ -1101,7 +1131,7 @@ const nothing = {
           value: (array, attribute, {begin = 0, end = array.length} = {}) => {
             let deleteAttributes = Array.isArray(attribute) ? attribute : [attribute];
             array.forEach((item, index) => {
-              if (index >= begin && index < end && typeof item === 'object' && !(item instanceof Date)) {
+              if (index >= begin && index <= end && typeof item === 'object' && !(item instanceof Date)) {
                 deleteAttributes.forEach(attr => delete item[attr]);
               }
             })
@@ -1138,7 +1168,7 @@ const nothing = {
         Object.defineProperty(Array, 'setAttributeToAttribute', {
           value: (array, sourceAttribute, targetAttribute, {begin = 0, end = array.length} = {}) => {
             array.forEach((item, index) => {
-              if (index >= begin && index < end && typeof item === 'object' && !(item instanceof Date)) {
+              if (index >= begin && index <= end && typeof item === 'object' && !(item instanceof Date)) {
                 JSON.setAttribute(item, targetAttribute, JSON.getAttribute(item, sourceAttribute))
               }
             })

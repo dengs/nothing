@@ -1,9 +1,9 @@
-# nothing.js 
+# Nothing.JS 
 一套简单易用的常用函数&系统对象扩展库
 <br>
 ![avatar](/logo.jpeg ':size=480')
 ## 概述
-> varsion：`v1.1.4`
+> varsion：`v1.1.5`
 <br>author：`cbtak` <cbtak@hotmail.com>
 <br>
  nothing.js 来源于项目开发过程积累常用到的一些工具函数，筛选通用性比较好的整理成库，采用`CommonJS`规范、`ES6`重构。本库不依赖于第三方库，可直接在node服务端及前端环境使用。
@@ -37,7 +37,7 @@ yarn add @cbtak/nothing
 3 | [isBlank](/?id=_13-isblankval) | 检验传入值是否为空字符串
 4 | [isNotBlank](/?id=_14-isnotblankval) | 检验传入值是否不为空字符串
 5 | [ifNull](/?id=_15-ifnull-val-val1-val2) | 空值处理(类oracle 的 nvl2)
-6 | [deepCopy](/?id=_16-deepcopysource-ignorefunction) | 深拷贝
+6 | [deepCopy](/?id=_16-deepcopysource) | 深拷贝
 7 | [ternary](/?id=_17-ternaryexpression-result1-result2) | 三元函数
 8 | [caseValue](/?id=_18-casevalueargs) | 匹配函数(类oracle 的 decode)
 9 | [buildTree](/?id=_19-buildtreetreedataarray-options) | 构建树
@@ -45,13 +45,15 @@ yarn add @cbtak/nothing
 11 | [numberFormat](/?id=_111-numberformatnum-options) | 数值格式化
 12 | [dateFormat](/?id=_112-dateformatdate-format) | 日期格式化
 13 | [getParam](/?id=_113-geturlparamkey) | 获取地址栏参数
-14 | [hasOwnProperty](/?id=_114-hasownpropertyobject-property) | 检查对象是否具有指定属性
-15 | [defineGetter](/?id=_115-definegetter-object-getter-value) | 定义对象Getter
-16 | [defineSetter](/?id=_116-definesetter-object-setter-value) | 定义对象Setter
-17 | [validateNumber](/?id=_117-validatenumberval) | 数值型验证
-18 | [validateMobile](/?id=_118-validatemobilemobile) | 验证手机号码
-19 | [validateIDCard](/?id=_119-validateidcardidcard) | 验证身份证
-20 | [validateEmail](/?id=_120-validateemailemail) | 验证邮箱
+14 | [getOwnProperty](/?id=_114-getownpropertyobject-property) | 获取对象指定属性
+15 | [hasOwnProperty](/?id=_115-hasownpropertyobject-property) | 检查对象是否具有指定属性
+16 | [isPrototype](/?id=_116-isprototypeobject-property) | 检查对象指定属性是否为原型属性
+17 | [defineGetter](/?id=_117-definegetter-object-getter-value) | 定义对象Getter
+18 | [defineSetter](/?id=_118-definesetter-object-setter-value) | 定义对象Setter
+19 | [validateNumber](/?id=_119-validatenumberval) | 数值型验证
+20 | [validateMobile](/?id=_120-validatemobilemobile) | 验证手机号码
+21 | [validateIDCard](/?id=_121-validateidcardidcard) | 验证身份证
+22 | [validateEmail](/?id=_122-validateemailemail) | 验证邮箱
 
 #### 1.1. isNull(val)
 **参数说明：** `val` *要校验的值*
@@ -123,18 +125,16 @@ nothing.ifNull(var, var1);          // 结果为：返回var
 ```
 
 
-#### 1.6. deepCopy(source, ignoreFunction)
+#### 1.6. deepCopy(source)
 **参数说明：** `source` *要拷贝的对象*
-<br>　　　　　 `ignoreFunction` *忽略函数属性(可选，默认 false)*
 <br>　**返回值：** `{*}` *拷贝后的对象*
 <br>**功能描述：**
-> 深拷贝<br>对传入对象进行深度拷贝<br>第二个参数传入`true`时，将忽略函数类型的属性
+> 深拷贝<br>对传入对象进行深度拷贝<br>
 
 **示例代码：**
 ```js
-let a = {name: 'this is a', showFun: function() {}};
+let a = {name: 'this is a', showFun: function() { return 'is a.'; }};
 let copy_a = nothing.deepCopy(a);         // 完整拷贝
-let copy_b = nothing.deepCopy(a, true);   // 第二个参数传入true，将忽略函数类型属性 showFun
 ```
 
 #### 1.7. ternary(expression, result1, result2)
@@ -261,7 +261,22 @@ nothing.dateFormat(new Date(), 'dd/MM/yyyy');             // 结果：10/06/2018
 let userid = nothing.getParam('userid');  // 结果：123
 ```
 
-#### 1.14. hasOwnProperty(object, property)
+#### 1.14. getOwnProperty(object, property)
+**参数说明：** `object` *要获取属性的对象*
+<br>　　　　　 `property` *要获取的属性(支持多级属性，以"."分隔)*
+<br>　**返回值：** `{*}`
+<br>**功能描述：** 
+> 获取对象指定属性<br>注：属性支持多级属性，以"."分隔
+
+**示例代码：**
+```js
+let user = {id: '0001', name: 'zhang san', school: {class: '302'}};
+nothing.getOwnProperty(user, 'id');           // 结果：0001
+nothing.getOwnProperty(user, 'name');         // 结果：zhang san
+nothing.getOwnProperty(user, 'school.class'); // 结果：302
+```
+
+#### 1.15. hasOwnProperty(object, property)
 **参数说明：** `object` *检查的对象*
 <br>　　　　　 `property` *检查的属性(支持多级属性，以"."分隔)*
 <br>　**返回值：** `Boolean`
@@ -276,7 +291,23 @@ nothing.hasOwnProperty(user, 'age');    // 结果：false
 nothing.hasOwnProperty(user, 'school.class');    // 结果：true
 ```
 
-#### 1.15. defineGetter: (object, getter, value)
+#### 1.16. isPrototype(object, property)
+**参数说明：** `object` *检查的对象*
+<br>　　　　　 `property` *检查的属性(支持多级属性，以"."分隔)*
+<br>　**返回值：** `Boolean`
+<br>**功能描述：** 
+> 检查对象属性是否为原型属性/函数<br>注：检查的属性支持多级属性，以"."分隔
+
+**示例代码：**
+```js
+let user = {id: '0001', name: 'zhang san', school: {class: '302'}};
+nothing.isPrototype(user, 'name');   // 结果：false
+nothing.isPrototype(user, 'age');    // 结果：false
+nothing.isPrototype(user, 'school.class');    // 结果：false
+nothing.isPrototype(user, 'toString');        // 结果：true
+```
+
+#### 1.17. defineGetter: (object, getter, value)
 **参数说明：** `object` *源对象*
 <br>　　　　　 `getter` *要定义的getter名称/或要定义getter属性集合*
 <br>　　　　　 `value` *getter的返回值*
@@ -305,9 +336,9 @@ console.log(user.preYearAge);   // 输出：19
 console.log(user.nextYearAge);  // 输出：21
 ```
 
-#### 1.16. defineSetter: (object, setter, value)
+#### 1.18. defineSetter: (object, setter, value)
 
-#### 1.17. validateNumber(val)
+#### 1.19. validateNumber(val)
 **参数说明：** `val` *要验证的参数*
 <br>　**返回值：** `Boolean`
 <br>**功能描述：** 
@@ -320,7 +351,7 @@ nothing.validateNumber('12.22.32');   // 结果：false
 nothing.validateNumber('ab32');       // 结果：false
 ```
 
-#### 1.18. validateMobile(mobile)
+#### 1.20. validateMobile(mobile)
 **参数说明：** `mobile` *要验证的手机号*
 <br>　**返回值：** `Boolean`
 <br>**功能描述：** 
@@ -332,7 +363,7 @@ nothing.validateMobile(13500012222);    // 结果：true
 nothing.validateMobile(24563325633);    // 结果：false
 ```
 
-#### 1.19. validateIDCard(idCard)
+#### 1.21. validateIDCard(idCard)
 **参数说明：** `idCard` *要验证的身份证号码*
 <br>　**返回值：** `Boolean`
 <br>**功能描述：** 
@@ -344,7 +375,7 @@ nothing.validateIDCard('43048820100102445X'); // 结果：true
 nothing.validateIDCard('1234567890');         // 结果：false
 ```
 
-#### 1.20. validateEmail(email)
+#### 1.22. validateEmail(email)
 **参数说明：** `mail` *要验证的 email*
 <br>　**返回值：** `Boolean`
 <br>**功能描述：** 
@@ -361,37 +392,31 @@ nothing.validateEmail('wangyi@@');          // 结果：false
 #### 2.1. Object
 序号 | 函数名称 | 说明
 :--- | :--- | :---
-1 | [Object.clone](/?id=_211-objectclonesource-ignorefunction) | 对象克隆(深拷贝)
-2 | [Object.prototype.clone](/?id=_212-objectprototypecloneignorefunction) | 对象克隆(深拷贝)，基于对象实例克隆
+1 | [Object.clone](/?id=_211-objectclonesource) | 对象克隆(深拷贝)
+2 | [Object.prototype.clone](/?id=_212-objectprototypeclone) | 对象克隆(深拷贝)，基于对象实例克隆
 
-##### 2.1.1. Object.clone(source, ignoreFunction)
+##### 2.1.1. Object.clone(source)
 **参数说明：** `source` *要克隆的对象*
-<br>　　　　　 `ignoreFunction` *忽略函数属性(可选，默认 false)*
 <br>　**返回值：** `{*}` *克隆后的新对象*
 <br>**功能描述：** 
-> 对象克隆(深拷贝)<br>第二个参数传入`true`时，将忽略函数类型的属性
+> 对象克隆(深拷贝)
 
 **示例代码：**
 ```js
-let user = {id: '0001', name: 'wangxiaoming', fun: () => {}};
-let newUser1 = Object.clone(user);
-let newUser2 = Object.clone(user, true); // 忽略函数属性
+let user = {id: '0001', name: 'wangxiaoming', showFun: () => { return this.name; }};
+let newUser1 = Object.clone(user);        // 完整拷贝
 ```
 
-##### 2.1.2. Object.prototype.clone(ignoreFunction)
-**参数说明：** `ignoreFunction` *忽略函数属性(可选，默认 false)*
+##### 2.1.2. Object.prototype.clone()
+**参数说明：** `无` 
 <br>　**返回值：** `{*}` *克隆后的新对象*
 <br>**功能描述：** 
-> 对象克隆(深拷贝)，基于对象实例克隆<br>第二个参数传入`true`时，将忽略函数类型的属性<br>派生于Object的对象实例都继承此方法(如：JSON、String、Array...等对象实例)
+> 对象克隆(深拷贝)，基于对象实例克隆<<br>派生于Object的对象实例都继承此方法(如：JSON、String、Array...等对象实例)
 
 **示例代码：**
 ```js
-let user = {id: '0001', name: 'wangxiaoming', fun: () => {}};
-let newUser1 = user.clone();
-let newUser2 = user.clone(true);            // 忽略函数属性
-let userArray = [user, newUser];
-let newUserArray1 = userArray.clone();
-let newUserArray2 = userArray.clone(true);  // 忽略函数属性
+let user = {id: '0001', name: 'wangxiaoming', showFun: () => { return this.name; }};
+let newUser1 = user.clone();        // 完整拷贝
 ```
 
 !> 注：`微信小程序` 环境不适用，暂无法实现对Object对象的原型扩展，请直接使用 `nothing.clone(object)` 或 `Object.clone(object)` 代替
@@ -406,8 +431,8 @@ let newUserArray2 = userArray.clone(true);  // 忽略函数属性
 5 | [String.toByte](/?id=_225-stringtobytestr) | String对象扩展：字符串转 Byte 数组
 6 | [String.prototype.toByte](/?id=_226-stringprototypetobyte) | String对象原型扩展：字符串转 Byte 数组
 7 | [String.fromByte](/?id=_227-stringfrombytebytes) | String对象扩展：Byte 数组转字符串
-7 | [String.from](/?id=_228-stringfromobject-format) | String对象扩展：将对象转换为字符串
-7 | [String.isString](/?id=_229-stringisstringobject) | String对象扩展：校验对象是否为字符串
+8 | [String.from](/?id=_228-stringfromobject-format) | String对象扩展：将对象转换为字符串
+9 | [String.isString](/?id=_229-stringisstringobject) | String对象扩展：校验对象是否为字符串
 
 ##### 2.2.1. String.replaceAll(source, substr, replacement)
 **参数说明：** `source` *执行替换操作的字符串，*
@@ -636,6 +661,19 @@ Number(10.2345).toFixed2(2, -1);  // 结果：10.23
 :--- | :--- | :---
 1 | [JSON.new](/?id=_261-jsonnewjson-args) | JSON对象扩展：传入JSON对象，创建新JSON对象
 2 | [JSON.prototype.new](/?id=_262-jsonprototypenewargs) | JSON对象原型扩展：基于对象实例本身创建新JSON对象
+3 | [JSON.toFormSerializeArray](/?id=_263-jsontoformserializearrayjson) | JSON对象扩展：JSON转表单序列化数组
+4 | [JSON.prototype.toFormSerializeArray](/?id=_264-jsonprototypetoformserializearray) | JSON对象原型扩展：基于对象实例本身创建新JSON对象
+5 | [JSON.formSerializeArray](/?id=_265-jsonformserializearrayformserializearray) | JSON对象扩展：表单序列化数组形式转JSON对象
+6 | [JSON.keys](/?id=_266-jsonkeysjson) | JSON对象扩展：获取JSON对象的所有key(数组形式)
+7 | [JSON.prototype.keys](/?id=_267-jsonprototypekeys) | JSON对象原型扩展：获取JSON对象的所有key(数组形式)
+8 | [JSON.clear](/?id=_268-jsonclearjson) | JSON对象扩展：清空JSON对象(移除所有属性)
+9 | [JSON.prototype.clear](/?id=_269-jsonprototypeclear) | JSON对象原型扩展：清空JSON对象(移除所有属性)
+10 | [JSON.remove](/?id=_2610-jsonremovejson-keys) | JSON对象扩展：移除JSON对象指定属性
+11 | [JSON.prototype.remove](/?id=_2611-jsonprototyperemovekeys) | JSON对象原型扩展：移除JSON对象指定属性
+12 | [JSON.getAttribute](/?id=_2612-jsongetattributejson-attribute) | JSON对象扩展：获取JSON对象指定属性值
+13 | [JSON.prototype.getAttribute](/?id=_2613-jsonprototypegetattributeattribute) | JSON对象原型扩展：获取JSON对象指定属性值
+14 | [JSON.setAttribute](/?id=_2614-jsonsetattributejson-attribute-value) | JSON对象扩展：设置JSON对象指定属性值
+15 | [JSON.prototype.setAttribute](/?id=_2615-jsonprototypesetattributeattribute-value) | JSON对象原型扩展：设置JSON对象指定属性值
 
 ##### 2.6.1. JSON.new(json, ...args)
 **参数说明：** `json` *源对象，* `args` *动态指定属性集*
@@ -671,13 +709,818 @@ let simpPsn = psn.new('id', 'name', 'corp.id', 'test.test1');
 
 !> 注：`Node.js` 后端环境不适用，暂无法实现后端环境对JSON对象的原型扩展，请使用 `JSON.new(json, ...args)` 代替
 
+##### 2.6.3. JSON.toFormSerializeArray(json)
+**参数说明：** `json` *要转换的对象*
+<br>　**返回值：** `Array` *表单序列化数组形式*
+<br>**功能描述：**
+> JSON转表单序列化数组<br>将传入的JSON对象转换为表单序列化数组形式<br>
+
+**示例代码：**
+```js
+let json = {name: 'zhang san', dept: {id: 'dept1', name: '信息部'}, hobby: ['篮球', '唱歌', '爬山', '摄影']};
+let formArray = JSON.toFormSerializeArray(json);
+```
+
+##### 2.6.4. JSON.prototype.toFormSerializeArray()
+**参数说明：** `无`
+<br>　**返回值：** `Array` *表单序列化数组形式*
+<br>**功能描述：**
+> JSON转表单序列化数组<br>将JSON对象自身转换为表单序列化数组形式<br>
+
+**示例代码：**
+```js
+let json = {name: 'zhang san', dept: {id: 'dept1', name: '信息部'}, hobby: ['篮球', '唱歌', '爬山', '摄影']};
+let formArray = json.toFormSerializeArray();
+```
+
+##### 2.6.5. JSON.formSerializeArray(formSerializeArray)
+**参数说明：** `formSerializeArray` *表单序列化数组形式*
+<br>　**返回值：** `{*}` *转化后的JSON对象*
+<br>**功能描述：**
+> 表单序列化数组形式转JSON对象<br>将传入的表单序列化数组形式转换为JSON对象形式<br>
+
+**示例代码：**
+```js
+```
+
+##### 2.6.6. JSON.keys(json)
+**参数说明：** `json` *json对象*
+<br>　**返回值：** `{*}` *json对象的所有key(数组形式)*
+<br>**功能描述：**
+> 获取JSON对象的所有key(数组形式)<br>
+
+**示例代码：**
+```js
+let json = {name: 'zhang san', dept: {id: 'dept1', name: '信息部'}, hobby: ['篮球', '唱歌', '爬山', '摄影']};
+let jsonKeys = JSON.keys(json);
+// 结果：[ 'name', 'dept', 'hobby' ]
+```
+
+##### 2.6.7. JSON.prototype.keys()
+**参数说明：** `无`
+<br>　**返回值：** `{*}` *json对象的所有key(数组形式)*
+<br>**功能描述：**
+> 获取JSON对象自身的所有key(数组形式)<br>
+
+**示例代码：**
+```js
+let json = {name: 'zhang san', dept: {id: 'dept1', name: '信息部'}, hobby: ['篮球', '唱歌', '爬山', '摄影']};
+let jsonKeys = json.keys();
+// 结果：[ 'name', 'dept', 'hobby' ]
+```
+
+##### 2.6.8. JSON.clear(json)
+**参数说明：** `json` *json对象*
+<br>　**返回值：** `{*}`
+<br>**功能描述：**
+> 清空传入的JSON对象的所有属性<br>
+
+**示例代码：**
+```js
+let json = {name: 'zhang san', dept: {id: 'dept1', name: '信息部'}, hobby: ['篮球', '唱歌', '爬山', '摄影']};
+json = JSON.clear(json);
+// 结果：json = {}
+```
+
+##### 2.6.9. JSON.prototype.clear()
+**参数说明：** `无`
+<br>　**返回值：** `{*}`
+<br>**功能描述：**
+> 清空JSON对象本身的所有属性<br>
+
+**示例代码：**
+```js
+let json = {name: 'zhang san', dept: {id: 'dept1', name: '信息部'}, hobby: ['篮球', '唱歌', '爬山', '摄影']};
+json = json.clear();
+// 结果：json = {}
+```
+
+##### 2.6.10. JSON.remove(json, ...keys)
+**参数说明：** `json` *json对象*
+<br>　　　　　 `keys` *动态参数(key集合)*
+<br>　**返回值：** `{*}`
+<br>**功能描述：**
+> 移除传入的JSON对象的指定属性(可批量指定，支持多级属性)<br>
+
+**示例代码：**
+```js
+let json = {name: 'zhang san', dept: {id: 'dept1', name: '信息部'}, hobby: ['篮球', '唱歌', '爬山', '摄影']};
+json = JSON.remove(json, 'dept.name', 'hobby');
+// 结果：json = {name: 'zhang san', dept: {id: 'dept1'}}
+```
+
+##### 2.6.11. JSON.prototype.remove(...keys)
+**参数说明：** `keys` *动态参数(key集合)*
+<br>　**返回值：** `{*}`
+<br>**功能描述：**
+> 移除JSON对象本身的指定属性(可批量指定，支持多级属性)<br>
+
+**示例代码：**
+```js
+let json = {name: 'zhang san', dept: {id: 'dept1', name: '信息部'}, hobby: ['篮球', '唱歌', '爬山', '摄影']};
+json = json.remove('dept.name', 'hobby');
+// 结果：json = {name: 'zhang san', dept: {id: 'dept1'}}
+```
+
+##### 2.6.12. JSON.getAttribute(json, attribute)
+**参数说明：** `json` *json对象*
+<br>　　　　　 `attribute` *属性*
+<br>　**返回值：** `{*}` *属性值*
+<br>**功能描述：**
+> 获取传入的JSON对象的指定属性(支持多级属性)<br>
+
+**示例代码：**
+```js
+let json = {name: 'zhang san', dept: {id: 'dept1', name: '信息部'}};
+let dept = JSON.getAttribute(json, 'dept');           // 结果：{id: 'dept1', name: '信息部'}
+let deptName = JSON.getAttribute(json, 'dept.name');  // 结果：信息部
+```
+
+##### 2.6.13. JSON.prototype.getAttribute(attribute)
+**参数说明：** `attribute` *属性*
+<br>　**返回值：** `{*}` *属性值*
+<br>**功能描述：**
+> 获取JSON对象本身的指定属性(支持多级属性)<br>
+
+**示例代码：**
+```js
+let json = {name: 'zhang san', dept: {id: 'dept1', name: '信息部'}};
+let dept = json.getAttribute('dept');           // 结果：{id: 'dept1', name: '信息部'}
+let deptName = json.getAttribute('dept.name');  // 结果：信息部
+```
+
+##### 2.6.14. JSON.setAttribute(json, attribute, value)
+**参数说明：** `json` *json对象*
+<br>　　　　　 `attribute` *要设置的属性*
+<br>　　　　　 `value` *要设置的值*
+<br>　**返回值：** `{*}` *属性值*
+<br>**功能描述：**
+> 设置传入的JSON对象的指定属性值(支持多级属性)<br>
+
+**示例代码：**
+```js
+let json = {name: 'zhang san', dept: {id: 'dept1', name: '信息部'}};
+json = JSON.setAttribute(json, 'dept.name', '财务部');
+// 结果：{name: 'zhang san', dept: {id: 'dept1', name: '财务部'}}
+json = JSON.setAttribute(json, 'hobby', ['篮球', '唱歌', '爬山', '摄影']);
+// 结果：{name: 'zhang san', dept: {id: 'dept1', name: '信息部'}, hobby: ['篮球', '唱歌', '爬山', '摄影']}
+```
+
+##### 2.6.15. JSON.prototype.setAttribute(attribute, value)
+**参数说明：** `attribute` *要设置的属性*
+<br>　　　　　 `value` *要设置的值*
+<br>　**返回值：** `{*}` *属性值*
+<br>**功能描述：**
+> 设置JSON对象本身的指定属性值(支持多级属性)<br>
+
+**示例代码：**
+```js
+let json = {name: 'zhang san', dept: {id: 'dept1', name: '信息部'}};
+json = JSON.setAttribute('dept.name', '财务部');
+// 结果：{name: 'zhang san', dept: {id: 'dept1', name: '财务部'}}
+json = JSON.setAttribute('hobby', ['篮球', '唱歌', '爬山', '摄影']);
+// 结果：{name: 'zhang san', dept: {id: 'dept1', name: '信息部'}, hobby: ['篮球', '唱歌', '爬山', '摄影']}
+```
+
 #### 2.7. Array
+序号 | 函数名称 | 说明
+:--- | :--- | :---
+1 | [Array.isEmpty](/?id=_271-arrayisemptyarray) | Array对象扩展：数组是否为空
+2 | [Array.prototype.isEmpty](/?id=_272-arrayprototypeisempty) | Array对象原型扩展：数组是否为空
+3 | [Array.isNotEmpty](/?id=_273-arrayisnotemptyarray) | Array对象扩展：数据是否不为空
+4 | [Array.prototype.isNotEmpty](/?id=_274-arrayprototypeisnotempty) | Array对象原型扩展：数据是否不为空
+5 | [Array.contains](/?id=_275-arraycontainsarray-element) | Array对象扩展：数组中是否包含指定元素
+6 | [Array.prototype.contains](/?id=_276-arrayprototypecontainselement) | Array对象原型扩展：数组中是否包含指定元素
+7 | [Array.add](/?id=_277-arrayaddarray-element-index) | Array对象扩展：添加元素到数组中
+8 | [Array.prototype.add](/?id=_278-arrayprototypeaddelement-index) | Array对象原型扩展：添加元素到数组中
+9 | [Array.addAll](/?id=_279-arrayaddallarray-elements-index) | Array对象扩展：批量添加元素到数组中
+10 | [Array.prototype.addAll](/?id=_2710-arrayprototypeaddallelements-index) | Array对象原型扩展：批量添加元素到数组中
+11 | [Array.addFirst](/?id=_2711-arrayaddfirstarray-element) | Array对象扩展：添加元素到数组的第一个位置
+12 | [Array.prototype.addFirst](/?id=_2712-arrayprototypeaddfirstelement) | Array对象原型扩展：添加元素到数组的第一个位置
+13 | [Array.first](/?id=_2713-arrayfirstarray) | Array对象扩展：返回数组的第一个元素
+14 | [Array.prototype.first](/?id=_2714-arrayprototypefirst) | Array对象原型扩展：返回数组的第一个元素
+15 | [Array.last](/?id=_2715-arraylastarray) | Array对象扩展：返回数组的最后一个元素
+16 | [Array.prototype.last](/?id=_2716-arrayprototypelast) | Array对象原型扩展：返回数组的最后一个元素
+17 | [Array.remove](/?id=_2717-arrayremovearray-element) | Array对象扩展：从数组的移除指定元素
+18 | [Array.prototype.remove](/?id=_2718-arrayprototyperemoveelement) | Array对象原型扩展：从数组的移除指定元素
+19 | [Array.sum](/?id=_2719-arraysumarray-options) | Array对象扩展：汇总数组元素
+20 | [Array.prototype.sum](/?id=_2720-arrayprototypesumoptions) | Array对象原型扩展：汇总数组元素
+21 | [Array.sumAttribute](/?id=_2721-arraysumattributearray-attribute-options) | Array对象扩展：汇总数组元素指定属性
+22 | [Array.prototype.sumAttribute](/?id=_2722-arrayprototypesumattributeattribute-options) | Array对象原型扩展：汇总数组元素指定属性
+23 | [Array.getAttribute](/?id=_2723-arraygetattributearray-attribute-options) | Array对象扩展：批量获取对象指定属性值
+24 | [Array.prototype.getAttribute](/?id=_2724-arrayprototypegetattributeattribute-options) | Array对象原型扩展：批量获取对象指定属性值
+25 | [Array.setAttribute](/?id=_2725-arraysetattributearray-attribute-value-options) | Array对象扩展：批量设置数组元素指定属性值
+26 | [Array.prototype.setAttribute](/?id=_2726-arrayprototypesetattributeattribute-value-options) | Array对象原型扩展：批量设置数组元素指定属性值
+27 | [Array.deleteAttribute](/?id=_2727-arraydeleteattributearray-attribute-options) | Array对象扩展：批量删除数组元素指定属性
+28 | [Array.prototype.deleteAttribute](/?id=_2728-arrayprototypedeleteattributeattribute-options) | Array对象原型扩展：批量删除数组元素指定属性
+29 | [Array.setAttributeToAttribute](/?id=_2729-arraysetattributetoattributearray-sourceattribute-targetattribute-options) | Array对象扩展：批量设置数组元素本身属性到指定属性
+30 | [Array.prototype.setAttributeToAttribute](/?id=_2730-arrayprototypesetattributetoattributesourceattribute-targetattribute-options) | Array对象原型扩展：批量设置数组元素本身属性到指定属性
+31 | [Array.agg](/?id=_2731-arrayaggdata-groupby-options) | Array对象扩展：对数组进行分组聚合统计
+32 | [Array.prototype.agg](/?id=_2732-arrayprototypeagggroupby-options) | Array对象原型扩展：对数组进行分组聚合统计
+
+##### 2.7.1. Array.isEmpty(array)
+**参数说明：** `array` *数组*
+<br>　**返回值：** `Boolean` *数据是否为空*
+<br>**功能描述：**
+> 校验传入的数组对象是否为空(等于：[]、null、undefined)<br>
+
+**示例代码：**
+```js
+let arr1 = [], arr2 = [1, 2, 3], arr3;
+let result1 = Array.isEmpty(arr1);  // 结果：true
+let result2 = Array.isEmpty(arr2);  // 结果：false
+let result3 = Array.isEmpty(arr3);  // 结果：true
+```
+
+##### 2.7.2. Array.prototype.isEmpty()
+**参数说明：** `无`
+<br>　**返回值：** `Boolean` *数据是否为空*
+<br>**功能描述：**
+> 校验数组本身是否为空(等于：[]、null、undefined)<br>
+
+**示例代码：**
+```js
+let arr1 = [], arr2 = [1, 2, 3], arr3;
+let result1 = arr1.isEmpty();  // 结果：true
+let result2 = arr2.isEmpty();  // 结果：false
+let result3 = arr3.isEmpty();  // 结果：true
+```
+
+##### 2.7.3. Array.isNotEmpty(array)
+**参数说明：** `array` *数组*
+<br>　**返回值：** `Boolean` *数据是否不为空*
+<br>**功能描述：**
+> 校验传入的数组对象是否不为空(不等于：[]、null、undefined)<br>
+
+**示例代码：**
+```js
+let arr1 = [], arr2 = [1, 2, 3], arr3;
+let result1 = Array.isNotEmpty(arr1);  // 结果：false
+let result2 = Array.isNotEmpty(arr2);  // 结果：true
+let result3 = Array.isNotEmpty(arr3);  // 结果：false
+```
+
+##### 2.7.4. Array.prototype.isNotEmpty()
+**参数说明：** `无`
+<br>　**返回值：** `Boolean` *数据是否不为空*
+<br>**功能描述：**
+> 校验数组对象本身是否不为空(不等于：[]、null、undefined)<br>
+
+**示例代码：**
+```js
+let arr1 = [], arr2 = [1, 2, 3], arr3;
+let result1 = arr1.isNotEmpty();  // 结果：false
+let result2 = arr2.isNotEmpty();  // 结果：true
+let result3 = arr3.isNotEmpty();  // 结果：false
+```
+
+##### 2.7.5. Array.contains(array, element)
+**参数说明：** `array` *要校验的数组*
+<br>　　　　　 `element` *要校验的数组元素*
+<br>　**返回值：** `Boolean` *是否包含*
+<br>**功能描述：**
+> 检验传入的数组中是否包含指定元素<br>
+
+**示例代码：**
+```js
+let array = [1, 2, 3, 4, 8, 10];
+let result1 = Array.contains(array, 1);   // 结果：true
+let result2 = Array.contains(array, 5);   // 结果：false
+let result3 = Array.contains(array, 10);   // 结果：true
+```
+
+##### 2.7.6. Array.prototype.contains(element)
+**参数说明：** `element` *要校验的数组元素*
+<br>　**返回值：** `Boolean` *是否包含*
+<br>**功能描述：**
+> 检验数组本身是否包含指定元素<br>
+
+**示例代码：**
+```js
+let array = [1, 2, 3, 4, 8, 10];
+let result1 = array.contains(1);   // 结果：true
+let result2 = array.contains(5);   // 结果：false
+let result3 = array.contains(10);   // 结果：true
+```
+
+##### 2.7.7. Array.add(array, element, index)
+**参数说明：** `array` *数组*
+<br>　　　　　 `element` *要添加的元素*
+<br>　　　　　 `index` *添加的位置(可选)*
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 添加指定元素到传入的数组中(可指定位置[可选参数])<br>
+
+**示例代码：**
+```js
+let array = [1, 2, 3, 4, 8, 10];
+array = Array.add(array, 9);      // 结果：[ 1, 2, 3, 4, 8, 10, 9 ]
+array = Array.add(array, 5, 4);   // 结果：[ 1, 2, 3, 4, 5, 8, 10, 9 ]
+```
+
+##### 2.7.8. Array.prototype.add(element, index)
+**参数说明：** `element` *要添加的元素*
+<br>　　　　　 `index` *添加的位置(可选)*
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 添加指定元素到数组中(可指定位置[可选参数])<br>
+
+**示例代码：**
+```js
+let array = [1, 2, 3, 4, 8, 10];
+array = array.add(9);      // 结果：[ 1, 2, 3, 4, 8, 10, 9 ]
+array = array.add(5, 4);   // 结果：[ 1, 2, 3, 4, 5, 8, 10, 9 ]
+```
+
+##### 2.7.9. Array.addAll(array, elements, index)
+**参数说明：** `array` *数组*
+<br>　　　　　 `elements` *要添加的元素集合*
+<br>　　　　　 `index` *添加的位置(可选)*
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 批量添加元素到传入的数组中(可指定位置[可选参数])<br>
+
+**示例代码：**
+```js
+let array = [1, 2, 3, 4, 8, 10];
+let elements = [5, 6, 7];
+array = Array.addAll(array, elements, 4);      // 结果：[ 1, 2, 3, 4, 5, 6, 7, 8, 10 ]
+```
+
+##### 2.7.10. Array.prototype.addAll(elements, index)
+**参数说明：** `elements` *要添加的元素集合*
+<br>　　　　　 `index` *添加的位置(可选)*
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 批量添加元素到数组中(可指定位置[可选参数])<br>
+
+**示例代码：**
+```js
+let array = [1, 2, 3, 4, 8, 10];
+let elements = [5, 6, 7];
+array = array.addAll(elements, 4);      // 结果：[ 1, 2, 3, 4, 5, 6, 7, 8, 10 ]
+```
+
+##### 2.7.11. Array.addFirst(array, element)
+**参数说明：** `array` *数组*
+<br>　　　　　 `element` *要添加的元素*
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 添加指定元素到传入的数组的第一个位置<br>
+
+**示例代码：**
+```js
+let array = [1, 2, 3, 4, 8, 10];
+array = Array.addFirst(array, 9);      // 结果：[ 9, 1, 2, 3, 4, 8, 10 ]
+```
+
+##### 2.7.12. Array.prototype.addFirst(element)
+**参数说明：** `element` *要添加的元素*
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 添加指定元素到数组的第一个位置<br>
+
+**示例代码：**
+```js
+let array = [1, 2, 3, 4, 8, 10];
+array = array.addFirst( 9);      // 结果：[ 9, 1, 2, 3, 4, 8, 10 ]
+```
+
+##### 2.7.13. Array.first(array)
+**参数说明：** `array` *数组*
+<br>　**返回值：** `{*}` *数组的第一个元素*
+<br>**功能描述：**
+> 返回传入的数组对象的第一个元素<br>
+
+**示例代码：**
+```js
+let array = [1, 2, 3, 4, 5];
+let first = Array.first(array); // 结果: 1
+```
+
+##### 2.7.14. Array.prototype.first()
+**参数说明：** `无`
+<br>　**返回值：** `{*}` *数组的第一个元素*
+<br>**功能描述：**
+> 返回数组对象的第一个元素<br>
+
+**示例代码：**
+```js
+let array = [1, 2, 3, 4, 5];
+let first = array.first(); // 结果: 1
+```
+
+##### 2.7.15. Array.last(array)
+**参数说明：** `array` *数组*
+<br>　**返回值：** `{*}` *数组的最后一个元素*
+<br>**功能描述：**
+> 返回传入的数组对象的最后一个元素<br>
+
+**示例代码：**
+```js
+let array = [1, 2, 3, 4, 5];
+let first = Array.last(array); // 结果: 5
+```
+
+##### 2.7.16. Array.prototype.last()
+**参数说明：** `无`
+<br>　**返回值：** `{*}` *数组的最后一个元素*
+<br>**功能描述：**
+> 返回数组对象的最后一个元素<br>
+
+**示例代码：**
+```js
+let array = [1, 2, 3, 4, 5];
+let first = array.last(); // 结果: 5
+```
+
+##### 2.7.17. Array.remove(array, element)
+**参数说明：** `array` *数组*
+<br>　　　　　 `element` *要移除的元素*
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 从数组的移除指定元素<br>
+
+**示例代码：**
+```js
+let array = [1, 2, 3, 4, 8, 10];
+array = Array.remove(array, 2);      // 结果：[1, 3, 4, 8, 10]
+```
+
+##### 2.7.18. Array.prototype.remove(element)
+**参数说明：** `element` *要移除的元素*
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 从数组的移除指定元素<br>
+
+**示例代码：**
+```js
+let array = [1, 2, 3, 4, 8, 10];
+array = array.remove(2);      // 结果：[1, 3, 4, 8, 10]
+```
+
+##### 2.7.19. Array.sum(array, options)
+**参数说明：** `array` *数组*
+<br>　　　　　 `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`begin` *开始位置*
+<br>　　　　　　　`end` *'结束位置*
+<br>　　　　　　}
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 汇总传入的数组元素（数值型有效），可指定元素的起、止位置<br>
+
+**示例代码：**
+```js
+let array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+let sum1 = Array.sum(array);                      // 结果：55
+let sum2 = Array.sum(array, {begin: 2, end: 5});  // 结果：18
+```
+
+##### 2.7.20. Array.prototype.sum(options)
+**参数说明：** `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`begin` *开始位置*
+<br>　　　　　　　`end` *'结束位置*
+<br>　　　　　　}
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 汇总数组元素（数值型有效），可指定元素的起、止位置<br>
+
+**示例代码：**
+```js
+let array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+let sum1 = array.sum();                   // 结果：55
+let sum2 = array.sum({begin: 2, end: 5}); // 结果：18
+```
+
+##### 2.7.21. Array.sumAttribute(array, attribute, options)
+**参数说明：** `array` *数组*
+<br>　　　　　 `attribute` *要汇总属性(支持多级属性)*
+<br>　　　　　 `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`begin` *开始位置*
+<br>　　　　　　　`end` *'结束位置*
+<br>　　　　　　}
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 汇总数组元素对象指定属性(支持多级属性)，可指定元素的起、止位置<br>
+
+**示例代码：**
+```js
+let examScores = [
+  {name: 'wang', en: {score: 6}, ch: {score: 8}, total: 14},
+  {name: 'li', en: {score: 8}, ch: {score: 9}, total: 17},
+  {name: 'liu', en: {score: 10}, ch: {score: 6}, total: 16},
+  {name: 'hao', en: {score: 9}, ch: {score: 7}, total: 16},
+  {name: 'deng', en: {score: 7}, ch: {score: 5}, total: 12},
+  {name: 'zhang', en: {score: 2}, ch: {score: 4}, total: 6}
+];
+let sum1 = Array.sumAttribute(examScores, 'total');                         // 结果：81
+let sum2 = Array.sumAttribute(examScores, 'en.score');                      // 结果：42
+let sum3 = Array.sumAttribute(examScores, 'ch.score', {begin: 2, end: 5});  // 结果：22
+```
+
+##### 2.7.22. Array.prototype.sumAttribute(attribute, options)
+**参数说明：** `array` *数组*
+<br>　　　　　 `attribute` *要汇总属性(支持多级属性)*
+<br>　　　　　 `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`begin` *开始位置*
+<br>　　　　　　　`end` *'结束位置*
+<br>　　　　　　}
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 汇总数组元素对象指定属性(支持多级属性)，可指定元素的起、止位置<br>
+
+**示例代码：**
+```js
+let examScores = [
+  {name: 'wang', en: {score: 6}, ch: {score: 8}, total: 14},
+  {name: 'li', en: {score: 8}, ch: {score: 9}, total: 17},
+  {name: 'liu', en: {score: 10}, ch: {score: 6}, total: 16},
+  {name: 'hao', en: {score: 9}, ch: {score: 7}, total: 16},
+  {name: 'deng', en: {score: 7}, ch: {score: 5}, total: 12},
+  {name: 'zhang', en: {score: 2}, ch: {score: 4}, total: 6}
+];
+let sum1 = examScores.sumAttribute('total');                         // 结果：81
+let sum2 = examScores.sumAttribute('en.score');                      // 结果：42
+let sum3 = examScores.sumAttribute('ch.score', {begin: 2, end: 5});  // 结果：22
+```
+
+##### 2.7.23. Array.getAttribute(array, attribute, options)
+**参数说明：** `array` *数组*
+<br>　　　　　 `attribute` *要获取值的属性(支持多级属性)*
+<br>　　　　　 `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`begin` *开始位置*
+<br>　　　　　　　`end` *'结束位置*
+<br>　　　　　　}
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 批量获取数组元素对象指定属性的值(支持多级属性)，可指定元素的起、止位置<br>
+
+**示例代码：**
+```js
+let users = [{name: 'wang', age: 18, sex: '男'}, {name: 'li', age: 22, sex: '男'}, {name: 'liu', age: 30, sex: '女'}];
+let result1 = Array.getAttribute(users, 'age');               // 结果：[ 18, 22, 30 ]
+let result2 = Array.getAttribute(users, 'sex', {begin: 1});   // 结果：[ '男', '女' ]
+```
+
+##### 2.7.24. Array.prototype.getAttribute(attribute, options)
+**参数说明：** `attribute` *要获取值的属性(支持多级属性)*
+<br>　　　　　 `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`begin` *开始位置*
+<br>　　　　　　　`end` *'结束位置*
+<br>　　　　　　}
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 批量获取数组元素对象指定属性的值(支持多级属性)，可指定元素的起、止位置<br>
+
+**示例代码：**
+```js
+let users = [{name: 'wang', age: 18, sex: '男'}, {name: 'li', age: 22, sex: '男'}, {name: 'liu', age: 30, sex: '女'}];
+let result1 = users.getAttribute('age');               // 结果：[ 18, 22, 30 ]
+let result2 = users.getAttribute('sex', {begin: 1});   // 结果：[ '男', '女' ]
+```
+
+##### 2.7.25. Array.setAttribute(array, attribute, value, options)
+**参数说明：** `array` *数组*
+<br>　　　　　 `attribute` *要设置值的属性(支持多级属性)*
+<br>　　　　　 `value` *要设置的值*
+<br>　　　　　 `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`begin` *开始位置*
+<br>　　　　　　　`end` *'结束位置*
+<br>　　　　　　}
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 批量设置数组元素对象指定属性的值(支持多级属性)，可指定元素的起、止位置<br>
+
+**示例代码：**
+```js
+let users = [{name: 'wang'}, {name: 'li'}, {name: 'liu'}];
+users = Array.setAttribute(users, 'age', 20);
+// 结果：users = [ { name: 'wang', age: 20 }, { name: 'li', age: 20 }, { name: 'liu', age: 20 } ]
+users = Array.setAttribute(users, 'sex', '男', {begin: 0, end: 1});
+// 结果：users = [ { name: 'wang', age: 20, sex: '男' }, { name: 'li', age: 20, sex: '男' }, { name: 'liu', age: 20 } ]
+```
+
+##### 2.7.26. Array.prototype.setAttribute(attribute, value, options)
+**参数说明：** `attribute` *要设置值的属性(支持多级属性)*
+<br>　　　　　 `value` *要设置的值*
+<br>　　　　　 `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`begin` *开始位置*
+<br>　　　　　　　`end` *'结束位置*
+<br>　　　　　　}
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 批量设置数组元素对象指定属性的值(支持多级属性)，可指定元素的起、止位置<br>
+
+**示例代码：**
+```js
+let users = [{name: 'wang'}, {name: 'li'}, {name: 'liu'}];
+users = users.setAttribute('age', 20);
+// 结果：users = [ { name: 'wang', age: 20 }, { name: 'li', age: 20 }, { name: 'liu', age: 20 } ]
+users = users.setAttribute('sex', '男', {begin: 0, end: 1});
+// 结果：users = [ { name: 'wang', age: 20, sex: '男' }, { name: 'li', age: 20, sex: '男' }, { name: 'liu', age: 20 } ]
+```
+
+##### 2.7.27. Array.deleteAttribute(array, attribute, options)
+**参数说明：** `array` *数组*
+<br>　　　　　 `attribute` *要删除的属性(支持多个以数组形式)*
+<br>　　　　　 `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`begin` *开始位置*
+<br>　　　　　　　`end` *'结束位置*
+<br>　　　　　　}
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 批量删除数组元素对象指定属性的值(支持多个以数组形式)，可指定元素的起、止位置<br>
+
+**示例代码：**
+```js
+let users = [{name: 'wang', age: 18, sex: '男'}, {name: 'li', age: 22, sex: '男'}, {name: 'liu', age: 30, sex: '女'}];
+users = Array.getAttribute(users, 'sex', {begin: 1});   // 结果：[ '男', '女' ]
+// 结果：[{name: 'wang', age: 18, sex: '男'}, {name: 'li', age: 22 }, {name: 'liu', age: 30}]
+users = Array.deleteAttribute(users, ['age', 'sex']);
+// 结果：[{name: 'wang' }, {name: 'li'}, {name: 'liu'}]
+```
+
+##### 2.7.28. Array.prototype.deleteAttribute(attribute, options)
+**参数说明：** `attribute` *要删除的属性(支持多个以数组形式)*
+<br>　　　　　 `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`begin` *开始位置*
+<br>　　　　　　　`end` *'结束位置*
+<br>　　　　　　}
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 批量删除数组元素对象指定属性的值(支持多个以数组形式)，可指定元素的起、止位置<br>
+
+**示例代码：**
+```js
+let users = [{name: 'wang', age: 18, sex: '男'}, {name: 'li', age: 22, sex: '男'}, {name: 'liu', age: 30, sex: '女'}];
+users = users.getAttribute('sex', {begin: 1});   // 结果：[ '男', '女' ]
+// 结果：[{name: 'wang', age: 18, sex: '男'}, {name: 'li', age: 22 }, {name: 'liu', age: 30}]
+users = users.deleteAttribute(['age', 'sex']);
+// 结果：[{name: 'wang' }, {name: 'li'}, {name: 'liu'}]
+```
+
+##### 2.7.29. Array.setAttributeToAttribute(array, sourceAttribute, targetAttribute, options)
+**参数说明：** `array` *数组*
+<br>　　　　　 `sourceAttribute` *源属性(支持多级属性)*
+<br>　　　　　 `targetAttribute` *目标属性(支持多级属性)*
+<br>　　　　　 `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`begin` *开始位置*
+<br>　　　　　　　`end` *'结束位置*
+<br>　　　　　　}
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 批量设置数组元素对象本身属性的值到指定属性(支持多级属性)，可指定元素的起、止位置<br>
+
+**示例代码：**
+```js
+let users = [{name: 'wang'}, {name: 'li'}, {name: 'liu'}];
+users = Array.setAttributeToAttribute(users, 'name', 'user_name', {begin: 1});
+// 结果：[{name: 'wang'}, {name: 'li', user_name: 'li'}, {name: 'liu', user_name: 'liu'}]
+```
+
+##### 2.7.30. Array.prototype.setAttributeToAttribute(sourceAttribute, targetAttribute, options)
+**参数说明：** `sourceAttribute` *源属性(支持多级属性)*
+<br>　　　　　 `targetAttribute` *目标属性(支持多级属性)*
+<br>　　　　　 `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`begin` *开始位置*
+<br>　　　　　　　`end` *'结束位置*
+<br>　　　　　　}
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 批量设置数组元素对象本身属性的值到指定属性(支持多级属性)，可指定元素的起、止位置<br>
+
+**示例代码：**
+```js
+let users = [{name: 'wang'}, {name: 'li'}, {name: 'liu'}];
+users = users.setAttributeToAttribute('name', 'user_name', {begin: 1});
+// 结果：[{name: 'wang'}, {name: 'li', user_name: 'li'}, {name: 'liu', user_name: 'liu'}]
+```
+
+##### 2.7.31. Array.agg(data, groupBy, options)
+**参数说明：** `data` *要聚合的数据(数组)*
+<br>　　　　　 `groupBy` *聚合分组属性(数组)*
+<br>　　　　　 `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`sum` *汇总合计的属性(数组)*
+<br>　　　　　　　`min` *取最小值的属性(数组)*
+<br>　　　　　　　`max` *取最大值的属性(数组)*
+<br>　　　　　　　`avg` *取平均值的属性(数组)*
+<br>　　　　　　　`count` *分组后的统计数量(设置别名，默认为：_count)*
+<br>　　　　　　}
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 对数组进行分组聚合统计，可进行合计、最小值、最大值、平均值和数量统计<br>
+
+**示例代码：**
+```js
+let saleData = [
+  {id: 'A001', grp: 'G01', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 80, num: 2, money: 160},
+  {id: 'A002', grp: 'G01', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 10, num: 20, money: 200},
+  {id: 'A003', grp: 'G01', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 100, num: 10, money: 1000},
+  {id: 'A004', grp: 'G02', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 101, num: 20, money: 2020},
+  {id: 'A005', grp: 'G02', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 102, num: 20, money: 2040},
+  {id: 'A006', grp: 'G03', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 103, num: 20, money: 2060},
+  {id: 'A007', grp: 'G03', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 104, num: 20, money: 2080},
+  {id: 'A008', grp: 'G03', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 200, num: 20, money: 4000},
+  {id: 'A009', grp: 'G03', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 100, num: 20, money: 2000},
+  {id: 'A010', grp: 'G04', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 100, num: 20, money: 2000}
+]
+let aggResult = Array.agg(saleData, ['grp', 'name', 'dept.id'], {max: ['price'], min: ['num'], sum: ['money']})
+/** 结果：
+aggResult = [
+  { grp: 'G01', name: 'name1', dept: { id: 'DEPT01' }, money: 1360, num: 2, price: 100, _count: 3 },
+  { grp: 'G02', name: 'name1', dept: { id: 'DEPT01' }, money: 4060, num: 20, price: 102, _count: 2 },
+  { grp: 'G03', name: 'name1', dept: { id: 'DEPT01' }, money: 10140, num: 20, price: 200, _count: 4 },
+  { grp: 'G04', name: 'name1', dept: { id: 'DEPT01' }, money: 2000, num: 20, price: 100, _count: 1 }
+]
+*/
+```
+
+##### 2.7.32. Array.prototype.agg(groupBy, options)
+**参数说明：** `groupBy` *聚合分组属性(数组)*
+<br>　　　　　 `options` *参数项(可选)，详细说明：*
+<br>　　　　　　{
+<br>　　　　　　　`sum` *汇总合计的属性(数组)*
+<br>　　　　　　　`min` *取最小值的属性(数组)*
+<br>　　　　　　　`max` *取最大值的属性(数组)*
+<br>　　　　　　　`avg` *取平均值的属性(数组)*
+<br>　　　　　　　`count` *分组后的统计数量(设置别名，默认为：_count)*
+<br>　　　　　　}
+<br>　**返回值：** `Array`
+<br>**功能描述：**
+> 对数组进行分组聚合统计，可进行合计、最小值、最大值、平均值和数量统计<br>
+
+**示例代码：**
+```js
+let saleData = [
+  {id: 'A001', grp: 'G01', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 80, num: 2, money: 160},
+  {id: 'A002', grp: 'G01', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 10, num: 20, money: 200},
+  {id: 'A003', grp: 'G01', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 100, num: 10, money: 1000},
+  {id: 'A004', grp: 'G02', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 101, num: 20, money: 2020},
+  {id: 'A005', grp: 'G02', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 102, num: 20, money: 2040},
+  {id: 'A006', grp: 'G03', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 103, num: 20, money: 2060},
+  {id: 'A007', grp: 'G03', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 104, num: 20, money: 2080},
+  {id: 'A008', grp: 'G03', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 200, num: 20, money: 4000},
+  {id: 'A009', grp: 'G03', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 100, num: 20, money: 2000},
+  {id: 'A010', grp: 'G04', name: 'name1', dept: {id: 'DEPT01', name: 'NAME_DEPT01'}, price: 100, num: 20, money: 2000}
+]
+let aggResult = saleData.agg(['grp', 'name', 'dept.id'], {max: ['price'], min: ['num'], sum: ['money']})
+/** 结果：
+aggResult = [
+  { grp: 'G01', name: 'name1', dept: { id: 'DEPT01' }, money: 1360, num: 2, price: 100, _count: 3 },
+  { grp: 'G02', name: 'name1', dept: { id: 'DEPT01' }, money: 4060, num: 20, price: 102, _count: 2 },
+  { grp: 'G03', name: 'name1', dept: { id: 'DEPT01' }, money: 10140, num: 20, price: 200, _count: 4 },
+  { grp: 'G04', name: 'name1', dept: { id: 'DEPT01' }, money: 2000, num: 20, price: 100, _count: 1 }
+]
+*/
+```
 
 #### 2.8. Storage
 
+##### 2.8.1. Storage.prototype.setJSON(key, value)
+**参数说明：** `key` *存储到Storage中唯一标识*
+<br>　　　　　 `value` *要存储的JSON数据对象*
+<br>　**返回值：** `无`
+<br>**功能描述：**
+> 扩展 Storage 对象实例：增加setJSON函数<br>
+
+**示例代码：**
+```js
+let users = [{name: 'wang'}, {name: 'li'}, {name: 'liu'}];
+localStorage.setJSON('USERS_KEY', users);
+```
+
+##### 2.8.2. Storage.prototype.getJSON(key)
+**参数说明：** `key` *存储到Storage中唯一标识*
+<br>　**返回值：** `无`
+<br>**功能描述：**
+> 扩展 Storage 对象实例：增加setJSON函数<br>
+
+**示例代码：**
+```js
+let users = [{name: 'wang'}, {name: 'li'}, {name: 'liu'}];
+// 存储到localStorage中
+localStorage.setJSON('USERS_KEY', users);
+// 从localStorage中获取
+users = localStorage.getJSON('USERS_KEY');
+
+```
+
 ---
 
-持续完善中...
+!> 截止【2019-07-09】初步完成 `nothing.js` 文档，后续持续更正、勘误、完善中...
 
 ---
 
