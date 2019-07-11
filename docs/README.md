@@ -3,7 +3,7 @@
 <br>
 ![avatar](/logo.jpeg ':size=480')
 ## 概述
-> varsion：`v1.1.5`
+> varsion：`v1.1.6`
 <br>author：`cbtak` <cbtak@hotmail.com>
 <br>
  nothing.js 来源于项目开发过程积累常用到的一些工具函数，筛选通用性比较好的整理成库，采用`CommonJS`规范、`ES6`重构。本库不依赖于第三方库，可直接在node服务端及前端环境使用。
@@ -645,16 +645,139 @@ Number(10.2345).toFixed2(2, -1);  // 结果：10.23
 6 | [Date.prototype.diff](/?id=_256-dateprototypediffdiffdate-interval) | Date对象原型扩展：日期差异计算
 
 ##### 2.5.1. Date.format(date, fmt)
+**参数说明：** `date` *日期*
+<br>　　　　　 `fmt` *格式表达式*
+<br>　**返回值：** `String` *格式化后字符串形式*
+<br>**功能描述：**
+> 扩展 Date 对象实例：按指定格式表达式格式化日期<br>
+
+**示例代码：**
+```js
+let date = new Date();
+let year = Date.format(date, 'yy');
+let fullYear = Date.format(date, 'yyyy');
+let strDate = Date.format(date, 'yyyy-MM-dd');
+let strTime = Date.format(date, 'yyyy-MM-dd HH:mm:ss');
+/**
+ * 结果：
+ * year = 19
+ * fullYear = 2019
+ * strDate = 2019-06-10
+ * strTime = 2019-06-10 10:55:22
+ */
+```
 
 ##### 2.5.2. Date.prototype.format(fmt)
+**参数说明：** `fmt` *格式表达式*
+<br>　**返回值：** `String` *格式化后字符串形式*
+<br>**功能描述：**
+> 扩展 Date 对象实例：按指定格式表达式格式化日期<br>
+
+**示例代码：**
+```js
+let date = new Date();
+let year = date.format('yy');
+let fullYear = date.format('yyyy');
+let strDate = date.format('yyyy-MM-dd');
+let strTime = date.format('yyyy-MM-dd HH:mm:ss');
+/**
+ * 结果：
+ * year = 19
+ * fullYear = 2019
+ * strDate = 2019-06-10
+ * strTime = 2019-06-10 10:55:22
+ */
+```
 
 ##### 2.5.3. Date.add(date, interval, number)
+**参数说明：** `date` *日期*
+<br>　　　　　 `interval` *计算日期间隔单位*
+<br>　　　　　 `number` *计算值(可传入负数)*
+<br>　**返回值：** `Date` *计算后的日期*
+<br>**功能描述：**
+> 扩展 Date 对象实例：日期计算-为日期增加指定间隔单位的值<br>
+
+**示例代码：**
+```js
+let date = new Date();
+date = Date.add(date, 'y', 1);  // 增加1年
+date = Date.add(date, 'q', 1);  // 增加1季度
+date = Date.add(date, 'm', 1);  // 增加1月
+date = Date.add(date, 'w', 1);  // 增加1星期
+date = Date.add(date, 'd', -1);  // 增加-1天(减少一天)
+date = Date.add(date, 'h', 1);  // 增加1小时
+date = Date.add(date, 'n', 1);  // 增加1分钟
+date = Date.add(date, 's', 30); // 增加30秒
+date = Date.add(date, 'ms', 1000 * 3 * 10);   // 增加(1000 * 3 * 10)毫秒
+```
 
 ##### 2.5.4. Date.prototype.add(interval, number)
+**参数说明：** `interval` *计算日期间隔单位*
+<br>　　　　　 `number` *计算值(可传入负数)*
+<br>　**返回值：** `Date` *计算后的日期*
+<br>**功能描述：**
+> 扩展 Date 对象实例：日期计算-为日期增加指定间隔单位的值<br>
+
+**示例代码：**
+```js
+let date = new Date();
+date = date.add('y', 1);  // 增加1年
+date = date.add('q', 1);  // 增加1季度
+date = date.add('m', 1);  // 增加1月
+date = date.add('w', 1);  // 增加1星期
+date = date.add('d', -1);  // 增加-1天(减少一天)
+date = date.add('h', 1);  // 增加1小时
+date = date.add('n', 1);  // 增加1分钟
+date = date.add('s', 30); // 增加30秒
+date = date.add('ms', 1000 * 3 * 10);   // 增加(1000 * 3 * 10)毫秒
+```
 
 ##### 2.5.5. Date.diff(diffDate1 , diffDate2, interval)
+**参数说明：** `diffDate1` *日期1*
+<br>　　　　　 `diffDate2` *日期2*
+<br>　　　　　 `interval` *计算日期间隔单位*
+<br>　**返回值：** `Number` *计算后差异值*
+<br>**功能描述：**
+> 扩展 Date 对象实例：日期计算-计算两个日期指定间隔单位的差异值<br>
+
+**示例代码：**
+```js
+let date1 = new Date('2018-05-01')
+let date2 = new Date('2019-05-01')
+let diff_year = Date.diff(date1, date2, 'y');   // 结果(年)：1
+let diff_month = Date.diff(date1, date2, 'm');  // 结果(月)：12
+let diff_day = Date.diff(date1, date2, 'd');    // 结果(天)：365
+
+let dateTime1 = new Date('2019-05-01 12:30:15')
+let dateTime2 = new Date('2019-05-01 16:30:15')
+let diff_hour = Date.diff(dateTime1, dateTime2, 'h');           // 结果(小时)：4
+let diff_minutes = Date.diff(dateTime1, dateTime2, 'n');        // 结果(分钟)：240
+let diff_seconds = Date.diff(dateTime1, dateTime2, 's');        // 结果(秒)：14400
+let diff_milliseconds = Date.diff(dateTime1, dateTime2, 'ms');  // 结果(毫秒)：14400000
+```
 
 ##### 2.5.6. Date.prototype.diff(diffDate, interval)
+**参数说明：** `diffDate` *要计算差异的日期*
+<br>　　　　　 `interval` *计算日期间隔单位*
+<br>　**返回值：** `Number` *计算后差异值*
+<br>**功能描述：**
+> 扩展 Date 对象实例：日期计算-计算两个日期指定间隔单位的差异值<br>
+
+**示例代码：**
+```js
+let date1 = new Date('2018-05-01')
+let date2 = new Date('2019-05-01')
+let diff_year = date1.diff(date2, 'y');   // 结果(年)：1
+let diff_month = date1.diff(date2, 'm');  // 结果(月)：12
+let diff_day = date1.diff(date2, 'd');    // 结果(天)：365
+
+let dateTime1 = new Date('2019-05-01 12:30:15')
+let dateTime2 = new Date('2019-05-01 16:30:15')
+let diff_hour = dateTime1.diff(dateTime2, 'h');           // 结果(小时)：4
+let diff_minutes = dateTime1.diff(dateTime2, 'n');        // 结果(分钟)：240
+let diff_seconds = dateTime1.diff(dateTime2, 's');        // 结果(秒)：14400
+let diff_milliseconds = dateTime1.diff(dateTime2, 'ms');  // 结果(毫秒)：14400000
+```
 
 #### 2.6. JSON
 序号 | 函数名称 | 说明
