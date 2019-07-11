@@ -261,7 +261,6 @@ const nothing = {
    * @param {*} value     getter的返回值
    */
   defineGetter: (object, getter, value) => {
-    console.warn(object, getter, value)
     let getters = Array.isArray(getter) ? getter : [{name: getter, value: value}]
     getters.forEach(item => object.__defineGetter__(item.name, () => item.value instanceof Function ? item.value.apply(object) : item.value))
   },
@@ -548,7 +547,7 @@ const nothing = {
               'h': 'Hours',
               'n': 'Minutes',
               's': 'Seconds',
-              'ms': 'MilliSeconds'
+              'ms': 'Milliseconds'
             };
             let n = {'q': 3, 'w': 7};
             interval = (interval || '').toLowerCase();
@@ -603,7 +602,7 @@ const nothing = {
          */
         Object.defineProperty(Date.prototype, 'diff', {
           value (diffDate, interval = 'd') {
-            return new Date.diff(this, diffDate, interval);
+            return Date.diff(this, diffDate, interval);
           }
         });
       }
