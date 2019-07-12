@@ -3,7 +3,7 @@
 <br>
 ![avatar](/logo.jpeg ':size=480')
 ## 概述
-> varsion：`v1.1.6`
+> varsion：`v1.1.7`
 <br>author：`cbtak` <cbtak@hotmail.com>
 <br>
  nothing.js 来源于项目开发过程积累常用到的一些工具函数，筛选通用性比较好的整理成库，采用`CommonJS`规范、`ES6`重构。本库不依赖于第三方库，可直接在node服务端及前端环境使用。
@@ -52,8 +52,9 @@ yarn add @cbtak/nothing
 18 | [defineSetter](/?id=_118-definesetter-object-setter-value) | 定义对象Setter
 19 | [validateNumber](/?id=_119-validatenumberval) | 数值型验证
 20 | [validateMobile](/?id=_120-validatemobilemobile) | 验证手机号码
-21 | [validateIDCard](/?id=_121-validateidcardidcard) | 验证身份证
-22 | [validateEmail](/?id=_122-validateemailemail) | 验证邮箱
+21 | [validateTelephone](/?id=_121-validatetelephonephone) | 验证固定电话号码
+22 | [validateIDCard](/?id=_122-validateidcardidcard) | 验证身份证
+23 | [validateEmail](/?id=_123-validateemailemail) | 验证邮箱
 
 #### 1.1. isNull(val)
 **参数说明：** `val` *要校验的值*
@@ -363,7 +364,19 @@ nothing.validateMobile(13500012222);    // 结果：true
 nothing.validateMobile(24563325633);    // 结果：false
 ```
 
-#### 1.21. validateIDCard(idCard)
+#### 1.21. validateTelephone(phone)
+**参数说明：** `phone` *要验证的固定电话号码*
+<br>　**返回值：** `Boolean`
+<br>**功能描述：** 
+> 验证固定电话号码是否合法
+
+**示例代码：**
+```js
+nothing.validateTelephone('020-11112222');  // 结果：true
+nothing.validateTelephone('02011112222');   // 结果：true
+```
+
+#### 1.22. validateIDCard(idCard)
 **参数说明：** `idCard` *要验证的身份证号码*
 <br>　**返回值：** `Boolean`
 <br>**功能描述：** 
@@ -375,7 +388,7 @@ nothing.validateIDCard('43048820100102445X'); // 结果：true
 nothing.validateIDCard('1234567890');         // 结果：false
 ```
 
-#### 1.22. validateEmail(email)
+#### 1.23. validateEmail(email)
 **参数说明：** `mail` *要验证的 email*
 <br>　**返回值：** `Boolean`
 <br>**功能描述：** 
