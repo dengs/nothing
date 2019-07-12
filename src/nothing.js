@@ -289,6 +289,11 @@ const nothing = {
   // validateMobile: (mobile) => /^[1][3,4,5,7,8][0-9]{9}$/.test(mobile),
   validateMobile: (mobile) => /^[1][0-9]{10}$/.test(mobile),
   /**
+   * 验证固定电话号码
+   * @param {*} phone
+   */
+  validateTelephone: (phone) => /^[0-9]{3,4}[-]{0,1}[0-9]{7,8}$/.test(phone),
+  /**
    * 数值型验证
    * @param {*} val
    */
