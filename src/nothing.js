@@ -512,6 +512,20 @@ const nothing = {
       }
     },
     Date: () => {
+      if (!nothing.hasOwnProperty(Date, 'from')) {
+        /**
+         * Date对象扩展：将传入参数转换为日期对象
+         * @param {*} date    日期（字符串、时间戳等）
+         */
+        Object.defineProperty(Date, 'from', {
+          value: (date) => {
+            if (String.isString(date)) {
+              date = date.replaceAll('-', '/')
+            }
+            return new Date(date)
+          }
+        });
+      }
       if (!nothing.hasOwnProperty(Date, 'format')) {
         /**
          * Date对象扩展：日期格式化
