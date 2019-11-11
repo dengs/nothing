@@ -650,14 +650,22 @@ Number(10.2345).toFixed2(2, -1);  // 结果：10.23
 #### 2.5. Date
 序号 | 函数名称 | 说明
 :--- | :--- | :---
-1 | [Date.format](/?id=_251-dateformatdate-fmt) | Date对象扩展：日期格式化
-2 | [Date.prototype.format](/?id=_252-dateprototypeformatfmt) | Date对象原型扩展：日期格式化
-3 | [Date.add](/?id=_253-dateadddate-interval-number) | Date对象扩展：日期计算(增加)
-4 | [Date.prototype.add](/?id=_254-dateprototypeaddinterval-number) | Date对象原型扩展：日期计算(增加)
-5 | [Date.diff](/?id=_255-datediffdiffdate1-diffdate2-interval) | Date对象扩展：日期差异计算
-6 | [Date.prototype.diff](/?id=_256-dateprototypediffdiffdate-interval) | Date对象原型扩展：日期差异计算
+1 | [Date.from](/?id=_251-datefromdate) | Date对象扩展：将传入参数转换为日期对象
+1 | [Date.format](/?id=_252-dateformatdate-fmt) | Date对象扩展：日期格式化
+2 | [Date.prototype.format](/?id=_253-dateprototypeformatfmt) | Date对象原型扩展：日期格式化
+3 | [Date.add](/?id=_254-dateadddate-interval-number) | Date对象扩展：日期计算(增加)
+4 | [Date.prototype.add](/?id=_25-dateprototypeaddinterval-number) | Date对象原型扩展：日期计算(增加)
+5 | [Date.diff](/?id=_256-datediffdiffdate1-diffdate2-interval) | Date对象扩展：日期差异计算
+6 | [Date.prototype.diff](/?id=_257-dateprototypediffdiffdate-interval) | Date对象原型扩展：日期差异计算
 
-##### 2.5.1. Date.format(date, fmt)
+##### 2.5.1. Date.from(date)
+**参数说明：** `date` *日期（字符串、时间戳、日期实例等形式）*
+<br>　**返回值：** `Date` *转换后的Date对象*
+<br>**功能描述：**
+> 扩展 Date 对象实例：将传入参数转换为Date对象<br>
+
+
+##### 2.5.2. Date.format(date, fmt)
 **参数说明：** `date` *日期*
 <br>　　　　　 `fmt` *格式表达式*
 <br>　**返回值：** `String` *格式化后字符串形式*
@@ -680,7 +688,7 @@ let strTime = Date.format(date, 'yyyy-MM-dd HH:mm:ss');
  */
 ```
 
-##### 2.5.2. Date.prototype.format(fmt)
+##### 2.5.3. Date.prototype.format(fmt)
 **参数说明：** `fmt` *格式表达式*
 <br>　**返回值：** `String` *格式化后字符串形式*
 <br>**功能描述：**
@@ -702,7 +710,7 @@ let strTime = date.format('yyyy-MM-dd HH:mm:ss');
  */
 ```
 
-##### 2.5.3. Date.add(date, interval, number)
+##### 2.5.4. Date.add(date, interval, number)
 **参数说明：** `date` *日期*
 <br>　　　　　 `interval` *计算日期间隔单位*
 <br>　　　　　 `number` *计算值(可传入负数)*
@@ -724,7 +732,7 @@ date = Date.add(date, 's', 30); // 增加30秒
 date = Date.add(date, 'ms', 1000 * 3 * 10);   // 增加(1000 * 3 * 10)毫秒
 ```
 
-##### 2.5.4. Date.prototype.add(interval, number)
+##### 2.5.5. Date.prototype.add(interval, number)
 **参数说明：** `interval` *计算日期间隔单位*
 <br>　　　　　 `number` *计算值(可传入负数)*
 <br>　**返回值：** `Date` *计算后的日期*
@@ -745,7 +753,7 @@ date = date.add('s', 30); // 增加30秒
 date = date.add('ms', 1000 * 3 * 10);   // 增加(1000 * 3 * 10)毫秒
 ```
 
-##### 2.5.5. Date.diff(diffDate1 , diffDate2, interval)
+##### 2.5.6. Date.diff(diffDate1 , diffDate2, interval)
 **参数说明：** `diffDate1` *日期1*
 <br>　　　　　 `diffDate2` *日期2*
 <br>　　　　　 `interval` *计算日期间隔单位*
@@ -769,7 +777,7 @@ let diff_seconds = Date.diff(dateTime1, dateTime2, 's');        // 结果(秒)�
 let diff_milliseconds = Date.diff(dateTime1, dateTime2, 'ms');  // 结果(毫秒)：14400000
 ```
 
-##### 2.5.6. Date.prototype.diff(diffDate, interval)
+##### 2.5.7. Date.prototype.diff(diffDate, interval)
 **参数说明：** `diffDate` *要计算差异的日期*
 <br>　　　　　 `interval` *计算日期间隔单位*
 <br>　**返回值：** `Number` *计算后差异值*
