@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
+    "build": "webpack -p",
     "doc": "docsify serve docs"
   },
   "keywords": [
@@ -27,5 +27,7 @@
     "babel-loader": "^7.1.1",
     "babel-preset-env": "^1.3.2",
     "webpack": "^3.6.0"
+  },
+  "dependencies": {
   }
 }
