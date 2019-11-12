@@ -512,6 +512,12 @@ const nothing = {
       }
     },
     Date: () => {
+      if (!nothing.hasOwnProperty(Date, 'nowDate')) {
+        nothing.defineGetter(Date, 'nowDate', () => Date.from(new Date().format('yyyy-MM-dd')))
+      }
+      if (!nothing.hasOwnProperty(Date, 'nowTime')) {
+        nothing.defineGetter(Date, 'nowTime', () => new Date())
+      }
       if (!nothing.hasOwnProperty(Date, 'from')) {
         /**
          * Date对象扩展：将传入参数转换为日期对象

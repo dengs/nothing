@@ -3,7 +3,7 @@
 <br>
 ![avatar](/logo.jpeg ':size=480')
 ## 概述
-> varsion：`v1.1.8`
+> varsion：`v1.1.9`
 <br>author：`cbtak` <cbtak@hotmail.com>
 <br>
  nothing.js 来源于项目开发过程积累常用到的一些工具函数，筛选通用性比较好的整理成库，采用`ES6`规范重构。本库不依赖于第三方库，可直接在node服务端及前端环境使用。
@@ -648,15 +648,25 @@ Number(10.2345).toFixed2(2, -1);  // 结果：10.23
 ><br>　　　　　暂无<br><br>
 
 #### 2.5. Date
+
+> 扩展属性：
+
+序号 | 属性名称 | 说明
+:--- | :--- | :---
+1 | Date.nowDate | 当前日期
+2 | Date.nowTime | 当前时间
+
+> 扩展函数：
+
 序号 | 函数名称 | 说明
 :--- | :--- | :---
 1 | [Date.from](/?id=_251-datefromdate) | Date对象扩展：将传入参数转换为日期对象
-1 | [Date.format](/?id=_252-dateformatdate-fmt) | Date对象扩展：日期格式化
-2 | [Date.prototype.format](/?id=_253-dateprototypeformatfmt) | Date对象原型扩展：日期格式化
-3 | [Date.add](/?id=_254-dateadddate-interval-number) | Date对象扩展：日期计算(增加)
-4 | [Date.prototype.add](/?id=_25-dateprototypeaddinterval-number) | Date对象原型扩展：日期计算(增加)
-5 | [Date.diff](/?id=_256-datediffdiffdate1-diffdate2-interval) | Date对象扩展：日期差异计算
-6 | [Date.prototype.diff](/?id=_257-dateprototypediffdiffdate-interval) | Date对象原型扩展：日期差异计算
+2 | [Date.format](/?id=_252-dateformatdate-fmt) | Date对象扩展：日期格式化
+3 | [Date.prototype.format](/?id=_253-dateprototypeformatfmt) | Date对象原型扩展：日期格式化
+4 | [Date.add](/?id=_254-dateadddate-interval-number) | Date对象扩展：日期计算(增加)
+5 | [Date.prototype.add](/?id=_25-dateprototypeaddinterval-number) | Date对象原型扩展：日期计算(增加)
+6 | [Date.diff](/?id=_256-datediffdiffdate1-diffdate2-interval) | Date对象扩展：日期差异计算
+7 | [Date.prototype.diff](/?id=_257-dateprototypediffdiffdate-interval) | Date对象原型扩展：日期差异计算
 
 ##### 2.5.1. Date.from(date)
 **参数说明：** `date` *日期（字符串、时间戳、日期实例等形式）*
