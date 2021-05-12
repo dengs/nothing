@@ -1,6 +1,6 @@
 {
   "name": "@cbtak/nothing",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "一套简单易用的常用函数&系统对象扩展库",
   "main": "lib/nothing.min.js",
   "repository": {
