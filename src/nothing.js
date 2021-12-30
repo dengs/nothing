@@ -105,14 +105,14 @@ const nothing = {
    */
   buildTree: (treeDataArray = [], { nodeKey = "id", parentKey = "parentId", childrenKey = "children", root = null } = {}) => {
     let [tree, nodeSet] = [[], {}];
-    treeDataArray.forEach((node) => (nodeSet[node[nodeKey]] = node));
+    treeDataArray.forEach((node) => (nodeSet[JSON.getAttribute(node, nodeKey)] = node));
     Object.keys(nodeSet).forEach((key) => {
       let node = nodeSet[key];
-      if (nothing.isNotNull(node[parentKey]) && nodeSet[node[parentKey]] && !(Array.isArray(root) ? root : [root]).indexOf(node[parentKey]) !== -1) {
-        if (!nodeSet[node[parentKey]][childrenKey]) {
-          nodeSet[node[parentKey]][childrenKey] = [];
+      if (nothing.isNotNull(JSON.getAttribute(node, parentKey)) && nodeSet[JSON.getAttribute(node, parentKey)] && !(Array.isArray(root) ? root : [root]).indexOf(JSON.getAttribute(node, parentKey)) !== -1) {
+        if (!nodeSet[JSON.getAttribute(node, parentKey)][childrenKey]) {
+          nodeSet[JSON.getAttribute(node, parentKey)][childrenKey] = [];
         }
-        nodeSet[node[parentKey]][childrenKey].push(node);
+        nodeSet[JSON.getAttribute(node, parentKey)][childrenKey].push(node);
       } else {
         tree.push(node);
       }
