@@ -108,7 +108,11 @@ const nothing = {
     treeDataArray.forEach((node) => (nodeSet[JSON.getAttribute(node, nodeKey)] = node));
     Object.keys(nodeSet).forEach((key) => {
       let node = nodeSet[key];
-      if (nothing.isNotNull(JSON.getAttribute(node, parentKey)) && nodeSet[JSON.getAttribute(node, parentKey)] && !(Array.isArray(root) ? root : [root]).indexOf(JSON.getAttribute(node, parentKey)) !== -1) {
+      if (
+        nothing.isNotNull(JSON.getAttribute(node, parentKey)) &&
+        nodeSet[JSON.getAttribute(node, parentKey)] &&
+        !(Array.isArray(root) ? root : [root]).indexOf(JSON.getAttribute(node, parentKey)) !== -1
+      ) {
         if (!nodeSet[JSON.getAttribute(node, parentKey)][childrenKey]) {
           nodeSet[JSON.getAttribute(node, parentKey)][childrenKey] = [];
         }
@@ -168,7 +172,7 @@ const nothing = {
       tempArr[1] = "." + tempArr[1] + new Array(scale - tempArr[1].length + 1).join("0"); // 小数位数处理（不够位数补0）
     }
     // 根据是否显示千分位格式化返回
-    return (thousands ? String(Number(tempArr[0])).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,") : tempArr[0]) + (scale ? tempArr[1] : "");
+    return (thousands ? String(!Number(tempArr[0]) ? tempArr[0] : Number(tempArr[0])).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,") : tempArr[0]) + (scale ? tempArr[1] : "");
   },
   /**
    * 日期格式化
