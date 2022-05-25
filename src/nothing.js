@@ -131,20 +131,33 @@ const nothing = {
    * @param {*} mode        舍入模式：0:Math.round  1:Math.ceil  -1:Math.floor
    */
   numberToFixed: (num, scale = 0, mode = 0) => {
-    num = Number(num);
+    let newNum = Number(num);
     scale = Number(scale);
     mode = [0, 1, -1].indexOf(mode) !== -1 ? mode : 0;
+    const currScale = String(newNum).includes(".") ? String(newNum).split(".")[1].length : 0;
+    if (!currScale) {
+      return newNum;
+    }
+    if (mode == 0 || currScale <= scale) {
+      return Number(newNum.toFixed(scale));
+    }
+    if (mode == 1) {
+      return scale ? Math.ceil(newNum * Math.pow(10, scale)) * (1 / Math.pow(10, scale)) : Math.ceil(newNum);
+    } else if (mode == 2) {
+      return scale ? Math.floor(newNum * Math.pow(10, scale)) * (1 / Math.pow(10, scale)) : Math.floor(newNum);
+    }
+    return num;
     // 舍入处理
-    num = nothing.caseValue(
-      mode,
-      0,
-      scale ? Math.round(num * Math.pow(10, scale)) * (1 / Math.pow(10, scale)) : Math.round(num),
-      1,
-      scale ? Math.ceil(num * Math.pow(10, scale)) * (1 / Math.pow(10, scale)) : Math.ceil(num),
-      -1,
-      scale ? Math.floor(num * Math.pow(10, scale)) * (1 / Math.pow(10, scale)) : Math.floor(num)
-    );
-    return Number(num.toFixed(scale));
+    // num = nothing.caseValue(
+    //   mode,
+    //   0,
+    //   scale ? Math.round(num * Math.pow(10, scale)) * (1 / Math.pow(10, scale)) : Math.round(num),
+    //   1,
+    //   scale ? Math.ceil(num * Math.pow(10, scale)) * (1 / Math.pow(10, scale)) : Math.ceil(num),
+    //   -1,
+    //   scale ? Math.floor(num * Math.pow(10, scale)) * (1 / Math.pow(10, scale)) : Math.floor(num)
+    // );
+    // return Number(num.toFixed(scale));
   },
   /**
    * 数值格式化
