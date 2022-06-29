@@ -143,7 +143,7 @@ const nothing = {
     }
     if (mode == 1) {
       return scale ? Math.ceil(newNum * Math.pow(10, scale)) * (1 / Math.pow(10, scale)) : Math.ceil(newNum);
-    } else if (mode == 2) {
+    } else if (mode == -1) {
       return scale ? Math.floor(newNum * Math.pow(10, scale)) * (1 / Math.pow(10, scale)) : Math.floor(newNum);
     }
     return num;
