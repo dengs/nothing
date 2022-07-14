@@ -139,7 +139,8 @@ const nothing = {
       return newNum;
     }
     if (mode == 0 || currScale <= scale) {
-      return Number(newNum.toFixed(scale));
+      // 4舍5入时出现5不入问题，加 0.000000000001
+      return Number((newNum + 0.000000000001).toFixed(scale));
     }
     if (mode == 1) {
       return scale ? Math.ceil(newNum * Math.pow(10, scale)) * (1 / Math.pow(10, scale)) : Math.ceil(newNum);
