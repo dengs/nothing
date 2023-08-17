@@ -1121,10 +1121,8 @@ const nothing = {
          */
         Object.defineProperty(Array, "remove", {
           value: (array, element) => {
-            array.splice(
-              array.findIndex((item) => item === element),
-              1
-            );
+            let index = array.findIndex((item) => item === element)
+            index != -1 && array.splice(index, 1);
             return array;
           },
         });
